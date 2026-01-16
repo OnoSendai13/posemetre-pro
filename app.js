@@ -77,20 +77,20 @@ const SHUTTERSPEEDS = [
 
 // Puissances flash standard (pour mode Fractions)
 const FLASH_POWERS_FRACTIONS = [
-    { label: '1/1', value: 1 },
-    { label: '1/1.4', value: 1/1.4 },
-    { label: '1/2', value: 1/2 },
-    { label: '1/2.8', value: 1/2.8 },
-    { label: '1/4', value: 1/4 },
-    { label: '1/5.6', value: 1/5.6 },
-    { label: '1/8', value: 1/8 },
-    { label: '1/11', value: 1/11 },
-    { label: '1/16', value: 1/16 },
-    { label: '1/22', value: 1/22 },
-    { label: '1/32', value: 1/32 },
-    { label: '1/64', value: 1/64 },
-    { label: '1/128', value: 1/128 },
-    { label: '1/256', value: 1/256 }
+    { label: '1/1', value: 1, ilValue: 0 },        // Pleine puissance
+    { label: '1/1.4', value: 0.7071, ilValue: -0.5 },  // -0.5 IL
+    { label: '1/2', value: 0.5, ilValue: -1 },     // -1 IL
+    { label: '1/2.8', value: 0.3536, ilValue: -1.5 },  // -1.5 IL
+    { label: '1/4', value: 0.25, ilValue: -2 },    // -2 IL
+    { label: '1/5.6', value: 0.1768, ilValue: -2.5 },  // -2.5 IL
+    { label: '1/8', value: 0.125, ilValue: -3 },   // -3 IL
+    { label: '1/11', value: 0.0884, ilValue: -3.5 },   // -3.5 IL
+    { label: '1/16', value: 0.0625, ilValue: -4 }, // -4 IL
+    { label: '1/22', value: 0.0442, ilValue: -4.5 },   // -4.5 IL
+    { label: '1/32', value: 0.03125, ilValue: -5 },    // -5 IL
+    { label: '1/64', value: 0.015625, ilValue: -6 },   // -6 IL
+    { label: '1/128', value: 0.0078125, ilValue: -7 }, // -7 IL
+    { label: '1/256', value: 0.00390625, ilValue: -8 } // -8 IL
 ];
 
 // ============================================
@@ -532,13 +532,23 @@ function calculateFlashmetre() {
         powerExplanation = ilDiff >= 0 ? 'Augmenter la puissance du flash' : 'Diminuer la puissance du flash';
     } else {
         // Mode FRACTIONS : calcul depuis la puissance actuelle
-        const currentPower = parseFloat(document.getElementById('flash-current-power')?.value || 0.5);
-        const targetPowerRatio = Math.pow(2, ilDiff);
-        const targetPower = currentPower * targetPowerRatio;
+        const currentPowerElement = document.getElementById('flash-current-power');
+        const currentPower = currentPowerElement ? parseFloat(currentPowerElement.value) : 1.0;
         
-        // Trouve la fraction la plus proche
-        const targetFraction = ilToPowerFraction(Math.log2(targetPower / currentPower));
-        const currentFractionLabel = FLASH_POWERS_FRACTIONS.find(f => Math.abs(f.value - currentPower) < 0.01)?.label || '1/2';
+        // Trouve la puissance actuelle en IL
+        const currentPowerObj = FLASH_POWERS_FRACTIONS.find(f => Math.abs(f.value - currentPower) < 0.01);
+        const currentPowerIL = currentPowerObj ? currentPowerObj.ilValue : 0;
+        
+        // Calcule la puissance cible en IL
+        const targetPowerIL = currentPowerIL + ilDiff;
+        
+        // Trouve la fraction cible la plus proche
+        const targetPowerObj = FLASH_POWERS_FRACTIONS.reduce((prev, curr) => 
+            Math.abs(curr.ilValue - targetPowerIL) < Math.abs(prev.ilValue - targetPowerIL) ? curr : prev
+        );
+        
+        const currentFractionLabel = currentPowerObj ? currentPowerObj.label : '1/1';
+        const targetFraction = targetPowerObj.label;
         
         powerDisplay = targetFraction;
         powerExplanation = `Régler de ${currentFractionLabel} à ${targetFraction}`;
