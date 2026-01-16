@@ -77,20 +77,15 @@ const SHUTTERSPEEDS = [
 
 // Puissances flash standard (pour mode Fractions)
 const FLASH_POWERS_FRACTIONS = [
-    { label: '1/1', value: 1, ilValue: 0 },        // Pleine puissance
-    { label: '1/1.4', value: 0.7071, ilValue: -0.5 },  // -0.5 IL
-    { label: '1/2', value: 0.5, ilValue: -1 },     // -1 IL
-    { label: '1/2.8', value: 0.3536, ilValue: -1.5 },  // -1.5 IL
-    { label: '1/4', value: 0.25, ilValue: -2 },    // -2 IL
-    { label: '1/5.6', value: 0.1768, ilValue: -2.5 },  // -2.5 IL
-    { label: '1/8', value: 0.125, ilValue: -3 },   // -3 IL
-    { label: '1/11', value: 0.0884, ilValue: -3.5 },   // -3.5 IL
-    { label: '1/16', value: 0.0625, ilValue: -4 }, // -4 IL
-    { label: '1/22', value: 0.0442, ilValue: -4.5 },   // -4.5 IL
-    { label: '1/32', value: 0.03125, ilValue: -5 },    // -5 IL
-    { label: '1/64', value: 0.015625, ilValue: -6 },   // -6 IL
-    { label: '1/128', value: 0.0078125, ilValue: -7 }, // -7 IL
-    { label: '1/256', value: 0.00390625, ilValue: -8 } // -8 IL
+    { label: '1/1', value: 1, ilValue: 0 },           // Pleine puissance
+    { label: '1/2', value: 0.5, ilValue: -1 },        // -1 IL
+    { label: '1/4', value: 0.25, ilValue: -2 },       // -2 IL
+    { label: '1/8', value: 0.125, ilValue: -3 },      // -3 IL
+    { label: '1/16', value: 0.0625, ilValue: -4 },    // -4 IL
+    { label: '1/32', value: 0.03125, ilValue: -5 },   // -5 IL
+    { label: '1/64', value: 0.015625, ilValue: -6 },  // -6 IL
+    { label: '1/128', value: 0.0078125, ilValue: -7 },// -7 IL
+    { label: '1/256', value: 0.00390625, ilValue: -8 }// -8 IL
 ];
 
 // ============================================
