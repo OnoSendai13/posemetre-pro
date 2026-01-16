@@ -1,0 +1,46 @@
+# Fichiers systèmes et temporaires
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*~
+
+# Fichiers IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Fichiers de backup
+*.bak
+*.backup
+app-backup.js
+data-corrected.js
+
+# Node modules (si ajout futur)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Fichiers de build (si ajout futur)
+dist/
+build/
+.cache/
+
+# Environnement
+.env
+.env.local
+.env.*.local
+
+# Fichiers de test
+coverage/
+.nyc_output/
+*.test.js
+*.spec.js
+
+# Documentation temporaire
+docs/temp/
+*.draft.md
