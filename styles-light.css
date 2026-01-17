@@ -1,0 +1,365 @@
+/* =====================================================
+   THEME CLAIR - PASTEL MINT
+   Mode lumineux moderne et apaisant
+   ===================================================== */
+
+:root[data-theme="light"] {
+    /* Couleurs principales (règle 60-30-10) */
+    --color-bg: #f0f4f8;              /* 60% - Fond bleu-gris très clair */
+    --color-surface: #ffffff;          /* Cards et sections */
+    --color-primary: #81c784;          /* 30% - Vert menthe doux */
+    --color-primary-dark: #66bb6a;     /* Primary hover */
+    --color-accent: #64b5f6;           /* 10% - Bleu vif */
+    --color-accent-dark: #42a5f5;      /* Accent hover */
+    
+    /* Texte */
+    --color-text: #2c3e50;             /* Texte principal */
+    --color-text-light: #7f8c8d;       /* Texte secondaire */
+    --color-text-muted: #95a5a6;       /* Texte désactivé */
+    
+    /* Borders et séparateurs */
+    --color-border: #d0dbe3;
+    --color-border-light: #e8eef3;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(129, 199, 132, 0.12);
+    --shadow-md: 0 4px 16px rgba(129, 199, 132, 0.15);
+    --shadow-lg: 0 8px 24px rgba(129, 199, 132, 0.18);
+    
+    /* Status colors */
+    --color-success: #66bb6a;
+    --color-warning: #ffa726;
+    --color-error: #ef5350;
+    --color-info: #64b5f6;
+}
+
+/* =====================================================
+   GLOBAL STYLES - MODE CLAIR
+   ===================================================== */
+
+[data-theme="light"] body {
+    background: var(--color-bg);
+    color: var(--color-text);
+}
+
+[data-theme="light"] .container {
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+/* =====================================================
+   HEADER - MODE CLAIR
+   ===================================================== */
+
+[data-theme="light"] header {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+[data-theme="light"] .app-title {
+    color: white;
+}
+
+/* Bouton de switch theme */
+[data-theme="light"] #theme-toggle {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] #theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* =====================================================
+   NAVIGATION TABS - MODE CLAIR
+   ===================================================== */
+
+[data-theme="light"] .tabs {
+    background: var(--color-surface);
+    border-bottom: 2px solid var(--color-border-light);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="light"] .tab-button {
+    color: var(--color-text-light);
+    background: transparent;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .tab-button:hover {
+    background: rgba(129, 199, 132, 0.1);
+    color: var(--color-primary);
+}
+
+[data-theme="light"] .tab-button.active {
+    color: var(--color-primary);
+    border-bottom: 3px solid var(--color-primary);
+    font-weight: 600;
+}
+
+/* =====================================================
+   MODE PANELS - MODE CLAIR
+   ===================================================== */
+
+[data-theme="light"] .mode-panel {
+    background: var(--color-surface);
+}
+
+[data-theme="light"] .mode-title {
+    color: var(--color-text);
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: 8px;
+}
+
+/* =====================================================
+   FORM ELEMENTS - MODE CLAIR
+   ===================================================== */
+
+[data-theme="light"] label {
+    color: var(--color-text-light);
+    font-weight: 500;
+}
+
+[data-theme="light"] .input-field,
+[data-theme="light"] select.input-field {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 2px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .input-field:focus,
+[data-theme="light"] select.input-field:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(129, 199, 132, 0.1);
+    outline: none;
+}
+
+[data-theme="light"] .input-field:hover {
+    border-color: var(--color-primary-dark);
+}
+
+/* =====================================================
+   BUTTONS - MODE CLAIR
+   ===================================================== */
+
+/* Boutons de compensation */
+[data-theme="light"] .compensation-buttons button {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 2px solid var(--color-border);
+    transition: all 0.2s ease;
+}
+
+[data-theme="light"] .compensation-buttons button:hover {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="light"] .compensation-buttons button.active {
+    background: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
+}
+
+/* Switch IL/Fractions */
+[data-theme="light"] .switch-container {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="light"] .switch-btn {
+    color: var(--color-text-light);
+    background: transparent;
+}
+
+[data-theme="light"] .switch-btn.active {
+    background: var(--color-primary);
+    color: white;
+    font-weight: 600;
+}
+
+/* =====================================================
+   RESULTS BOX - MODE CLAIR
+   ===================================================== */
+
+[data-theme="light"] .results-box {
+    background: linear-gradient(135deg, rgba(129, 199, 132, 0.1) 0%, rgba(100, 181, 246, 0.1) 100%);
+    border: 2px solid var(--color-primary);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+}
+
+[data-theme="light"] .results-title {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+[data-theme="light"] .result-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-light);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .result-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary);
+}
+
+[data-theme="light"] .result-label {
+    color: var(--color-text-light);
+}
+
+[data-theme="light"] .result-value {
+    color: var(--color-accent);
+    font-weight: 700;
+}
+
+[data-theme="light"] .result-detail {
+    color: var(--color-text-muted);
+}
+
+/* =====================================================
+   REFLECTANCE GRID - MODE CLAIR
+   ===================================================== */
+
+[data-theme="light"] .reflectance-grid {
+    background: var(--color-surface);
+    border: 2px solid var(--color-primary);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="light"] .grid-title {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: white;
+    font-weight: 600;
+}
+
+[data-theme="light"] .grid-item {
+    border-bottom: 1px solid var(--color-border-light);
+    transition: background 0.2s ease;
+}
+
+[data-theme="light"] .grid-item:hover {
+    background: rgba(129, 199, 132, 0.05);
+}
+
+[data-theme="light"] .grid-item:last-child {
+    border-bottom: none;
+}
+
+[data-theme="light"] .zone-il {
+    color: var(--color-accent);
+    font-weight: 700;
+}
+
+[data-theme="light"] .zone-description {
+    color: var(--color-text);
+}
+
+/* =====================================================
+   COMPENSATION DISPLAY - MODE CLAIR
+   ===================================================== */
+
+[data-theme="light"] .compensation-section {
+    background: rgba(129, 199, 132, 0.08);
+    border: 2px solid var(--color-primary);
+    border-radius: 12px;
+}
+
+[data-theme="light"] .comp-title {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+[data-theme="light"] .comp-value {
+    color: var(--color-accent);
+    font-weight: 700;
+    font-size: 1.5em;
+}
+
+/* =====================================================
+   SCROLLBAR - MODE CLAIR
+   ===================================================== */
+
+[data-theme="light"] ::-webkit-scrollbar {
+    width: 10px;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+    background: var(--color-border-light);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 5px;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-dark);
+}
+
+/* =====================================================
+   ANIMATIONS & TRANSITIONS - MODE CLAIR
+   ===================================================== */
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+[data-theme="light"] .result-item {
+    animation: slideIn 0.3s ease;
+}
+
+/* =====================================================
+   RESPONSIVE - MODE CLAIR
+   ===================================================== */
+
+@media (max-width: 768px) {
+    [data-theme="light"] .container {
+        box-shadow: none;
+    }
+    
+    [data-theme="light"] .result-item {
+        box-shadow: var(--shadow-sm);
+    }
+}
+
+/* =====================================================
+   PRINT - MODE CLAIR
+   ===================================================== */
+
+@media print {
+    [data-theme="light"] body {
+        background: white;
+    }
+    
+    [data-theme="light"] .container {
+        box-shadow: none;
+    }
+}
