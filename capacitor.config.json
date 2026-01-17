@@ -1,0 +1,31 @@
+{
+  "appId": "com.laurent.posemetre",
+  "appName": "Posemètre Pro",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "backgroundColor": "#1a1a1a",
+  "ios": {
+    "contentInset": "always",
+    "scheme": "App"
+  },
+  "android": {
+    "backgroundColor": "#1a1a1a",
+    "allowMixedContent": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1000,
+      "launchAutoHide": true,
+      "backgroundColor": "#1a1a1a",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "iosSpinnerStyle": "small",
+      "spinnerColor": "#ff6b35"
+    },
+    "StatusBar": {
+      "style": "dark",
+      "backgroundColor": "#1a1a1a"
+    }
+  }
+}
