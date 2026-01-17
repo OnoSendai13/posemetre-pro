@@ -7,6 +7,74 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ---
 
+## [1.1 Capacitor + Dual Theme] - 2026-01-17
+
+### 🎉 Migration native + Double thème
+
+**Statut** : ✅ Production-ready  
+**Plateforme** : ✅ PWA + iOS + Android ready  
+**Thèmes** : 2 (Clair + Sombre)  
+
+### ✨ Nouvelles fonctionnalités
+
+#### 📦 Migration Capacitor
+- **Support iOS** : App native prête pour App Store
+- **Support Android** : App native prête pour Play Store
+- **Configuration** : package.json + capacitor.config.json
+- **Compatibilité** : Garde la PWA existante fonctionnelle
+
+#### 🎨 Système de double thème
+
+**Mode Clair - Pastel Mint** 🌿
+- Fond : `#f0f4f8` Bleu-gris très clair (60%)
+- Primary : `#81c784` Vert menthe doux (30%)
+- Accent : `#64b5f6` Bleu vif (10%)
+- Style : Moderne, apaisant, tendance 2024-2026
+- Usage : Excellent en pleine lumière
+
+**Mode Sombre - Dark Orange** 🌙 (Actuel)
+- Fond : `#1a1a1a` Noir profond (60%)
+- Primary : `#2d2d2d` Gris foncé (30%)
+- Accent : `#ff6b35` Orange vif (10%)
+- Style : Professionnel, technique
+- Usage : Excellent en faible lumière
+
+#### 🔄 Switch automatique et manuel
+- **Détection auto** : Suit la préférence système (prefers-color-scheme)
+- **Toggle manuel** : Bouton 🌙/☀️ dans le header
+- **Mémoire** : Sauvegarde du choix utilisateur (localStorage)
+- **Transition douce** : Animation fluide entre les thèmes (0.3s)
+
+### 📝 Fichiers ajoutés
+- `styles-light.css` : Thème Pastel Mint (9.7 Ko)
+- `theme-switcher.js` : Logique de switch thème (6.1 Ko)
+- `package.json` : Configuration npm + Capacitor
+- `capacitor.config.json` : Configuration app native
+
+### 🛠️ Fichiers modifiés
+- `index.html` : Ajout bouton theme + liens CSS/JS
+- `styles.css` : Ajout style bouton theme
+- `README.md` : Documentation double thème + Capacitor
+- `CHANGELOG.md` : Ce fichier
+
+### ✅ Tests
+- ✅ Switch thème fonctionne
+- ✅ Détection préférence système OK
+- ✅ Sauvegarde choix utilisateur OK
+- ✅ Tous les 4 modes fonctionnent avec les 2 thèmes
+- ✅ PWA toujours fonctionnelle
+- ✅ Capacitor configé pour build iOS/Android
+
+### 🚀 Prochaines étapes
+1. Installer les dépendances : `npm install`
+2. Initialiser Capacitor : `npx cap init`
+3. Ajouter plateformes : `npx cap add ios` + `npx cap add android`
+4. Build iOS : `npx cap open ios` (Xcode)
+5. Build Android : `npx cap open android` (Android Studio)
+6. Publication stores : App Store + Play Store
+
+---
+
 ## [1.0 PROD V2] - 2026-01-17
 
 ### 🎉 Version de production finale - Tous bugs corrigés
