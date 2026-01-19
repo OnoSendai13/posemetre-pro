@@ -556,6 +556,15 @@ function calculatePosemetre() {
 
 /**
  * Calcule les réglages en mode FLASHMÈTRE
+ * 
+ * LOGIQUE HSS:
+ * La mesure flash est TOUJOURS faite dans les conditions reelles de prise de vue.
+ * Si vous etes en HSS a 1/1000, vous mesurez en HSS - la perte est deja incluse.
+ * 
+ * Le mode HSS sert a:
+ * 1. Informer l'utilisateur qu'il est en HSS (perte de puissance)
+ * 2. Montrer ce que donnerait le meme flash en sync normale (info)
+ * 3. PAS a modifier les calculs de base (la mesure est correcte)
  */
 function calculateFlashmetre() {
     const currentFstop = parseFloat(document.getElementById('flash-mesure').value);
@@ -567,9 +576,9 @@ function calculateFlashmetre() {
     // HSS: Recupere la vitesse sync max si HSS est active
     const maxSyncSpeed = hssEnabled ? 
         parseFloat(document.getElementById('hss-sync-max').value) : 
-        shootingSpeed; // Si pas HSS, on considere qu'on est en sync normale
+        shootingSpeed;
     
-    // Calcule la perte HSS si necessaire
+    // Detecte si on est en mode HSS
     let hssLoss = 0;
     let hssActive = false;
     
@@ -579,21 +588,19 @@ function calculateFlashmetre() {
     }
 
     // Calcule la différence IL entre mesure actuelle et cible + compensation
+    // La mesure est faite dans les conditions reelles, donc pas de compensation HSS ici
     const ilDiff = apertureToIL(currentFstop, targetFstop) + extraComp;
-    
-    // En HSS, il faut compenser la perte de puissance
-    const ilDiffWithHSS = ilDiff + hssLoss;
     
     // Calcule l'ouverture finale nécessaire
     const finalFstop = calculateAperture(currentFstop, ilDiff);
 
-    // Format selon le mode sélectionné
+    // Format selon le mode sélectionné (PAS de compensation HSS - la mesure est correcte)
     let powerDisplay;
     let powerExplanation;
     
     if (powerMode === 'IL') {
-        powerDisplay = `${ilDiffWithHSS >= 0 ? '+' : ''}${ilToPowerIL(ilDiffWithHSS)} IL`;
-        powerExplanation = ilDiffWithHSS >= 0 ? 'Augmenter la puissance du flash' : 'Diminuer la puissance du flash';
+        powerDisplay = `${ilDiff >= 0 ? '+' : ''}${ilToPowerIL(ilDiff)} IL`;
+        powerExplanation = ilDiff >= 0 ? 'Augmenter la puissance du flash' : 'Diminuer la puissance du flash';
     } else {
         // Mode FRACTIONS : calcul depuis la puissance actuelle
         const currentPowerElement = document.getElementById('flash-current-power');
@@ -603,8 +610,8 @@ function calculateFlashmetre() {
         const currentPowerObj = FLASH_POWERS_FRACTIONS.find(f => Math.abs(f.value - currentPower) < 0.01);
         const currentPowerIL = currentPowerObj ? currentPowerObj.ilValue : 0;
         
-        // Calcule la puissance cible en IL (avec compensation HSS)
-        const targetPowerIL = currentPowerIL + ilDiffWithHSS;
+        // Calcule la puissance cible en IL
+        const targetPowerIL = currentPowerIL + ilDiff;
         
         // Trouve la fraction cible la plus proche
         const targetPowerObj = FLASH_POWERS_FRACTIONS.reduce((prev, curr) => 
@@ -625,62 +632,46 @@ function calculateFlashmetre() {
     if (hssEnabled && hssWarning && hssWarningText) {
         if (hssActive) {
             hssWarning.style.display = 'flex';
-            hssWarningText.innerHTML = `<strong>HSS actif:</strong> Perte de puissance estimee: <strong>-${hssLoss.toFixed(1)} IL</strong><br>
-                <small>Vitesse ${getShutterLabel(shootingSpeed)} au-dessus de la sync ${getShutterLabel(maxSyncSpeed)}</small>`;
+            hssWarningText.innerHTML = `<strong>Mode HSS actif</strong> (${getShutterLabel(shootingSpeed)})<br>
+                <small>Perte estimee par rapport a la sync normale: <strong>~${hssLoss.toFixed(1)} IL</strong></small>`;
         } else {
             hssWarning.style.display = 'flex';
-            hssWarningText.innerHTML = `<strong>HSS non necessaire:</strong> Votre vitesse (${getShutterLabel(shootingSpeed)}) est dans la plage sync normale.`;
+            hssWarningText.innerHTML = `<strong>Sync normale</strong> - Votre vitesse (${getShutterLabel(shootingSpeed)}) ne necessite pas le HSS.`;
         }
     } else if (hssWarning) {
         hssWarning.style.display = 'none';
     }
-
-    // En HSS, calculer l'ouverture reellement atteignable si on ne peut pas compenser
-    // (utile si le flash est deja a pleine puissance)
-    const realAchievableFstop = hssActive ? 
-        calculateAperture(finalFstop, hssLoss) : // Ouvrir de hssLoss IL pour compenser la perte
-        finalFstop;
 
     // Construction du HTML des resultats
     let resultsHTML = `
         <div class="result-item">
             <span class="result-label">Regler le flash pour obtenir</span>
             <span class="result-value">f/${finalFstop}</span>
-            <span class="result-detail">A ${iso} ISO, ${getShutterLabel(shootingSpeed)}${hssActive ? ' - Necessite +' + hssLoss.toFixed(1) + ' IL de puissance' : ''}</span>
+            <span class="result-detail">A ${iso} ISO, ${getShutterLabel(shootingSpeed)}</span>
         </div>
-    `;
-    
-    // En HSS, montrer aussi l'ouverture atteignable sans compensation supplementaire
-    if (hssActive) {
-        resultsHTML += `
-        <div class="result-item" style="border-left-color: #ff9800;">
-            <span class="result-label">OU ouvrir le diaphragme a</span>
-            <span class="result-value" style="color: #ff9800;">f/${realAchievableFstop}</span>
-            <span class="result-detail">Si vous ne pouvez pas augmenter la puissance flash</span>
-        </div>
-        `;
-    }
-    
-    resultsHTML += `
         <div class="result-item">
-            <span class="result-label">Ajustement de puissance${hssActive ? ' (avec HSS)' : ''}</span>
+            <span class="result-label">Ajustement de puissance</span>
             <span class="result-value">${powerDisplay}</span>
             <span class="result-detail">${powerExplanation}</span>
         </div>
         <div class="result-item">
-            <span class="result-label">Difference de base</span>
+            <span class="result-label">Difference totale</span>
             <span class="result-value">${ilDiff >= 0 ? '+' : ''}${ilDiff.toFixed(1)} IL</span>
             <span class="result-detail">Compensation appliquee: ${extraComp >= 0 ? '+' : ''}${extraComp.toFixed(1)} IL</span>
         </div>
     `;
     
-    // Ajoute les infos HSS si actif
+    // En HSS, montrer l'info comparative avec la sync normale
     if (hssActive) {
+        // En sync normale, le meme flash donnerait une ouverture plus fermee (plus de lumiere)
+        // car pas de perte HSS. On FERME le diaphragme = valeur f/ plus GRANDE
+        const syncNormaleFstop = calculateAperture(currentFstop, hssLoss);
+        
         resultsHTML += `
         <div class="result-item" style="border-left-color: #64b5f6;">
-            <span class="result-label">Perte HSS a compenser</span>
-            <span class="result-value" style="color: #64b5f6;">+${hssLoss.toFixed(1)} IL</span>
-            <span class="result-detail">Augmenter la puissance OU ouvrir le diaphragme</span>
+            <span class="result-label">Info: En sync normale (${getShutterLabel(maxSyncSpeed)})</span>
+            <span class="result-value" style="color: #64b5f6;">f/${syncNormaleFstop}</span>
+            <span class="result-detail">Le meme flash donnerait ~${hssLoss.toFixed(1)} IL de plus</span>
         </div>
         `;
     }
