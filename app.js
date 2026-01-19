@@ -85,7 +85,8 @@ const FLASH_POWERS_FRACTIONS = [
     { label: '1/32', value: 0.03125, ilValue: -5 },   // -5 IL
     { label: '1/64', value: 0.015625, ilValue: -6 },  // -6 IL
     { label: '1/128', value: 0.0078125, ilValue: -7 },// -7 IL
-    { label: '1/256', value: 0.00390625, ilValue: -8 }// -8 IL
+    { label: '1/256', value: 0.00390625, ilValue: -8 },// -8 IL
+    { label: '1/512', value: 0.001953125, ilValue: -9 } // -9 IL
 ];
 
 // ============================================
@@ -93,6 +94,7 @@ const FLASH_POWERS_FRACTIONS = [
 // ============================================
 
 let powerMode = 'IL'; // 'IL' ou 'FRACTIONS'
+let hssEnabled = false; // Mode HSS actif ou non
 let deferredPrompt;
 
 // Valeurs de compensation actuelles
@@ -200,6 +202,43 @@ function calculateLightingRatio(ilDifference) {
     return `${ratio.toFixed(1)}:1`;
 }
 
+/**
+ * Calcule la perte de puissance en mode HSS
+ * En HSS, on perd environ 1-2 IL par stop au-dessus de la vitesse sync
+ * La perte est d'environ 2 IL au depart puis ~1 IL par stop supplementaire
+ * @param {number} shootingSpeed - Vitesse de prise de vue (ex: 1/1000 = 0.001)
+ * @param {number} maxSyncSpeed - Vitesse sync max du flash (ex: 1/250 = 0.004)
+ * @returns {number} Perte en IL (nombre positif)
+ */
+function calculateHSSPowerLoss(shootingSpeed, maxSyncSpeed) {
+    // Si on est en dessous ou egale a la sync max, pas de perte
+    if (shootingSpeed >= maxSyncSpeed) {
+        return 0;
+    }
+    
+    // Calcule le nombre de stops au-dessus de la sync
+    // Chaque division par 2 de la vitesse = 1 stop
+    const stopsAboveSync = Math.log2(maxSyncSpeed / shootingSpeed);
+    
+    // En HSS, la perte est d'environ:
+    // - 2 IL de base pour activer le HSS
+    // - puis ~1 IL par stop supplementaire
+    // Formule simplifiee: 2 + (stops - 1) = 1 + stops
+    const powerLoss = 2 + (stopsAboveSync - 1);
+    
+    return Math.max(0, powerLoss);
+}
+
+/**
+ * Verifie si le HSS est necessaire
+ * @param {number} shootingSpeed - Vitesse de prise de vue
+ * @param {number} maxSyncSpeed - Vitesse sync max
+ * @returns {boolean}
+ */
+function isHSSRequired(shootingSpeed, maxSyncSpeed) {
+    return shootingSpeed < maxSyncSpeed;
+}
+
 // ============================================
 // INITIALISATION
 // ============================================
@@ -291,9 +330,22 @@ function setupEventListeners() {
     });
 
     // Changements inputs FLASHMETRE
-    ['flash-vitesse', 'flash-iso', 'flash-mesure', 'flash-target', 'flash-current-power'].forEach(id => {
+    ['flash-vitesse', 'flash-iso', 'flash-mesure', 'flash-target', 'flash-current-power', 'hss-sync-max'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', calculateFlashmetre);
     });
+
+    // Toggle HSS
+    const hssCheckbox = document.getElementById('hss-enabled');
+    if (hssCheckbox) {
+        hssCheckbox.addEventListener('change', (e) => {
+            hssEnabled = e.target.checked;
+            const hssOptions = document.getElementById('hss-options');
+            if (hssOptions) {
+                hssOptions.style.display = hssEnabled ? 'block' : 'none';
+            }
+            calculateFlashmetre();
+        });
+    }
 
     // Changements inputs RATIOS
     ['ratio-key', 'ratio-iso', 'ratio-vitesse'].forEach(id => {
@@ -508,12 +560,29 @@ function calculatePosemetre() {
 function calculateFlashmetre() {
     const currentFstop = parseFloat(document.getElementById('flash-mesure').value);
     const targetFstop = parseFloat(document.getElementById('flash-target').value);
-    const syncSpeed = parseFloat(document.getElementById('flash-vitesse').value);
+    const shootingSpeed = parseFloat(document.getElementById('flash-vitesse').value);
     const iso = parseInt(document.getElementById('flash-iso').value);
     const extraComp = currentCompensation.flashmetre;
 
+    // HSS: Recupere la vitesse sync max si HSS est active
+    const maxSyncSpeed = hssEnabled ? 
+        parseFloat(document.getElementById('hss-sync-max').value) : 
+        shootingSpeed; // Si pas HSS, on considere qu'on est en sync normale
+    
+    // Calcule la perte HSS si necessaire
+    let hssLoss = 0;
+    let hssActive = false;
+    
+    if (hssEnabled && isHSSRequired(shootingSpeed, maxSyncSpeed)) {
+        hssLoss = calculateHSSPowerLoss(shootingSpeed, maxSyncSpeed);
+        hssActive = true;
+    }
+
     // Calcule la différence IL entre mesure actuelle et cible + compensation
     const ilDiff = apertureToIL(currentFstop, targetFstop) + extraComp;
+    
+    // En HSS, il faut compenser la perte de puissance
+    const ilDiffWithHSS = ilDiff + hssLoss;
     
     // Calcule l'ouverture finale nécessaire
     const finalFstop = calculateAperture(currentFstop, ilDiff);
@@ -523,8 +592,8 @@ function calculateFlashmetre() {
     let powerExplanation;
     
     if (powerMode === 'IL') {
-        powerDisplay = `${ilDiff >= 0 ? '+' : ''}${ilToPowerIL(ilDiff)} IL`;
-        powerExplanation = ilDiff >= 0 ? 'Augmenter la puissance du flash' : 'Diminuer la puissance du flash';
+        powerDisplay = `${ilDiffWithHSS >= 0 ? '+' : ''}${ilToPowerIL(ilDiffWithHSS)} IL`;
+        powerExplanation = ilDiffWithHSS >= 0 ? 'Augmenter la puissance du flash' : 'Diminuer la puissance du flash';
     } else {
         // Mode FRACTIONS : calcul depuis la puissance actuelle
         const currentPowerElement = document.getElementById('flash-current-power');
@@ -534,8 +603,8 @@ function calculateFlashmetre() {
         const currentPowerObj = FLASH_POWERS_FRACTIONS.find(f => Math.abs(f.value - currentPower) < 0.01);
         const currentPowerIL = currentPowerObj ? currentPowerObj.ilValue : 0;
         
-        // Calcule la puissance cible en IL
-        const targetPowerIL = currentPowerIL + ilDiff;
+        // Calcule la puissance cible en IL (avec compensation HSS)
+        const targetPowerIL = currentPowerIL + ilDiffWithHSS;
         
         // Trouve la fraction cible la plus proche
         const targetPowerObj = FLASH_POWERS_FRACTIONS.reduce((prev, curr) => 
@@ -546,26 +615,55 @@ function calculateFlashmetre() {
         const targetFraction = targetPowerObj.label;
         
         powerDisplay = targetFraction;
-        powerExplanation = `Régler de ${currentFractionLabel} à ${targetFraction}`;
+        powerExplanation = `Regler de ${currentFractionLabel} a ${targetFraction}`;
     }
 
-    const resultsHTML = `
+    // Affichage warning HSS
+    const hssWarning = document.getElementById('hss-warning');
+    const hssWarningText = document.getElementById('hss-warning-text');
+    
+    if (hssEnabled && hssWarning && hssWarningText) {
+        if (hssActive) {
+            hssWarning.style.display = 'flex';
+            hssWarningText.innerHTML = `<strong>HSS actif:</strong> Perte de puissance estimee: <strong>-${hssLoss.toFixed(1)} IL</strong><br>
+                <small>Vitesse ${getShutterLabel(shootingSpeed)} au-dessus de la sync ${getShutterLabel(maxSyncSpeed)}</small>`;
+        } else {
+            hssWarning.style.display = 'flex';
+            hssWarningText.innerHTML = `<strong>HSS non necessaire:</strong> Votre vitesse (${getShutterLabel(shootingSpeed)}) est dans la plage sync normale.`;
+        }
+    } else if (hssWarning) {
+        hssWarning.style.display = 'none';
+    }
+
+    // Construction du HTML des resultats
+    let resultsHTML = `
         <div class="result-item">
-            <span class="result-label">Régler le flash pour obtenir</span>
+            <span class="result-label">Regler le flash pour obtenir</span>
             <span class="result-value">f/${finalFstop}</span>
-            <span class="result-detail">À ${iso} ISO, ${getShutterLabel(syncSpeed)}</span>
+            <span class="result-detail">A ${iso} ISO, ${getShutterLabel(shootingSpeed)}</span>
         </div>
         <div class="result-item">
-            <span class="result-label">Ajustement de puissance</span>
+            <span class="result-label">Ajustement de puissance${hssActive ? ' (avec HSS)' : ''}</span>
             <span class="result-value">${powerDisplay}</span>
             <span class="result-detail">${powerExplanation}</span>
         </div>
         <div class="result-item">
-            <span class="result-label">Différence totale</span>
+            <span class="result-label">Difference de base</span>
             <span class="result-value">${ilDiff >= 0 ? '+' : ''}${ilDiff.toFixed(1)} IL</span>
-            <span class="result-detail">Compensation appliquée: ${extraComp >= 0 ? '+' : ''}${extraComp.toFixed(1)} IL</span>
+            <span class="result-detail">Compensation appliquee: ${extraComp >= 0 ? '+' : ''}${extraComp.toFixed(1)} IL</span>
         </div>
     `;
+    
+    // Ajoute les infos HSS si actif
+    if (hssActive) {
+        resultsHTML += `
+        <div class="result-item" style="border-left-color: #64b5f6;">
+            <span class="result-label">Compensation HSS</span>
+            <span class="result-value" style="color: #64b5f6;">+${hssLoss.toFixed(1)} IL</span>
+            <span class="result-detail">Perte de puissance a compenser en mode HSS</span>
+        </div>
+        `;
+    }
 
     document.getElementById('flash-results').innerHTML = resultsHTML;
 }

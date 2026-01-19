@@ -208,6 +208,42 @@
 }
 
 /* =====================================================
+   HSS SECTION - MODE CLAIR
+   ===================================================== */
+
+[data-theme="light"] .hss-section {
+    background: rgba(100, 181, 246, 0.08);
+    border: 2px solid rgba(100, 181, 246, 0.25);
+}
+
+[data-theme="light"] .hss-label {
+    color: var(--text-light);
+}
+
+[data-theme="light"] .hss-switch {
+    background: var(--border-color);
+}
+
+[data-theme="light"] .hss-checkbox:checked + .hss-switch {
+    background: #42a5f5;
+}
+
+[data-theme="light"] .hss-options {
+    border-top-color: rgba(100, 181, 246, 0.2);
+}
+
+[data-theme="light"] .hss-warning {
+    background: rgba(255, 152, 0, 0.1);
+    border-color: rgba(255, 152, 0, 0.3);
+    color: #e65100;
+}
+
+[data-theme="light"] .hss-info {
+    background: rgba(100, 181, 246, 0.08);
+    color: var(--text-muted);
+}
+
+/* =====================================================
    COMPENSATION SECTION - MODE CLAIR
    ===================================================== */
 

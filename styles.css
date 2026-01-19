@@ -266,6 +266,101 @@ input[type="number"].input-field {
     font-size: 18px;
 }
 
+/* HSS SECTION */
+.hss-section {
+    background: rgba(100, 181, 246, 0.08);
+    border: 2px solid rgba(100, 181, 246, 0.3);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 20px 0;
+}
+
+.hss-toggle-row {
+    display: flex;
+    align-items: center;
+}
+
+.hss-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.hss-checkbox {
+    display: none;
+}
+
+.hss-switch {
+    position: relative;
+    width: 48px;
+    height: 26px;
+    background: var(--border-color);
+    border-radius: 13px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.hss-switch::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.hss-checkbox:checked + .hss-switch {
+    background: #64b5f6;
+}
+
+.hss-checkbox:checked + .hss-switch::after {
+    left: 25px;
+}
+
+.hss-options {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.hss-options .input-group {
+    margin-bottom: 12px;
+}
+
+.hss-warning {
+    background: rgba(255, 152, 0, 0.15);
+    border: 1px solid rgba(255, 152, 0, 0.4);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--warning-color);
+}
+
+.hss-warning .warning-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.hss-info {
+    background: rgba(100, 181, 246, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
 /* COMPENSATION CONTROLS */
 .compensation-section {
     background: rgba(255,107,53,0.08);

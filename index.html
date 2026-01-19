@@ -97,7 +97,7 @@
                     
                     <div class="input-row">
                         <div class="input-group">
-                            <label>Vitesse sync:</label>
+                            <label>Vitesse:</label>
                             <select id="flash-vitesse" class="input-field">
                                 <!-- Options generees par JS -->
                             </select>
@@ -105,6 +105,31 @@
                         <div class="input-group">
                             <label>ISO:</label>
                             <input type="number" id="flash-iso" class="input-field" value="100" min="50" max="102400" step="1">
+                        </div>
+                    </div>
+
+                    <!-- Section HSS -->
+                    <div class="hss-section">
+                        <div class="hss-toggle-row">
+                            <label class="hss-label">
+                                <input type="checkbox" id="hss-enabled" class="hss-checkbox">
+                                <span class="hss-switch"></span>
+                                <span>Mode HSS (High-Speed Sync)</span>
+                            </label>
+                        </div>
+                        <div class="hss-options" id="hss-options" style="display: none;">
+                            <div class="input-group">
+                                <label>Vitesse sync max du flash:</label>
+                                <select id="hss-sync-max" class="input-field">
+                                    <option value="0.005">1/200</option>
+                                    <option value="0.004" selected>1/250</option>
+                                    <option value="0.003125">1/320</option>
+                                </select>
+                            </div>
+                            <div class="hss-warning" id="hss-warning" style="display: none;">
+                                <span class="warning-icon">&#9888;</span>
+                                <span id="hss-warning-text"></span>
+                            </div>
                         </div>
                     </div>
 
