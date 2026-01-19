@@ -661,30 +661,13 @@ function calculateFlashmetre() {
         </div>
     `;
     
-    // En HSS, montrer l'info comparative avec la sync normale
+    // En HSS, montrer un rappel informatif
     if (hssActive) {
-        // En sync normale, le meme flash donnerait PLUS de lumiere (pas de perte HSS)
-        // Donc la MESURE serait plus haute (f/ plus grand car plus de lumiere)
-        // 
-        // Exemple: mesure HSS = f/5.6, perte HSS = 2 IL
-        // En sync normale, mesure serait f/11 (2 stops de plus de lumiere)
-        // 
-        // Ensuite on applique le meme calcul: cible f/8 + compensation +3 IL
-        // Depuis f/11 vers f/8 = environ -0.5 IL, puis +3 IL = +2.5 IL
-        // Resultat sync normale = f/11 ajuste de +2.5 IL = f/29 environ
-        
-        // Mesure virtuelle en sync normale (plus de lumiere = f/ plus grand)
-        const syncNormaleMesure = calculateAperture(currentFstop, hssLoss);
-        
-        // Meme calcul qu'en HSS mais depuis cette mesure virtuelle
-        const syncNormaleIlDiff = apertureToIL(syncNormaleMesure, targetFstop) + extraComp;
-        const syncNormaleFstop = calculateAperture(syncNormaleMesure, syncNormaleIlDiff);
-        
         resultsHTML += `
         <div class="result-item" style="border-left-color: #64b5f6;">
-            <span class="result-label">Info: En sync normale (${getShutterLabel(maxSyncSpeed)})</span>
-            <span class="result-value" style="color: #64b5f6;">f/${syncNormaleFstop}</span>
-            <span class="result-detail">Mesure ~f/${syncNormaleMesure} (+${hssLoss.toFixed(1)} IL de lumiere)</span>
+            <span class="result-label">Rappel HSS</span>
+            <span class="result-value" style="color: #64b5f6; font-size: 16px;">Perte estimee: ~${hssLoss.toFixed(1)} IL</span>
+            <span class="result-detail">Ces reglages tiennent compte de votre mesure en HSS. Si les reglages sont difficiles, essayez en sync normale (${getShutterLabel(maxSyncSpeed)}) et remesurez.</span>
         </div>
         `;
     }
