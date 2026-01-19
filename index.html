@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#1a1a1a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Assistant PosemÃ¨tre Pro</title>
+    <title>Assistant Posemetre Pro</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles-light.css">
@@ -16,8 +16,8 @@
     <div id="app">
         <header>
             <div class="header-content">
-                <h1>ðŸ“· Assistant PosemÃ¨tre Pro</h1>
-                <button id="theme-toggle" class="theme-btn" title="Changer de thÃ¨me">ðŸŒ™</button>
+                <h1>Assistant Posemetre Pro</h1>
+                <button id="theme-toggle" class="theme-btn" title="Changer de theme"></button>
             </div>
             <div class="power-mode-switch" id="powerModeSwitch" style="display: none;">
                 <label class="switch-label">
@@ -31,22 +31,22 @@
         </header>
 
         <nav class="tab-nav">
-            <button class="tab-btn active" data-tab="posemetre">ðŸ“· PosemÃ¨tre</button>
-            <button class="tab-btn" data-tab="flashmetre">âš¡ Flash</button>
-            <button class="tab-btn" data-tab="ratios">ðŸ’¡ Ratios</button>
-            <button class="tab-btn" data-tab="estimation">ðŸ“Š Estimation</button>
+            <button class="tab-btn active" data-tab="posemetre">Posemetre</button>
+            <button class="tab-btn" data-tab="flashmetre">Flash</button>
+            <button class="tab-btn" data-tab="ratios">Ratios</button>
+            <button class="tab-btn" data-tab="estimation">Estimation</button>
         </nav>
 
         <main class="content">
-            <!-- MODE POSEMÃˆTRE -->
+            <!-- MODE POSEMETRE -->
             <section id="tab-posemetre" class="tab-content active">
                 <div class="meter-display">
-                    <h2>Mode PosemÃ¨tre (LumiÃ¨re continue)</h2>
+                    <h2>Mode Posemetre (Lumiere continue)</h2>
                     
                     <div class="input-group">
                         <label>Mesure initiale (Ouverture):</label>
                         <select id="pose-mesure" class="input-field">
-                            <!-- Options gÃ©nÃ©rÃ©es par JS -->
+                            <!-- Options generees par JS -->
                         </select>
                     </div>
 
@@ -58,7 +58,7 @@
                         <div class="input-group">
                             <label>Vitesse:</label>
                             <select id="pose-vitesse" class="input-field">
-                                <!-- Options gÃ©nÃ©rÃ©es par JS -->
+                                <!-- Options generees par JS -->
                             </select>
                         </div>
                     </div>
@@ -68,11 +68,11 @@
                         <div class="compensation-controls">
                             <button class="comp-btn" data-value="-2">-2 IL</button>
                             <button class="comp-btn" data-value="-1">-1 IL</button>
-                            <button class="comp-btn" data-value="-0.33">-â…“ IL</button>
+                            <button class="comp-btn" data-value="-0.33">-1/3 IL</button>
                             <button class="comp-btn active" data-value="0">0</button>
-                            <button class="comp-btn" data-value="0.33">+â…“ IL</button>
+                            <button class="comp-btn" data-value="0.33">+1/3 IL</button>
                             <button class="comp-btn" data-value="1">+1 IL</button>
-                            <button class="comp-btn" data-value="1.33">+1â…“ IL</button>
+                            <button class="comp-btn" data-value="1.33">+1 1/3 IL</button>
                             <button class="comp-btn" data-value="2">+2 IL</button>
                             <button class="comp-btn" data-value="3">+3 IL</button>
                         </div>
@@ -82,24 +82,24 @@
                     </div>
 
                     <div class="results-box">
-                        <h3>ðŸŽ¯ RÃ©glages suggÃ©rÃ©s</h3>
+                        <h3>Reglages suggeres</h3>
                         <div id="pose-results" class="results-content">
-                            <!-- RÃ©sultats gÃ©nÃ©rÃ©s par JS -->
+                            <!-- Resultats generes par JS -->
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- MODE FLASHMÃˆTRE -->
+            <!-- MODE FLASHMETRE -->
             <section id="tab-flashmetre" class="tab-content">
                 <div class="meter-display">
-                    <h2>Mode FlashmÃ¨tre</h2>
+                    <h2>Mode Flashmetre</h2>
                     
                     <div class="input-row">
                         <div class="input-group">
                             <label>Vitesse sync:</label>
                             <select id="flash-vitesse" class="input-field">
-                                <!-- Options gÃ©nÃ©rÃ©es par JS -->
+                                <!-- Options generees par JS -->
                             </select>
                         </div>
                         <div class="input-group">
@@ -111,14 +111,14 @@
                     <div class="input-group">
                         <label>Mesure flash actuelle:</label>
                         <select id="flash-mesure" class="input-field">
-                            <!-- Options gÃ©nÃ©rÃ©es par JS -->
+                            <!-- Options generees par JS -->
                         </select>
                     </div>
 
                     <div class="input-group">
-                        <label>Ouverture souhaitÃ©e:</label>
+                        <label>Ouverture souhaitee:</label>
                         <select id="flash-target" class="input-field">
-                            <!-- Options gÃ©nÃ©rÃ©es par JS -->
+                            <!-- Options generees par JS -->
                         </select>
                     </div>
 
@@ -138,15 +138,15 @@
                     </div>
 
                     <div class="compensation-section">
-                        <label>Compensation supplÃ©mentaire:</label>
+                        <label>Compensation supplementaire:</label>
                         <div class="compensation-controls">
                             <button class="comp-btn flash-comp" data-value="-2">-2 IL</button>
                             <button class="comp-btn flash-comp" data-value="-1">-1 IL</button>
-                            <button class="comp-btn flash-comp" data-value="-0.33">-â…“ IL</button>
+                            <button class="comp-btn flash-comp" data-value="-0.33">-1/3 IL</button>
                             <button class="comp-btn flash-comp active" data-value="0">0</button>
-                            <button class="comp-btn flash-comp" data-value="0.33">+â…“ IL</button>
+                            <button class="comp-btn flash-comp" data-value="0.33">+1/3 IL</button>
                             <button class="comp-btn flash-comp" data-value="1">+1 IL</button>
-                            <button class="comp-btn flash-comp" data-value="1.33">+1â…“ IL</button>
+                            <button class="comp-btn flash-comp" data-value="1.33">+1 1/3 IL</button>
                             <button class="comp-btn flash-comp" data-value="2">+2 IL</button>
                             <button class="comp-btn flash-comp" data-value="3">+3 IL</button>
                         </div>
@@ -156,9 +156,9 @@
                     </div>
 
                     <div class="results-box">
-                        <h3>ðŸŽ¯ Ajuster le flash Ã :</h3>
+                        <h3>Ajuster le flash a:</h3>
                         <div id="flash-results" class="results-content">
-                            <!-- RÃ©sultats gÃ©nÃ©rÃ©s par JS -->
+                            <!-- Resultats generes par JS -->
                         </div>
                     </div>
                 </div>
@@ -172,12 +172,12 @@
                     <div class="input-group">
                         <label>Key Light (ouverture):</label>
                         <select id="ratio-key" class="input-field">
-                            <!-- Options gÃ©nÃ©rÃ©es par JS -->
+                            <!-- Options generees par JS -->
                         </select>
                     </div>
 
                     <div class="compensation-section">
-                        <label>Ratio souhaitÃ© (Fill vs Key):</label>
+                        <label>Ratio souhaite (Fill vs Key):</label>
                         <div class="compensation-controls">
                             <button class="comp-btn ratio-comp" data-value="-3">-3 IL</button>
                             <button class="comp-btn ratio-comp" data-value="-2.5">-2.5 IL</button>
@@ -199,15 +199,15 @@
                         <div class="input-group">
                             <label>Vitesse:</label>
                             <select id="ratio-vitesse" class="input-field">
-                                <!-- Options gÃ©nÃ©rÃ©es par JS -->
+                                <!-- Options generees par JS -->
                             </select>
                         </div>
                     </div>
 
                     <div class="results-box">
-                        <h3>ðŸŽ¯ Fill Light Ã  rÃ©gler:</h3>
+                        <h3>Fill Light a regler:</h3>
                         <div id="ratio-results" class="results-content">
-                            <!-- RÃ©sultats gÃ©nÃ©rÃ©s par JS -->
+                            <!-- Resultats generes par JS -->
                         </div>
                     </div>
                 </div>
@@ -216,23 +216,23 @@
             <!-- MODE ESTIMATION -->
             <section id="tab-estimation" class="tab-content">
                 <div class="meter-display">
-                    <h2>Estimation sans posemÃ¨tre</h2>
-                    <p class="info-text">Mesure spot sur une zone de rÃ©fÃ©rence</p>
+                    <h2>Estimation sans posemetre</h2>
+                    <p class="info-text">Mesure spot sur une zone de reference</p>
                     
                     <div class="input-group">
-                        <label>Zone mesurÃ©e (spot):</label>
+                        <label>Zone mesuree (spot):</label>
                         <select id="estim-zone" class="input-field">
                             <option value="5">Blanc pur / Neige plein soleil (+5 IL)</option>
-                            <option value="4">Blanc neige Ã  l'ombre (+4 IL)</option>
-                            <option value="3">Ã‰corce de bouleau / Tronc d'arbre (+3 IL)</option>
-                            <option value="2">Peau trÃ¨s claire / Pierre claire (+2 IL)</option>
+                            <option value="4">Blanc neige a l'ombre (+4 IL)</option>
+                            <option value="3">Ecorce de bouleau / Tronc d'arbre (+3 IL)</option>
+                            <option value="2">Peau tres claire / Pierre claire (+2 IL)</option>
                             <option value="1" selected>Peau claire / Sable clair (+1 IL)</option>
                             <option value="0.5">Peau moyenne claire (+0.5 IL)</option>
-                            <option value="0">Gris 18% / BÃ©ton / Herbe verte / Feuillage (0 IL)</option>
-                            <option value="-0.5">Peau moyenne foncÃ©e (-0.5 IL)</option>
-                            <option value="-1">Peau foncÃ©e / Feuillage ombre (-1 IL)</option>
+                            <option value="0">Gris 18% / Beton / Herbe verte / Feuillage (0 IL)</option>
+                            <option value="-0.5">Peau moyenne foncee (-0.5 IL)</option>
+                            <option value="-1">Peau foncee / Feuillage ombre (-1 IL)</option>
                             <option value="-2">Pierre sombre / Asphalte (-2 IL)</option>
-                            <option value="-3">Ã‰corce sombre / Ombre profonde (-3 IL)</option>
+                            <option value="-3">Ecorce sombre / Ombre profonde (-3 IL)</option>
                             <option value="-4">Noir profond (-4 IL)</option>
                         </select>
                     </div>
@@ -241,7 +241,7 @@
                         <div class="input-group">
                             <label>Lecture appareil (f/):</label>
                             <select id="estim-mesure" class="input-field">
-                                <!-- Options gÃ©nÃ©rÃ©es par JS -->
+                                <!-- Options generees par JS -->
                             </select>
                         </div>
                         <div class="input-group">
@@ -253,7 +253,7 @@
                     <div class="input-group">
                         <label>Vitesse:</label>
                         <select id="estim-vitesse" class="input-field">
-                            <!-- Options gÃ©nÃ©rÃ©es par JS -->
+                            <!-- Options generees par JS -->
                         </select>
                     </div>
 
@@ -262,11 +262,11 @@
                         <div class="compensation-controls">
                             <button class="comp-btn estim-comp" data-value="-2">-2 IL</button>
                             <button class="comp-btn estim-comp" data-value="-1">-1 IL</button>
-                            <button class="comp-btn estim-comp" data-value="-0.33">-â…“ IL</button>
+                            <button class="comp-btn estim-comp" data-value="-0.33">-1/3 IL</button>
                             <button class="comp-btn estim-comp active" data-value="0">0</button>
-                            <button class="comp-btn estim-comp" data-value="0.33">+â…“ IL</button>
+                            <button class="comp-btn estim-comp" data-value="0.33">+1/3 IL</button>
                             <button class="comp-btn estim-comp" data-value="1">+1 IL</button>
-                            <button class="comp-btn estim-comp" data-value="1.33">+1â…“ IL</button>
+                            <button class="comp-btn estim-comp" data-value="1.33">+1 1/3 IL</button>
                             <button class="comp-btn estim-comp" data-value="2">+2 IL</button>
                             <button class="comp-btn estim-comp" data-value="3">+3 IL</button>
                         </div>
@@ -276,25 +276,25 @@
                     </div>
 
                     <div class="results-box">
-                        <h3>ðŸŽ¯ LumiÃ¨re incidente estimÃ©e:</h3>
+                        <h3>Lumiere incidente estimee:</h3>
                         <div id="estim-results" class="results-content">
-                            <!-- RÃ©sultats gÃ©nÃ©rÃ©s par JS -->
+                            <!-- Resultats generes par JS -->
                         </div>
                     </div>
 
                     <div class="info-box">
-                        <h4>ðŸ“‹ Grille de rÃ©flectance (Exemples concrets)</h4>
+                        <h4>Grille de reflectance (Exemples concrets)</h4>
                         <div class="reflectance-grid">
                             <div><strong>+5 IL:</strong> Blanc pur, Neige plein soleil</div>
-                            <div><strong>+4 IL:</strong> Blanc neige Ã  l'ombre</div>
-                            <div><strong>+3 IL:</strong> Ã‰corce de bouleau, Tronc d'arbre clair</div>
-                            <div><strong>+2 IL:</strong> Peau trÃ¨s claire, Pierre claire, Mur blanc</div>
+                            <div><strong>+4 IL:</strong> Blanc neige a l'ombre</div>
+                            <div><strong>+3 IL:</strong> Ecorce de bouleau, Tronc d'arbre clair</div>
+                            <div><strong>+2 IL:</strong> Peau tres claire, Pierre claire, Mur blanc</div>
                             <div><strong>+1 IL:</strong> Peau claire caucasienne, Sable clair</div>
-                            <div><strong>0 IL (Zone V):</strong> Gris neutre 18% (carte grise Kodak), BÃ©ton gris, Herbe verte, Feuillage moyen, Bois patinÃ©</div>
-                            <div><strong>-1 IL:</strong> Peau foncÃ©e, Feuillage Ã  l'ombre</div>
+                            <div><strong>0 IL (Zone V):</strong> Gris neutre 18% (carte grise Kodak), Beton gris, Herbe verte, Feuillage moyen, Bois patine</div>
+                            <div><strong>-1 IL:</strong> Peau foncee, Feuillage a l'ombre</div>
                             <div><strong>-2 IL:</strong> Pierre sombre, Asphalte, Terre humide</div>
-                            <div><strong>-3 IL:</strong> Ã‰corce sombre, Ombres profondes</div>
-                            <div><strong>-4 IL:</strong> Noir profond, Ombres trÃ¨s denses</div>
+                            <div><strong>-3 IL:</strong> Ecorce sombre, Ombres profondes</div>
+                            <div><strong>-4 IL:</strong> Noir profond, Ombres tres denses</div>
                         </div>
                     </div>
                 </div>
@@ -303,9 +303,9 @@
 
         <footer>
             <button id="installBtn" class="install-btn" style="display:none;">
-                ðŸ“± Installer l'application
+                Installer l'application
             </button>
-            <p class="footer-text">Assistant PosemÃ¨tre Pro v1.0 | DÃ©veloppÃ© pour Laurent</p>
+            <p class="footer-text">Assistant Posemetre Pro v1.0 | Developpe pour Laurent</p>
         </footer>
     </div>
 
