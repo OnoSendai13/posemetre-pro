@@ -635,13 +635,33 @@ function calculateFlashmetre() {
         hssWarning.style.display = 'none';
     }
 
+    // En HSS, calculer l'ouverture reellement atteignable si on ne peut pas compenser
+    // (utile si le flash est deja a pleine puissance)
+    const realAchievableFstop = hssActive ? 
+        calculateAperture(finalFstop, hssLoss) : // Ouvrir de hssLoss IL pour compenser la perte
+        finalFstop;
+
     // Construction du HTML des resultats
     let resultsHTML = `
         <div class="result-item">
             <span class="result-label">Regler le flash pour obtenir</span>
             <span class="result-value">f/${finalFstop}</span>
-            <span class="result-detail">A ${iso} ISO, ${getShutterLabel(shootingSpeed)}</span>
+            <span class="result-detail">A ${iso} ISO, ${getShutterLabel(shootingSpeed)}${hssActive ? ' - Necessite +' + hssLoss.toFixed(1) + ' IL de puissance' : ''}</span>
         </div>
+    `;
+    
+    // En HSS, montrer aussi l'ouverture atteignable sans compensation supplementaire
+    if (hssActive) {
+        resultsHTML += `
+        <div class="result-item" style="border-left-color: #ff9800;">
+            <span class="result-label">OU ouvrir le diaphragme a</span>
+            <span class="result-value" style="color: #ff9800;">f/${realAchievableFstop}</span>
+            <span class="result-detail">Si vous ne pouvez pas augmenter la puissance flash</span>
+        </div>
+        `;
+    }
+    
+    resultsHTML += `
         <div class="result-item">
             <span class="result-label">Ajustement de puissance${hssActive ? ' (avec HSS)' : ''}</span>
             <span class="result-value">${powerDisplay}</span>
@@ -658,9 +678,9 @@ function calculateFlashmetre() {
     if (hssActive) {
         resultsHTML += `
         <div class="result-item" style="border-left-color: #64b5f6;">
-            <span class="result-label">Compensation HSS</span>
+            <span class="result-label">Perte HSS a compenser</span>
             <span class="result-value" style="color: #64b5f6;">+${hssLoss.toFixed(1)} IL</span>
-            <span class="result-detail">Perte de puissance a compenser en mode HSS</span>
+            <span class="result-detail">Augmenter la puissance OU ouvrir le diaphragme</span>
         </div>
         `;
     }
