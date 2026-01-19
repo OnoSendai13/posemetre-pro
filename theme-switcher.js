@@ -169,18 +169,3 @@
     };
     
 })();
-
-/* =====================================================
-   TRANSITION DOUCE ENTRE THÈMES
-   ===================================================== */
-
-/* Ajouter une classe pour la transition */
-.theme-transitioning,
-.theme-transitioning *,
-.theme-transitioning *:before,
-.theme-transitioning *:after {
-    transition: background-color 0.3s ease, 
-                color 0.3s ease, 
-                border-color 0.3s ease,
-                box-shadow 0.3s ease !important;
-}

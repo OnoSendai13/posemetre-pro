@@ -3,34 +3,36 @@
    Mode lumineux moderne et apaisant
    ===================================================== */
 
+/* =====================================================
+   TRANSITION DOUCE ENTRE THEMES
+   ===================================================== */
+
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *:before,
+.theme-transitioning *:after {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease !important;
+}
+
+/* =====================================================
+   VARIABLES THEME CLAIR
+   ===================================================== */
+
 :root[data-theme="light"] {
-    /* Couleurs principales (règle 60-30-10) */
-    --color-bg: #f0f4f8;              /* 60% - Fond bleu-gris très clair */
-    --color-surface: #ffffff;          /* Cards et sections */
-    --color-primary: #81c784;          /* 30% - Vert menthe doux */
-    --color-primary-dark: #66bb6a;     /* Primary hover */
-    --color-accent: #64b5f6;           /* 10% - Bleu vif */
-    --color-accent-dark: #42a5f5;      /* Accent hover */
-    
-    /* Texte */
-    --color-text: #2c3e50;             /* Texte principal */
-    --color-text-light: #7f8c8d;       /* Texte secondaire */
-    --color-text-muted: #95a5a6;       /* Texte désactivé */
-    
-    /* Borders et séparateurs */
-    --color-border: #d0dbe3;
-    --color-border-light: #e8eef3;
-    
-    /* Shadows */
-    --shadow-sm: 0 2px 8px rgba(129, 199, 132, 0.12);
-    --shadow-md: 0 4px 16px rgba(129, 199, 132, 0.15);
-    --shadow-lg: 0 8px 24px rgba(129, 199, 132, 0.18);
-    
-    /* Status colors */
-    --color-success: #66bb6a;
-    --color-warning: #ffa726;
-    --color-error: #ef5350;
-    --color-info: #64b5f6;
+    /* Couleurs principales (regle 60-30-10) */
+    --primary-color: #81c784;          /* Vert menthe doux */
+    --secondary-color: #4caf50;        /* Vert accent */
+    --bg-dark: #f0f4f8;                /* Fond bleu-gris tres clair */
+    --bg-card: #ffffff;                /* Cards blanches */
+    --text-light: #2c3e50;             /* Texte principal fonce */
+    --text-muted: #7f8c8d;             /* Texte secondaire */
+    --border-color: #d0dbe3;           /* Bordures claires */
+    --success-color: #66bb6a;          /* Vert succes */
+    --warning-color: #ffa726;          /* Orange warning */
+    --input-bg: #ffffff;               /* Fond inputs */
 }
 
 /* =====================================================
@@ -38,13 +40,8 @@
    ===================================================== */
 
 [data-theme="light"] body {
-    background: var(--color-bg);
-    color: var(--color-text);
-}
-
-[data-theme="light"] .container {
-    background: var(--color-surface);
-    box-shadow: var(--shadow-sm);
+    background: linear-gradient(135deg, #f0f4f8 0%, #e8eef3 100%);
+    color: var(--text-light);
 }
 
 /* =====================================================
@@ -52,27 +49,79 @@
    ===================================================== */
 
 [data-theme="light"] header {
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
     color: white;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 16px rgba(129, 199, 132, 0.25);
 }
 
-[data-theme="light"] .app-title {
+[data-theme="light"] header h1 {
     color: white;
 }
 
-/* Bouton de switch theme */
-[data-theme="light"] #theme-toggle {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
+[data-theme="light"] .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Toggle mode puissance */
+[data-theme="light"] .toggle-btn {
+    background: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.4);
+}
+
+[data-theme="light"] .toggle-option {
+    color: rgba(255,255,255,0.8);
+}
+
+[data-theme="light"] .toggle-option.active {
+    background: white;
+    color: #66bb6a;
+}
+
+/* =====================================================
+   BOUTON THEME TOGGLE
+   ===================================================== */
+
+#theme-toggle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Style mode sombre (defaut) */
+[data-theme="dark"] #theme-toggle,
+:root:not([data-theme]) #theme-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] #theme-toggle:hover,
+:root:not([data-theme]) #theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+/* Style mode clair */
+[data-theme="light"] #theme-toggle {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="light"] #theme-toggle:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -80,117 +129,118 @@
    NAVIGATION TABS - MODE CLAIR
    ===================================================== */
 
-[data-theme="light"] .tabs {
-    background: var(--color-surface);
-    border-bottom: 2px solid var(--color-border-light);
-    box-shadow: var(--shadow-sm);
+[data-theme="light"] .tab-nav {
+    background: var(--bg-card);
+    border-bottom: 2px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(129, 199, 132, 0.1);
 }
 
-[data-theme="light"] .tab-button {
-    color: var(--color-text-light);
+[data-theme="light"] .tab-btn {
+    color: var(--text-muted);
     background: transparent;
     border: none;
-    transition: all 0.3s ease;
 }
 
-[data-theme="light"] .tab-button:hover {
+[data-theme="light"] .tab-btn:hover {
     background: rgba(129, 199, 132, 0.1);
-    color: var(--color-primary);
+    color: var(--secondary-color);
 }
 
-[data-theme="light"] .tab-button.active {
-    color: var(--color-primary);
-    border-bottom: 3px solid var(--color-primary);
-    font-weight: 600;
+[data-theme="light"] .tab-btn.active {
+    color: var(--secondary-color);
+    border-bottom-color: var(--secondary-color);
+    background: rgba(129, 199, 132, 0.15);
 }
 
 /* =====================================================
-   MODE PANELS - MODE CLAIR
+   CONTENT - MODE CLAIR
    ===================================================== */
 
-[data-theme="light"] .mode-panel {
-    background: var(--color-surface);
+[data-theme="light"] .content {
+    background: transparent;
 }
 
-[data-theme="light"] .mode-title {
-    color: var(--color-text);
-    border-bottom: 2px solid var(--color-primary);
-    padding-bottom: 8px;
+[data-theme="light"] .meter-display {
+    background: var(--bg-card);
+    box-shadow: 0 8px 24px rgba(129, 199, 132, 0.15);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .meter-display h2 {
+    color: var(--secondary-color);
+}
+
+[data-theme="light"] .info-text {
+    color: var(--text-muted);
 }
 
 /* =====================================================
    FORM ELEMENTS - MODE CLAIR
    ===================================================== */
 
-[data-theme="light"] label {
-    color: var(--color-text-light);
-    font-weight: 500;
+[data-theme="light"] .input-group label {
+    color: var(--text-muted);
 }
 
-[data-theme="light"] .input-field,
-[data-theme="light"] select.input-field {
-    background: var(--color-surface);
-    color: var(--color-text);
-    border: 2px solid var(--color-border);
-    box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
+[data-theme="light"] .input-field {
+    background: var(--input-bg);
+    color: var(--text-light);
+    border: 2px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-[data-theme="light"] .input-field:focus,
-[data-theme="light"] select.input-field:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(129, 199, 132, 0.1);
-    outline: none;
+[data-theme="light"] .input-field:focus {
+    border-color: var(--secondary-color);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(129, 199, 132, 0.15);
 }
 
 [data-theme="light"] .input-field:hover {
-    border-color: var(--color-primary-dark);
+    border-color: var(--primary-color);
+}
+
+[data-theme="light"] select.input-field {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232c3e50' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
 }
 
 /* =====================================================
-   BUTTONS - MODE CLAIR
+   COMPENSATION SECTION - MODE CLAIR
    ===================================================== */
 
-/* Boutons de compensation */
-[data-theme="light"] .compensation-buttons button {
-    background: var(--color-surface);
-    color: var(--color-text);
-    border: 2px solid var(--color-border);
-    transition: all 0.2s ease;
+[data-theme="light"] .compensation-section {
+    background: rgba(129, 199, 132, 0.08);
+    border: 2px solid rgba(129, 199, 132, 0.3);
 }
 
-[data-theme="light"] .compensation-buttons button:hover {
-    background: var(--color-primary);
+[data-theme="light"] .compensation-section > label {
+    color: var(--secondary-color);
+}
+
+[data-theme="light"] .comp-btn {
+    background: var(--bg-card);
+    color: var(--text-light);
+    border: 2px solid var(--border-color);
+}
+
+[data-theme="light"] .comp-btn:hover {
+    background: rgba(129, 199, 132, 0.1);
+    border-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+[data-theme="light"] .comp-btn.active {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
     color: white;
-    border-color: var(--color-primary);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
-[data-theme="light"] .compensation-buttons button.active {
-    background: var(--color-accent);
-    color: white;
-    border-color: var(--color-accent);
-    font-weight: 600;
-    box-shadow: var(--shadow-md);
+[data-theme="light"] .compensation-display {
+    background: rgba(129, 199, 132, 0.1);
 }
 
-/* Switch IL/Fractions */
-[data-theme="light"] .switch-container {
-    background: var(--color-surface);
-    border: 2px solid var(--color-border);
-    box-shadow: var(--shadow-sm);
-}
-
-[data-theme="light"] .switch-btn {
-    color: var(--color-text-light);
-    background: transparent;
-}
-
-[data-theme="light"] .switch-btn.active {
-    background: var(--color-primary);
-    color: white;
-    font-weight: 600;
+[data-theme="light"] .compensation-display span {
+    color: var(--secondary-color);
 }
 
 /* =====================================================
@@ -199,101 +249,72 @@
 
 [data-theme="light"] .results-box {
     background: linear-gradient(135deg, rgba(129, 199, 132, 0.1) 0%, rgba(100, 181, 246, 0.1) 100%);
-    border: 2px solid var(--color-primary);
-    border-radius: 16px;
-    box-shadow: var(--shadow-md);
+    border: 2px solid var(--secondary-color);
+    box-shadow: 0 4px 16px rgba(129, 199, 132, 0.15);
 }
 
-[data-theme="light"] .results-title {
-    color: var(--color-primary);
-    font-weight: 600;
+[data-theme="light"] .results-box h3 {
+    color: var(--secondary-color);
 }
 
 [data-theme="light"] .result-item {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border-light);
-    border-radius: 12px;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
-}
-
-[data-theme="light"] .result-item:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--color-primary);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--secondary-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="light"] .result-label {
-    color: var(--color-text-light);
+    color: var(--text-muted);
 }
 
 [data-theme="light"] .result-value {
-    color: var(--color-accent);
-    font-weight: 700;
+    color: var(--secondary-color);
 }
 
 [data-theme="light"] .result-detail {
-    color: var(--color-text-muted);
+    color: var(--text-muted);
 }
 
 /* =====================================================
-   REFLECTANCE GRID - MODE CLAIR
+   INFO BOX - MODE CLAIR
    ===================================================== */
 
-[data-theme="light"] .reflectance-grid {
-    background: var(--color-surface);
-    border: 2px solid var(--color-primary);
-    border-radius: 12px;
-    box-shadow: var(--shadow-sm);
+[data-theme="light"] .info-box {
+    background: rgba(255, 152, 0, 0.08);
+    border: 2px solid rgba(255, 152, 0, 0.3);
 }
 
-[data-theme="light"] .grid-title {
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-    color: white;
-    font-weight: 600;
+[data-theme="light"] .info-box h4 {
+    color: var(--warning-color);
 }
 
-[data-theme="light"] .grid-item {
-    border-bottom: 1px solid var(--color-border-light);
-    transition: background 0.2s ease;
-}
-
-[data-theme="light"] .grid-item:hover {
-    background: rgba(129, 199, 132, 0.05);
-}
-
-[data-theme="light"] .grid-item:last-child {
-    border-bottom: none;
-}
-
-[data-theme="light"] .zone-il {
-    color: var(--color-accent);
-    font-weight: 700;
-}
-
-[data-theme="light"] .zone-description {
-    color: var(--color-text);
+[data-theme="light"] .reflectance-grid > div {
+    background: var(--bg-card);
+    border-left-color: var(--warning-color);
+    color: var(--text-light);
 }
 
 /* =====================================================
-   COMPENSATION DISPLAY - MODE CLAIR
+   FOOTER - MODE CLAIR
    ===================================================== */
 
-[data-theme="light"] .compensation-section {
-    background: rgba(129, 199, 132, 0.08);
-    border: 2px solid var(--color-primary);
-    border-radius: 12px;
+[data-theme="light"] footer {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-color);
 }
 
-[data-theme="light"] .comp-title {
-    color: var(--color-primary);
-    font-weight: 600;
+[data-theme="light"] .install-btn {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, #43a047 100%);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
-[data-theme="light"] .comp-value {
-    color: var(--color-accent);
-    font-weight: 700;
-    font-size: 1.5em;
+[data-theme="light"] .install-btn:hover {
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+[data-theme="light"] .footer-text {
+    color: var(--text-muted);
 }
 
 /* =====================================================
@@ -305,61 +326,24 @@
 }
 
 [data-theme="light"] ::-webkit-scrollbar-track {
-    background: var(--color-border-light);
+    background: #e8eef3;
 }
 
 [data-theme="light"] ::-webkit-scrollbar-thumb {
-    background: var(--color-primary);
+    background: var(--primary-color);
     border-radius: 5px;
 }
 
 [data-theme="light"] ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-primary-dark);
-}
-
-/* =====================================================
-   ANIMATIONS & TRANSITIONS - MODE CLAIR
-   ===================================================== */
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-[data-theme="light"] .result-item {
-    animation: slideIn 0.3s ease;
+    background: var(--secondary-color);
 }
 
 /* =====================================================
    RESPONSIVE - MODE CLAIR
    ===================================================== */
 
-@media (max-width: 768px) {
-    [data-theme="light"] .container {
-        box-shadow: none;
-    }
-    
-    [data-theme="light"] .result-item {
-        box-shadow: var(--shadow-sm);
-    }
-}
-
-/* =====================================================
-   PRINT - MODE CLAIR
-   ===================================================== */
-
-@media print {
-    [data-theme="light"] body {
-        background: white;
-    }
-    
-    [data-theme="light"] .container {
-        box-shadow: none;
+@media (max-width: 480px) {
+    [data-theme="light"] .meter-display {
+        box-shadow: 0 4px 16px rgba(129, 199, 132, 0.1);
     }
 }
