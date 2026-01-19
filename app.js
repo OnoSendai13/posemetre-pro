@@ -665,7 +665,8 @@ function calculateFlashmetre() {
     if (hssActive) {
         // En sync normale, le meme flash donnerait une ouverture plus fermee (plus de lumiere)
         // car pas de perte HSS. On FERME le diaphragme = valeur f/ plus GRANDE
-        const syncNormaleFstop = calculateAperture(currentFstop, hssLoss);
+        // On part de finalFstop (qui inclut la compensation) pour etre coherent
+        const syncNormaleFstop = calculateAperture(finalFstop, hssLoss);
         
         resultsHTML += `
         <div class="result-item" style="border-left-color: #64b5f6;">
