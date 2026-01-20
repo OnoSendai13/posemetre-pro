@@ -119,7 +119,7 @@ const translations = {
         
         // Footer
         footerInstall: '📱 Installer l\'application',
-        footerText: 'Assistant Posemètre Pro v1.0 | Développé pour Laurent Suchet IG:@ono_sendai',
+        footerText: 'Assistant Posemètre Pro v1.2 | Développé pour Laurent Suchet IG:@ono_sendai',
         
         // Modal Aide - Titres
         helpTitle: '📖 Aide',
@@ -246,7 +246,7 @@ const translations = {
         
         // Footer
         footerInstall: '📱 Install app',
-        footerText: 'Light Meter Pro Assistant v1.0 | Developed for Laurent Suchet IG:@ono_sendai',
+        footerText: 'Light Meter Pro Assistant v1.2 | Developed for Laurent Suchet IG:@ono_sendai',
         
         // Modal Aide - Titres
         helpTitle: '📖 Help',
@@ -289,6 +289,66 @@ const helpContent = {
                 <li><strong>ISO</strong> : sensibilité du capteur (plus = plus de bruit)</li>
             </ul>
             <p>Modifier un paramètre d'1 IL (indice de lumination) = doubler ou diviser la lumière par 2.</p>
+            
+            <h4>📐 Tableau des ouvertures (diaphragme)</h4>
+            <div class="aperture-grid">
+                <table>
+                    <tr>
+                        <td class="third-stop"></td>
+                        <td class="full-stop">1</td>
+                        <td class="third-stop">1,1</td>
+                        <td class="third-stop">1,2</td>
+                    </tr>
+                    <tr>
+                        <td class="full-stop">1,4</td>
+                        <td class="third-stop">1,6</td>
+                        <td class="third-stop">1,8</td>
+                        <td class="full-stop">2</td>
+                    </tr>
+                    <tr>
+                        <td class="third-stop">2,2</td>
+                        <td class="third-stop">2,5</td>
+                        <td class="full-stop">2,8</td>
+                        <td class="third-stop">3,2</td>
+                    </tr>
+                    <tr>
+                        <td class="third-stop">3,5</td>
+                        <td class="full-stop">4</td>
+                        <td class="third-stop">4,5</td>
+                        <td class="third-stop">5</td>
+                    </tr>
+                    <tr>
+                        <td class="full-stop">5,6</td>
+                        <td class="third-stop">6,3</td>
+                        <td class="third-stop">7,1</td>
+                        <td class="full-stop">8</td>
+                    </tr>
+                    <tr>
+                        <td class="third-stop">9</td>
+                        <td class="third-stop">10</td>
+                        <td class="full-stop">11</td>
+                        <td class="third-stop">13</td>
+                    </tr>
+                    <tr>
+                        <td class="third-stop">14</td>
+                        <td class="full-stop">16</td>
+                        <td class="third-stop">18</td>
+                        <td class="third-stop">20</td>
+                    </tr>
+                    <tr>
+                        <td class="full-stop">22</td>
+                        <td class="third-stop">25</td>
+                        <td class="third-stop">29</td>
+                        <td class="full-stop">32</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="aperture-grid-legend">
+                <p><span class="legend-box red"></span> Cases rouges = 1 IL complet (diaphragme plein)</p>
+                <p><span class="legend-box gray"></span> Sur une ligne : 0,33 IL (⅓ de diaph) entre chaque case</p>
+                <p>↕ En colonne : 1,33 IL (1 diaph + ⅓) entre chaque case</p>
+            </div>
+            <p class="aperture-grid-credit">Tableau inspiré de @nathsakuraofficial — <a href="https://www.nath-sakura.com" target="_blank" rel="noopener">nath-sakura.com</a></p>
         `,
         posemetre: `
             <h3>📷 Mode Posemètre (lumière continue)</h3>
@@ -415,6 +475,66 @@ const helpContent = {
                 <li><strong>ISO</strong>: sensor sensitivity (higher = more noise)</li>
             </ul>
             <p>Changing one parameter by 1 EV (exposure value) = doubling or halving the light.</p>
+            
+            <h4>📐 Aperture Chart (f-stops)</h4>
+            <div class="aperture-grid">
+                <table>
+                    <tr>
+                        <td class="third-stop"></td>
+                        <td class="full-stop">1</td>
+                        <td class="third-stop">1.1</td>
+                        <td class="third-stop">1.2</td>
+                    </tr>
+                    <tr>
+                        <td class="full-stop">1.4</td>
+                        <td class="third-stop">1.6</td>
+                        <td class="third-stop">1.8</td>
+                        <td class="full-stop">2</td>
+                    </tr>
+                    <tr>
+                        <td class="third-stop">2.2</td>
+                        <td class="third-stop">2.5</td>
+                        <td class="full-stop">2.8</td>
+                        <td class="third-stop">3.2</td>
+                    </tr>
+                    <tr>
+                        <td class="third-stop">3.5</td>
+                        <td class="full-stop">4</td>
+                        <td class="third-stop">4.5</td>
+                        <td class="third-stop">5</td>
+                    </tr>
+                    <tr>
+                        <td class="full-stop">5.6</td>
+                        <td class="third-stop">6.3</td>
+                        <td class="third-stop">7.1</td>
+                        <td class="full-stop">8</td>
+                    </tr>
+                    <tr>
+                        <td class="third-stop">9</td>
+                        <td class="third-stop">10</td>
+                        <td class="full-stop">11</td>
+                        <td class="third-stop">13</td>
+                    </tr>
+                    <tr>
+                        <td class="third-stop">14</td>
+                        <td class="full-stop">16</td>
+                        <td class="third-stop">18</td>
+                        <td class="third-stop">20</td>
+                    </tr>
+                    <tr>
+                        <td class="full-stop">22</td>
+                        <td class="third-stop">25</td>
+                        <td class="third-stop">29</td>
+                        <td class="full-stop">32</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="aperture-grid-legend">
+                <p><span class="legend-box red"></span> Red cells = 1 full EV (full stop)</p>
+                <p><span class="legend-box gray"></span> On a row: 0.33 EV (⅓ stop) between each cell</p>
+                <p>↕ In a column: 1.33 EV (1 stop + ⅓) between each cell</p>
+            </div>
+            <p class="aperture-grid-credit">Chart inspired by @nathsakuraofficial — <a href="https://www.nath-sakura.com" target="_blank" rel="noopener">nath-sakura.com</a></p>
         `,
         posemetre: `
             <h3>📷 Light Meter Mode (continuous light)</h3>

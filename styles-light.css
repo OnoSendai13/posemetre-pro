@@ -457,3 +457,25 @@
     background: rgba(255, 152, 0, 0.1);
     border-left: 4px solid var(--warning-color);
 }
+
+/* Aperture Grid - Light Theme */
+[data-theme="light"] .aperture-grid td {
+    border-color: #ccc;
+}
+
+[data-theme="light"] .aperture-grid td.third-stop {
+    background: #f0f0f0;
+    color: #333;
+}
+
+[data-theme="light"] .aperture-grid-legend {
+    color: var(--text-light);
+}
+
+[data-theme="light"] .aperture-grid-credit {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .aperture-grid-credit a {
+    color: var(--secondary-color);
+}
