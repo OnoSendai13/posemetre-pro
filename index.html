@@ -347,48 +347,53 @@
             </div>
             
             <div class="modal-nav">
-                <button class="modal-nav-btn active" data-section="general">General</button>
-                <button class="modal-nav-btn" data-section="posemetre">Posemetre</button>
+                <button class="modal-nav-btn active" data-section="general">Général</button>
+                <button class="modal-nav-btn" data-section="posemetre">Posemètre</button>
                 <button class="modal-nav-btn" data-section="flash">Flash</button>
                 <button class="modal-nav-btn" data-section="ratios">Ratios</button>
                 <button class="modal-nav-btn" data-section="estimation">Estimation</button>
             </div>
             
             <div class="modal-content">
-                <!-- Section Generale -->
+                <!-- Section Générale -->
                 <div class="help-section active" id="help-general">
-                    <h3>&#127919; Principe general</h3>
-                    <p>Cette application est un <strong>assistant pour posemetre/flashmetre</strong>. Elle vous aide a calculer les reglages de votre appareil photo a partir d'une mesure de lumiere <strong>incidente</strong>.</p>
+                    <h3>&#127919; Principe général</h3>
+                    <p>Cette application est un <strong>assistant pour posemètre/flashmètre</strong>. Elle vous aide à calculer les réglages de votre appareil photo à partir d'une mesure de lumière <strong>incidente</strong>.</p>
+                    
+                    <div class="help-box help-box-warning">
+                        <h4>&#9888; Mode Manuel requis</h4>
+                        <p>Ce raisonnement n'est totalement applicable qu'en <strong>mode Manuel (M)</strong>. Dans les modes semi-automatiques (Av, Tv, P), vous ne contrôlez qu'un paramètre et devez utiliser la fonction <strong>compensation d'exposition</strong> propre à votre appareil. Vous êtes alors davantage soumis à la règle du 18%.</p>
+                    </div>
                     
                     <div class="help-box">
-                        <h4>Lumiere incidente vs reflechie</h4>
-                        <p><strong>Incidente</strong> : mesure la lumiere qui ARRIVE sur le sujet (avec dome blanc, posemetre vers la source).</p>
-                        <p><strong>Reflechie</strong> : mesure la lumiere RENVOYEE par le sujet (cellule de l'appareil photo).</p>
-                        <p>Cette app travaille avec la mesure <strong>incidente</strong>, plus fiable car independante de la couleur/reflectance du sujet.</p>
+                        <h4>Lumière incidente vs réfléchie</h4>
+                        <p><strong>Incidente</strong> : mesure la lumière qui ARRIVE sur le sujet (avec dôme blanc, posemètre vers la source).</p>
+                        <p><strong>Réfléchie</strong> : mesure la lumière RENVOYÉE par le sujet (= mesure par la cellule de l'appareil photo).</p>
+                        <p>Cette app travaille avec la mesure <strong>incidente</strong>, plus fiable car indépendante de la couleur/réflectance du sujet.</p>
                     </div>
                     
                     <h4>Le triangle d'exposition</h4>
-                    <p>Trois parametres lies controlent l'exposition :</p>
+                    <p>Trois paramètres liés contrôlent l'exposition :</p>
                     <ul>
-                        <li><strong>Ouverture (f/)</strong> : controle la quantite de lumiere + profondeur de champ</li>
-                        <li><strong>Vitesse</strong> : controle le temps d'exposition + fige/flou de mouvement</li>
-                        <li><strong>ISO</strong> : sensibilite du capteur (plus = plus de bruit)</li>
+                        <li><strong>Ouverture (f/)</strong> : contrôle la quantité de lumière + profondeur de champ</li>
+                        <li><strong>Vitesse</strong> : contrôle le temps d'exposition + figé/flou de mouvement</li>
+                        <li><strong>ISO</strong> : sensibilité du capteur (plus = plus de bruit)</li>
                     </ul>
-                    <p>Modifier un parametre d'1 IL (indice de lumination) = doubler ou diviser la lumiere par 2.</p>
+                    <p>Modifier un paramètre d'1 IL (indice de lumination) = doubler ou diviser la lumière par 2.</p>
                 </div>
                 
-                <!-- Section Posemetre -->
+                <!-- Section Posemètre -->
                 <div class="help-section" id="help-posemetre">
-                    <h3>&#128247; Mode Posemetre (lumiere continue)</h3>
-                    <p>Pour la photo en lumiere naturelle ou continue (LED, tungstene...).</p>
+                    <h3>&#128247; Mode Posemètre (lumière continue)</h3>
+                    <p>Pour la photo en lumière naturelle ou continue (LED, tungstène...).</p>
                     
                     <div class="help-box">
                         <h4>Utilisation</h4>
                         <ol>
-                            <li>Mesurez la lumiere incidente avec votre posemetre</li>
-                            <li>Entrez l'ouverture indiquee (ex: f/5.6)</li>
-                            <li>Selectionnez votre ISO et vitesse de base</li>
-                            <li>L'app calcule les reglages equivalents</li>
+                            <li>Mesurez la lumière incidente avec votre posemètre</li>
+                            <li>Entrez l'ouverture indiquée (ex: f/5.6)</li>
+                            <li>Sélectionnez votre ISO et vitesse de base</li>
+                            <li>L'app calcule les réglages équivalents</li>
                         </ol>
                     </div>
                     
@@ -398,7 +403,7 @@
                         <li><strong>+IL</strong> : surexposer (plus clair) - utile pour high-key, peaux claires</li>
                         <li><strong>-IL</strong> : sous-exposer (plus sombre) - utile pour low-key, ambiances</li>
                     </ul>
-                    <p>Les 3 options proposees sont equivalentes en terme d'exposition, choisissez selon votre priorite creative (profondeur de champ, mouvement, bruit).</p>
+                    <p>Les 3 options proposées sont équivalentes en terme d'exposition, choisissez selon votre priorité créative (profondeur de champ, mouvement, bruit).</p>
                 </div>
                 
                 <!-- Section Flash -->
@@ -408,15 +413,15 @@
                     
                     <div class="help-box help-box-warning">
                         <h4>&#9888; Concept important : f/X a double sens</h4>
-                        <p><strong>f/X comme reglage</strong> : l'ouverture a appliquer sur votre appareil (ex: "reglez f/8")</p>
-                        <p><strong>f/X comme mesure</strong> : indique l'intensite lumineuse du flash. Un flash qui "donne f/11" est plus puissant qu'un flash qui "donne f/5.6".</p>
-                        <p>Dans cette app, la <strong>mesure flash</strong> = ce que votre flashmetre indique. L'<strong>ouverture souhaitee</strong> = le reglage que vous voulez utiliser.</p>
+                        <p><strong>f/X comme réglage</strong> : l'ouverture à appliquer sur votre appareil (ex: "réglez f/8")</p>
+                        <p><strong>f/X comme mesure</strong> : indique l'intensité lumineuse du flash. Un flash qui "donne f/11" est plus puissant qu'un flash qui "donne f/5.6".</p>
+                        <p>Dans cette app, la <strong>mesure flash</strong> = ce que votre flashmètre indique. L'<strong>ouverture souhaitée</strong> = le réglage que vous voulez utiliser dans votre choix artistique.</p>
                     </div>
                     
                     <h4>Workflow typique</h4>
                     <ol>
-                        <li>Reglez votre flash a une puissance de depart</li>
-                        <li>Mesurez au flashmetre → notez le f/X indique</li>
+                        <li>Réglez votre flash à une puissance de départ</li>
+                        <li>Mesurez au flashmètre → notez le f/X indiqué</li>
                         <li>Entrez cette mesure et l'ouverture que vous souhaitez</li>
                         <li>L'app vous dit de combien ajuster la puissance</li>
                     </ol>
@@ -429,57 +434,57 @@
                     
                     <h4>Mode HSS (High-Speed Sync)</h4>
                     <p>Permet de shooter au-dessus de la vitesse de synchro (ex: 1/1000 au lieu de 1/250).</p>
-                    <p><strong>Attention</strong> : le HSS cause une perte de puissance importante (~2-4 IL). La mesure doit etre faite dans les conditions reelles (en HSS si vous shootez en HSS).</p>
+                    <p><strong>Attention</strong> : le HSS cause une perte de puissance importante (~2-4 IL). La mesure doit être faite dans les conditions réelles (en HSS si vous shootez en HSS).</p>
                 </div>
                 
                 <!-- Section Ratios -->
                 <div class="help-section" id="help-ratios">
                     <h3>&#128161; Mode Ratios Key/Fill</h3>
-                    <p>Pour gerer l'eclairage a plusieurs sources.</p>
+                    <p>Pour gérer l'éclairage à plusieurs sources.</p>
                     
                     <div class="help-box">
                         <h4>Key et Fill light</h4>
-                        <p><strong>Key light</strong> : source principale, definit l'exposition de base</p>
-                        <p><strong>Fill light</strong> : source secondaire, debouche les ombres</p>
+                        <p><strong>Key light</strong> : source principale, définit l'exposition de base</p>
+                        <p><strong>Fill light</strong> : source secondaire, débouche les ombres</p>
                     </div>
                     
                     <h4>Ratios courants</h4>
                     <ul>
-                        <li><strong>1:1</strong> (0 IL) : eclairage plat, pas d'ombre</li>
-                        <li><strong>2:1</strong> (-1 IL) : leger contraste, portrait flatteur</li>
-                        <li><strong>4:1</strong> (-2 IL) : contraste marque, portrait dramatique</li>
+                        <li><strong>1:1</strong> (0 IL) : éclairage plat, pas d'ombre</li>
+                        <li><strong>2:1</strong> (-1 IL) : léger contraste, portrait flatteur</li>
+                        <li><strong>4:1</strong> (-2 IL) : contraste marqué, portrait dramatique</li>
                         <li><strong>8:1</strong> (-3 IL) : fort contraste, clair-obscur</li>
                     </ul>
-                    <p>Entrez la mesure de votre Key light et le ratio souhaite, l'app calcule a quel f/ doit etre reglee votre Fill light.</p>
+                    <p>Entrez la mesure de votre Key light et le ratio souhaité, l'app calcule à quel f/ doit être réglée votre Fill light.</p>
                 </div>
                 
                 <!-- Section Estimation -->
                 <div class="help-section" id="help-estimation">
-                    <h3>&#128202; Mode Estimation (sans posemetre)</h3>
-                    <p>Pour estimer l'exposition sans posemetre, en utilisant la mesure spot de votre appareil sur une zone de reference.</p>
+                    <h3>&#128202; Mode Estimation (sans posemètre)</h3>
+                    <p>Pour estimer l'exposition sans posemètre, en utilisant la mesure spot de votre appareil sur une zone de référence.</p>
                     
                     <div class="help-box">
                         <h4>Principe</h4>
                         <p>La cellule de votre appareil suppose que tout est "gris 18%". Si vous mesurez une zone plus claire ou plus sombre, elle se trompe.</p>
-                        <p>Cette app corrige l'erreur en fonction de la zone mesuree.</p>
+                        <p>Cette app corrige l'erreur en fonction de la zone mesurée.</p>
                     </div>
                     
                     <h4>Comment faire</h4>
                     <ol>
                         <li>Passez en mode spot sur votre appareil</li>
-                        <li>Visez une zone de reference (peau, mur, ciel...)</li>
-                        <li>Notez l'ouverture suggeree par l'appareil</li>
-                        <li>Selectionnez le type de zone dans l'app</li>
-                        <li>L'app corrige et donne l'exposition reelle</li>
+                        <li>Visez une zone de référence (peau, mur, ciel...)</li>
+                        <li>Notez l'ouverture suggérée par l'appareil</li>
+                        <li>Sélectionnez le type de zone dans l'app</li>
+                        <li>L'app corrige et donne l'exposition réelle</li>
                     </ol>
                     
-                    <h4>Zones de reference courantes</h4>
+                    <h4>Zones de référence courantes</h4>
                     <ul>
-                        <li><strong>Gris 18%</strong> (0 IL) : beton, herbe verte, feuillage</li>
-                        <li><strong>Peau claire</strong> (+1 IL) : caucasien eclaire</li>
-                        <li><strong>Peau foncee</strong> (-1 IL) : peau noire, ombre</li>
-                        <li><strong>Blanc</strong> (+2 a +5 IL) : neige, mur blanc</li>
-                        <li><strong>Noir</strong> (-2 a -4 IL) : asphalte, ombres profondes</li>
+                        <li><strong>Gris 18%</strong> (0 IL) : béton, herbe verte, feuillage</li>
+                        <li><strong>Peau claire</strong> (+1 IL) : caucasien éclairé</li>
+                        <li><strong>Peau foncée</strong> (-1 IL) : peau noire, ombre</li>
+                        <li><strong>Blanc</strong> (+2 à +5 IL) : neige, mur blanc</li>
+                        <li><strong>Noir</strong> (-2 à -4 IL) : asphalte, ombres profondes</li>
                     </ul>
                 </div>
             </div>
