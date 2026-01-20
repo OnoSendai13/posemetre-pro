@@ -2,16 +2,50 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-1.0%20PROD-brightgreen)
+![Version](https://img.shields.io/badge/version-1.1%20Capacitor-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
-![Size](https://img.shields.io/badge/size-28KB-orange)
+![Size](https://img.shields.io/badge/size-32KB-orange)
 ![PWA](https://img.shields.io/badge/PWA-ready-purple)
+![iOS](https://img.shields.io/badge/iOS-ready-blue)
+![Android](https://img.shields.io/badge/Android-ready-green)
 
 **Application professionnelle de posemétrie et flashmétrie pour photographes**
 
 [🚀 Démo en ligne](#installation) • [📖 Documentation](#documentation) • [🐛 Signaler un bug](https://github.com/VOTRE-USERNAME/lightmeter-app-pwa/issues)
 
 </div>
+
+---
+
+## ✨ Nouveautés v1.1
+
+### 🎨 Double Thème Moderne
+
+**Mode Clair - Pastel Mint** 🌿
+- Design moderne et apaisant
+- Couleurs : Bleu-gris clair + Vert menthe + Bleu vif
+- Parfait pour usage en pleine lumière
+- Tendance design 2024-2026
+
+**Mode Sombre - Dark Orange** 🌙
+- Look professionnel et technique (actuel)
+- Couleurs : Noir profond + Gris + Orange vif
+- Excellent en faible lumière
+- Idéal pour studio et shooting de nuit
+
+**Switch Automatique**
+- ✅ Détection préférence système
+- ✅ Toggle manuel via bouton 🌙/☀️
+- ✅ Mémorisation du choix utilisateur
+- ✅ Transition douce et fluide
+
+### 📦 Support Capacitor (iOS + Android)
+
+**App Native Ready**
+- ✅ Configuration Capacitor complète
+- ✅ Build iOS avec Xcode
+- ✅ Build Android avec Android Studio
+- ✅ Publication App Store + Play Store
 
 ---
 

@@ -85,7 +85,8 @@ const FLASH_POWERS_FRACTIONS = [
     { label: '1/32', value: 0.03125, ilValue: -5 },   // -5 IL
     { label: '1/64', value: 0.015625, ilValue: -6 },  // -6 IL
     { label: '1/128', value: 0.0078125, ilValue: -7 },// -7 IL
-    { label: '1/256', value: 0.00390625, ilValue: -8 }// -8 IL
+    { label: '1/256', value: 0.00390625, ilValue: -8 },// -8 IL
+    { label: '1/512', value: 0.001953125, ilValue: -9 } // -9 IL
 ];
 
 // ============================================
@@ -93,6 +94,7 @@ const FLASH_POWERS_FRACTIONS = [
 // ============================================
 
 let powerMode = 'IL'; // 'IL' ou 'FRACTIONS'
+let hssEnabled = false; // Mode HSS actif ou non
 let deferredPrompt;
 
 // Valeurs de compensation actuelles
@@ -200,11 +202,53 @@ function calculateLightingRatio(ilDifference) {
     return `${ratio.toFixed(1)}:1`;
 }
 
+/**
+ * Calcule la perte de puissance en mode HSS
+ * En HSS, on perd environ 1-2 IL par stop au-dessus de la vitesse sync
+ * La perte est d'environ 2 IL au depart puis ~1 IL par stop supplementaire
+ * @param {number} shootingSpeed - Vitesse de prise de vue (ex: 1/1000 = 0.001)
+ * @param {number} maxSyncSpeed - Vitesse sync max du flash (ex: 1/250 = 0.004)
+ * @returns {number} Perte en IL (nombre positif)
+ */
+function calculateHSSPowerLoss(shootingSpeed, maxSyncSpeed) {
+    // Si on est en dessous ou egale a la sync max, pas de perte
+    if (shootingSpeed >= maxSyncSpeed) {
+        return 0;
+    }
+    
+    // Calcule le nombre de stops au-dessus de la sync
+    // Chaque division par 2 de la vitesse = 1 stop
+    const stopsAboveSync = Math.log2(maxSyncSpeed / shootingSpeed);
+    
+    // En HSS, la perte est d'environ:
+    // - 2 IL de base pour activer le HSS
+    // - puis ~1 IL par stop supplementaire
+    // Formule simplifiee: 2 + (stops - 1) = 1 + stops
+    const powerLoss = 2 + (stopsAboveSync - 1);
+    
+    return Math.max(0, powerLoss);
+}
+
+/**
+ * Verifie si le HSS est necessaire
+ * @param {number} shootingSpeed - Vitesse de prise de vue
+ * @param {number} maxSyncSpeed - Vitesse sync max
+ * @returns {boolean}
+ */
+function isHSSRequired(shootingSpeed, maxSyncSpeed) {
+    return shootingSpeed < maxSyncSpeed;
+}
+
 // ============================================
 // INITIALISATION
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialiser i18n en premier
+    if (window.i18n) {
+        window.i18n.initI18n();
+    }
+    
     initializeApp();
     setupEventListeners();
     populateSelects();
@@ -291,9 +335,22 @@ function setupEventListeners() {
     });
 
     // Changements inputs FLASHMETRE
-    ['flash-vitesse', 'flash-iso', 'flash-mesure', 'flash-target', 'flash-current-power'].forEach(id => {
+    ['flash-vitesse', 'flash-iso', 'flash-mesure', 'flash-target', 'flash-current-power', 'hss-sync-max'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', calculateFlashmetre);
     });
+
+    // Toggle HSS
+    const hssCheckbox = document.getElementById('hss-enabled');
+    if (hssCheckbox) {
+        hssCheckbox.addEventListener('change', (e) => {
+            hssEnabled = e.target.checked;
+            const hssOptions = document.getElementById('hss-options');
+            if (hssOptions) {
+                hssOptions.style.display = hssEnabled ? 'block' : 'none';
+            }
+            calculateFlashmetre();
+        });
+    }
 
     // Changements inputs RATIOS
     ['ratio-key', 'ratio-iso', 'ratio-vitesse'].forEach(id => {
@@ -304,6 +361,9 @@ function setupEventListeners() {
     ['estim-zone', 'estim-mesure', 'estim-iso', 'estim-vitesse'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', calculateEstimation);
     });
+    
+    // Modal d'aide
+    initHelpModal();
 }
 
 /**
@@ -504,21 +564,45 @@ function calculatePosemetre() {
 
 /**
  * Calcule les réglages en mode FLASHMÈTRE
+ * 
+ * LOGIQUE HSS:
+ * La mesure flash est TOUJOURS faite dans les conditions reelles de prise de vue.
+ * Si vous etes en HSS a 1/1000, vous mesurez en HSS - la perte est deja incluse.
+ * 
+ * Le mode HSS sert a:
+ * 1. Informer l'utilisateur qu'il est en HSS (perte de puissance)
+ * 2. Montrer ce que donnerait le meme flash en sync normale (info)
+ * 3. PAS a modifier les calculs de base (la mesure est correcte)
  */
 function calculateFlashmetre() {
     const currentFstop = parseFloat(document.getElementById('flash-mesure').value);
     const targetFstop = parseFloat(document.getElementById('flash-target').value);
-    const syncSpeed = parseFloat(document.getElementById('flash-vitesse').value);
+    const shootingSpeed = parseFloat(document.getElementById('flash-vitesse').value);
     const iso = parseInt(document.getElementById('flash-iso').value);
     const extraComp = currentCompensation.flashmetre;
 
+    // HSS: Recupere la vitesse sync max si HSS est active
+    const maxSyncSpeed = hssEnabled ? 
+        parseFloat(document.getElementById('hss-sync-max').value) : 
+        shootingSpeed;
+    
+    // Detecte si on est en mode HSS
+    let hssLoss = 0;
+    let hssActive = false;
+    
+    if (hssEnabled && isHSSRequired(shootingSpeed, maxSyncSpeed)) {
+        hssLoss = calculateHSSPowerLoss(shootingSpeed, maxSyncSpeed);
+        hssActive = true;
+    }
+
     // Calcule la différence IL entre mesure actuelle et cible + compensation
+    // La mesure est faite dans les conditions reelles, donc pas de compensation HSS ici
     const ilDiff = apertureToIL(currentFstop, targetFstop) + extraComp;
     
     // Calcule l'ouverture finale nécessaire
     const finalFstop = calculateAperture(currentFstop, ilDiff);
 
-    // Format selon le mode sélectionné
+    // Format selon le mode sélectionné (PAS de compensation HSS - la mesure est correcte)
     let powerDisplay;
     let powerExplanation;
     
@@ -546,14 +630,32 @@ function calculateFlashmetre() {
         const targetFraction = targetPowerObj.label;
         
         powerDisplay = targetFraction;
-        powerExplanation = `Régler de ${currentFractionLabel} à ${targetFraction}`;
+        powerExplanation = `Regler de ${currentFractionLabel} a ${targetFraction}`;
     }
 
-    const resultsHTML = `
+    // Affichage warning HSS
+    const hssWarning = document.getElementById('hss-warning');
+    const hssWarningText = document.getElementById('hss-warning-text');
+    
+    if (hssEnabled && hssWarning && hssWarningText) {
+        if (hssActive) {
+            hssWarning.style.display = 'flex';
+            hssWarningText.innerHTML = `<strong>Mode HSS actif</strong> (${getShutterLabel(shootingSpeed)})<br>
+                <small>Perte estimee par rapport a la sync normale: <strong>~${hssLoss.toFixed(1)} IL</strong></small>`;
+        } else {
+            hssWarning.style.display = 'flex';
+            hssWarningText.innerHTML = `<strong>Sync normale</strong> - Votre vitesse (${getShutterLabel(shootingSpeed)}) ne necessite pas le HSS.`;
+        }
+    } else if (hssWarning) {
+        hssWarning.style.display = 'none';
+    }
+
+    // Construction du HTML des resultats
+    let resultsHTML = `
         <div class="result-item">
-            <span class="result-label">Régler le flash pour obtenir</span>
+            <span class="result-label">Regler le flash pour obtenir</span>
             <span class="result-value">f/${finalFstop}</span>
-            <span class="result-detail">À ${iso} ISO, ${getShutterLabel(syncSpeed)}</span>
+            <span class="result-detail">A ${iso} ISO, ${getShutterLabel(shootingSpeed)}</span>
         </div>
         <div class="result-item">
             <span class="result-label">Ajustement de puissance</span>
@@ -561,11 +663,22 @@ function calculateFlashmetre() {
             <span class="result-detail">${powerExplanation}</span>
         </div>
         <div class="result-item">
-            <span class="result-label">Différence totale</span>
+            <span class="result-label">Difference totale</span>
             <span class="result-value">${ilDiff >= 0 ? '+' : ''}${ilDiff.toFixed(1)} IL</span>
-            <span class="result-detail">Compensation appliquée: ${extraComp >= 0 ? '+' : ''}${extraComp.toFixed(1)} IL</span>
+            <span class="result-detail">Compensation appliquee: ${extraComp >= 0 ? '+' : ''}${extraComp.toFixed(1)} IL</span>
         </div>
     `;
+    
+    // En HSS, montrer un rappel informatif
+    if (hssActive) {
+        resultsHTML += `
+        <div class="result-item" style="border-left-color: #64b5f6;">
+            <span class="result-label">Rappel HSS</span>
+            <span class="result-value" style="color: #64b5f6; font-size: 16px;">Perte estimee: ~${hssLoss.toFixed(1)} IL</span>
+            <span class="result-detail">Ces reglages tiennent compte de votre mesure en HSS. Si les reglages sont difficiles, essayez en sync normale (${getShutterLabel(maxSyncSpeed)}) et remesurez.</span>
+        </div>
+        `;
+    }
 
     document.getElementById('flash-results').innerHTML = resultsHTML;
 }
@@ -688,4 +801,103 @@ function getShutterLabel(value) {
     // Utiliser une tolérance relative de 1% au lieu d'une tolérance absolue
     const shutter = SHUTTERSPEEDS.find(s => Math.abs(s.value - value) / s.value < 0.01);
     return shutter ? shutter.label : `1/${Math.round(1/value)}`;
+}
+
+// ============================================
+// MODAL D'AIDE
+// ============================================
+
+/**
+ * Ouvre la modal d'aide
+ */
+function openHelpModal() {
+    const modal = document.getElementById('help-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Empêche le scroll du body
+        // Afficher la première section par défaut
+        showHelpSection('help-general');
+    }
+}
+
+/**
+ * Ferme la modal d'aide
+ */
+function closeHelpModal() {
+    const modal = document.getElementById('help-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = ''; // Restaure le scroll
+    }
+}
+
+/**
+ * Affiche une section d'aide spécifique
+ */
+function showHelpSection(sectionId) {
+    // Masquer toutes les sections
+    document.querySelectorAll('.help-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Désactiver tous les boutons de navigation
+    document.querySelectorAll('.modal-nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Afficher la section demandée
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.classList.add('active');
+    }
+    
+    // Activer le bouton correspondant
+    const targetBtn = document.querySelector(`.modal-nav-btn[data-section="${sectionId.replace('help-', '')}"]`);
+    if (targetBtn) {
+        targetBtn.classList.add('active');
+    }
+}
+
+/**
+ * Initialise les événements de la modal d'aide
+ */
+function initHelpModal() {
+    // Bouton d'ouverture
+    const helpBtn = document.getElementById('help-btn');
+    if (helpBtn) {
+        helpBtn.addEventListener('click', openHelpModal);
+    }
+    
+    // Bouton de fermeture
+    const closeBtn = document.getElementById('help-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeHelpModal);
+    }
+    
+    // Fermer en cliquant sur l'overlay
+    const modal = document.getElementById('help-modal');
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeHelpModal();
+            }
+        });
+    }
+    
+    // Fermer avec Echap
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeHelpModal();
+        }
+    });
+    
+    // Navigation entre sections
+    document.querySelectorAll('.modal-nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const sectionId = 'help-' + btn.getAttribute('data-section');
+            showHelpSection(sectionId);
+        });
+    });
+    
+    console.log('Help modal initialized');
 }
