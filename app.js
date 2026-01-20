@@ -244,6 +244,11 @@ function isHSSRequired(shootingSpeed, maxSyncSpeed) {
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialiser i18n en premier
+    if (window.i18n) {
+        window.i18n.initI18n();
+    }
+    
     initializeApp();
     setupEventListeners();
     populateSelects();

@@ -16,10 +16,11 @@
     <div id="app">
         <header>
             <div class="header-content">
-                <h1>&#128247; Assistant Posemetre Pro</h1>
+                <h1 data-i18n="appTitle">&#128247; Assistant Posemètre Pro</h1>
                 <div class="header-buttons">
+                    <button id="lang-btn" class="header-btn" title="Switch to English">EN</button>
                     <button id="help-btn" class="header-btn" title="Aide">?</button>
-                    <button id="theme-toggle" class="header-btn" title="Changer de theme"></button>
+                    <button id="theme-toggle" class="header-btn" title="Changer de thème"></button>
                 </div>
             </div>
             <div class="power-mode-switch" id="powerModeSwitch" style="display: none;">
@@ -34,20 +35,20 @@
         </header>
 
         <nav class="tab-nav">
-            <button class="tab-btn active" data-tab="posemetre">&#128247; Posemetre</button>
-            <button class="tab-btn" data-tab="flashmetre">&#9889; Flash</button>
-            <button class="tab-btn" data-tab="ratios">&#128161; Ratios</button>
-            <button class="tab-btn" data-tab="estimation">&#128202; Estimation</button>
+            <button class="tab-btn active" data-tab="posemetre" data-i18n="navPosemetre">&#128247; Posemètre</button>
+            <button class="tab-btn" data-tab="flashmetre" data-i18n="navFlash">&#9889; Flash</button>
+            <button class="tab-btn" data-tab="ratios" data-i18n="navRatios">&#128161; Ratios</button>
+            <button class="tab-btn" data-tab="estimation" data-i18n="navEstimation">&#128202; Estimation</button>
         </nav>
 
         <main class="content">
             <!-- MODE POSEMETRE -->
             <section id="tab-posemetre" class="tab-content active">
                 <div class="meter-display">
-                    <h2>Mode Posemetre (Lumiere continue)</h2>
+                    <h2 data-i18n="posemetreTitle">Mode Posemètre (Lumière continue)</h2>
                     
                     <div class="input-group">
-                        <label>Mesure initiale (Ouverture):</label>
+                        <label data-i18n="labelMesureInitiale">Mesure initiale (Ouverture):</label>
                         <select id="pose-mesure" class="input-field">
                             <!-- Options generees par JS -->
                         </select>
@@ -55,11 +56,11 @@
 
                     <div class="input-row">
                         <div class="input-group">
-                            <label>ISO:</label>
+                            <label data-i18n="labelISO">ISO:</label>
                             <input type="number" id="pose-iso" class="input-field" value="100" min="50" max="102400" step="1">
                         </div>
                         <div class="input-group">
-                            <label>Vitesse:</label>
+                            <label data-i18n="labelVitesse">Vitesse:</label>
                             <select id="pose-vitesse" class="input-field">
                                 <!-- Options generees par JS -->
                             </select>
@@ -67,7 +68,7 @@
                     </div>
 
                     <div class="compensation-section">
-                        <label>Compensation d'exposition:</label>
+                        <label data-i18n="labelCompensation">Compensation d'exposition:</label>
                         <div class="compensation-controls">
                             <button class="comp-btn" data-value="-2">-2 IL</button>
                             <button class="comp-btn" data-value="-1">-1 IL</button>
@@ -85,7 +86,7 @@
                     </div>
 
                     <div class="results-box">
-                        <h3>&#127919; Reglages suggeres</h3>
+                        <h3 data-i18n="resultsSuggeres">&#127919; Réglages suggérés</h3>
                         <div id="pose-results" class="results-content">
                             <!-- Resultats generes par JS -->
                         </div>
@@ -96,17 +97,17 @@
             <!-- MODE FLASHMETRE -->
             <section id="tab-flashmetre" class="tab-content">
                 <div class="meter-display">
-                    <h2>Mode Flashmetre</h2>
+                    <h2 data-i18n="flashTitle">Mode Flashmètre</h2>
                     
                     <div class="input-row">
                         <div class="input-group">
-                            <label>Vitesse:</label>
+                            <label data-i18n="labelVitesseSync">Vitesse sync:</label>
                             <select id="flash-vitesse" class="input-field">
                                 <!-- Options generees par JS -->
                             </select>
                         </div>
                         <div class="input-group">
-                            <label>ISO:</label>
+                            <label data-i18n="labelISO">ISO:</label>
                             <input type="number" id="flash-iso" class="input-field" value="100" min="50" max="102400" step="1">
                         </div>
                     </div>
@@ -117,12 +118,12 @@
                             <label class="hss-label">
                                 <input type="checkbox" id="hss-enabled" class="hss-checkbox">
                                 <span class="hss-switch"></span>
-                                <span>Mode HSS (High-Speed Sync)</span>
+                                <span data-i18n="labelHSSEnabled">Mode HSS (High-Speed Sync)</span>
                             </label>
                         </div>
                         <div class="hss-options" id="hss-options" style="display: none;">
                             <div class="input-group">
-                                <label>Vitesse sync max du flash:</label>
+                                <label data-i18n="labelHSSSyncMax">Vitesse sync max du flash:</label>
                                 <select id="hss-sync-max" class="input-field">
                                     <option value="0.005">1/200</option>
                                     <option value="0.004" selected>1/250</option>
@@ -137,21 +138,21 @@
                     </div>
 
                     <div class="input-group">
-                        <label>Mesure flash actuelle:</label>
+                        <label data-i18n="labelMesureFlash">Mesure flash actuelle:</label>
                         <select id="flash-mesure" class="input-field">
                             <!-- Options generees par JS -->
                         </select>
                     </div>
 
                     <div class="input-group">
-                        <label>Ouverture souhaitee:</label>
+                        <label data-i18n="labelOuvertureSouhaitee">Ouverture souhaitée:</label>
                         <select id="flash-target" class="input-field">
                             <!-- Options generees par JS -->
                         </select>
                     </div>
 
                     <div class="input-group" id="flash-current-power-group" style="display: none;">
-                        <label>Puissance flash actuelle:</label>
+                        <label data-i18n="labelPuissanceActuelle">Puissance flash actuelle:</label>
                         <select id="flash-current-power" class="input-field">
                             <option value="1">1/1 (Pleine puissance)</option>
                             <option value="0.5" selected>1/2</option>
@@ -185,7 +186,7 @@
                     </div>
 
                     <div class="results-box">
-                        <h3>&#127919; Ajuster le flash a:</h3>
+                        <h3 data-i18n="resultsFlash">&#9889; Ajuster le flash à</h3>
                         <div id="flash-results" class="results-content">
                             <!-- Resultats generes par JS -->
                         </div>
@@ -196,17 +197,17 @@
             <!-- MODE RATIOS KEY/FILL -->
             <section id="tab-ratios" class="tab-content">
                 <div class="meter-display">
-                    <h2>Ratios Key/Fill Light</h2>
+                    <h2 data-i18n="ratiosTitle">Ratios Key/Fill Light</h2>
                     
                     <div class="input-group">
-                        <label>Key Light (ouverture):</label>
+                        <label data-i18n="labelKeyLight">Key Light (mesure):</label>
                         <select id="ratio-key" class="input-field">
                             <!-- Options generees par JS -->
                         </select>
                     </div>
 
                     <div class="compensation-section">
-                        <label>Ratio souhaite (Fill vs Key):</label>
+                        <label data-i18n="labelRatioFill">Ratio Fill vs Key:</label>
                         <div class="compensation-controls">
                             <button class="comp-btn ratio-comp" data-value="-3">-3 IL</button>
                             <button class="comp-btn ratio-comp" data-value="-2.5">-2.5 IL</button>
@@ -222,11 +223,11 @@
 
                     <div class="input-row">
                         <div class="input-group">
-                            <label>ISO:</label>
+                            <label data-i18n="labelISO">ISO:</label>
                             <input type="number" id="ratio-iso" class="input-field" value="100" min="50" max="102400" step="1">
                         </div>
                         <div class="input-group">
-                            <label>Vitesse:</label>
+                            <label data-i18n="labelVitesse">Vitesse:</label>
                             <select id="ratio-vitesse" class="input-field">
                                 <!-- Options generees par JS -->
                             </select>
@@ -234,7 +235,7 @@
                     </div>
 
                     <div class="results-box">
-                        <h3>&#127919; Fill Light a regler:</h3>
+                        <h3 data-i18n="resultsFill">&#128161; Fill Light à régler</h3>
                         <div id="ratio-results" class="results-content">
                             <!-- Resultats generes par JS -->
                         </div>
@@ -245,11 +246,11 @@
             <!-- MODE ESTIMATION -->
             <section id="tab-estimation" class="tab-content">
                 <div class="meter-display">
-                    <h2>Estimation sans posemetre</h2>
-                    <p class="info-text">Mesure spot sur une zone de reference</p>
+                    <h2 data-i18n="estimationTitle">Estimation sans posemètre</h2>
+                    <p class="info-text">Mesure spot sur une zone de référence</p>
                     
                     <div class="input-group">
-                        <label>Zone mesuree (spot):</label>
+                        <label data-i18n="labelZoneMesuree">Zone mesurée (spot):</label>
                         <select id="estim-zone" class="input-field">
                             <option value="5">Blanc pur / Neige plein soleil (+5 IL)</option>
                             <option value="4">Blanc neige a l'ombre (+4 IL)</option>
@@ -268,26 +269,26 @@
 
                     <div class="input-row">
                         <div class="input-group">
-                            <label>Lecture appareil (f/):</label>
+                            <label data-i18n="labelLectureAppareil">Lecture appareil (f/):</label>
                             <select id="estim-mesure" class="input-field">
                                 <!-- Options generees par JS -->
                             </select>
                         </div>
                         <div class="input-group">
-                            <label>ISO:</label>
+                            <label data-i18n="labelISO">ISO:</label>
                             <input type="number" id="estim-iso" class="input-field" value="100" min="50" max="102400" step="1">
                         </div>
                     </div>
 
                     <div class="input-group">
-                        <label>Vitesse:</label>
+                        <label data-i18n="labelVitesse">Vitesse:</label>
                         <select id="estim-vitesse" class="input-field">
                             <!-- Options generees par JS -->
                         </select>
                     </div>
 
                     <div class="compensation-section">
-                        <label>Compensation d'exposition:</label>
+                        <label data-i18n="labelCompensation">Compensation d'exposition:</label>
                         <div class="compensation-controls">
                             <button class="comp-btn estim-comp" data-value="-2">-2 IL</button>
                             <button class="comp-btn estim-comp" data-value="-1">-1 IL</button>
@@ -305,14 +306,14 @@
                     </div>
 
                     <div class="results-box">
-                        <h3>&#127919; Lumiere incidente estimee:</h3>
+                        <h3 data-i18n="resultsEstimation">&#128202; Lumière incidente estimée</h3>
                         <div id="estim-results" class="results-content">
                             <!-- Resultats generes par JS -->
                         </div>
                     </div>
 
                     <div class="info-box">
-                        <h4>&#128203; Grille de reflectance (Exemples concrets)</h4>
+                        <h4 data-i18n="gridTitle">&#128203; Grille de réflectance (Exemples concrets)</h4>
                         <div class="reflectance-grid">
                             <div><strong>+5 IL:</strong> Blanc pur, Neige plein soleil</div>
                             <div><strong>+4 IL:</strong> Blanc neige a l'ombre</div>
@@ -332,9 +333,9 @@
 
         <footer>
             <button id="installBtn" class="install-btn" style="display:none;">
-                &#128241; Installer l'application
+                <span data-i18n="footerInstall">&#128241; Installer l'application</span>
             </button>
-            <p class="footer-text">Assistant Posemetre Pro v1.0 | Developpe pour Laurent</p>
+            <p class="footer-text" data-i18n="footerText">Assistant Posemètre Pro v1.0 | Développé pour Laurent</p>
         </footer>
     </div>
 
@@ -342,16 +343,16 @@
     <div id="help-modal" class="modal-overlay" style="display: none;">
         <div class="modal-container">
             <div class="modal-header">
-                <h2>&#128214; Aide</h2>
+                <h2 data-i18n="helpTitle">&#128214; Aide</h2>
                 <button id="help-close" class="modal-close">&times;</button>
             </div>
             
             <div class="modal-nav">
-                <button class="modal-nav-btn active" data-section="general">Général</button>
-                <button class="modal-nav-btn" data-section="posemetre">Posemètre</button>
-                <button class="modal-nav-btn" data-section="flash">Flash</button>
-                <button class="modal-nav-btn" data-section="ratios">Ratios</button>
-                <button class="modal-nav-btn" data-section="estimation">Estimation</button>
+                <button class="modal-nav-btn active" data-section="general" data-i18n="helpNavGeneral">Général</button>
+                <button class="modal-nav-btn" data-section="posemetre" data-i18n="helpNavPosemetre">Posemètre</button>
+                <button class="modal-nav-btn" data-section="flash" data-i18n="helpNavFlash">Flash</button>
+                <button class="modal-nav-btn" data-section="ratios" data-i18n="helpNavRatios">Ratios</button>
+                <button class="modal-nav-btn" data-section="estimation" data-i18n="helpNavEstimation">Estimation</button>
             </div>
             
             <div class="modal-content">
@@ -362,7 +363,8 @@
                     
                     <div class="help-box help-box-warning">
                         <h4>&#9888; Mode Manuel requis</h4>
-                        <p>Ce raisonnement n'est totalement applicable qu'en <strong>mode Manuel (M)</strong>. Dans les modes semi-automatiques (Av, Tv, P), vous ne contrôlez qu'un paramètre et devez utiliser la fonction <strong>compensation d'exposition</strong> propre à votre appareil. Vous êtes alors davantage soumis à la règle du 18%.</p>
+                        <p>Ce raisonnement n'est totalement applicable qu'en <strong>mode Manuel (M)</strong>. Dans les modes semi-automatiques (Av, Tv, P), vous ne contrôlez qu'un paramètre et devez utiliser la fonction <strong>compensation d'exposition</strong> propre à votre appareil. Vous êtes alors davantage soumis à la règle du gris 18% sur mesure de lumière réfléchie.</p>
+                        <p><strong>À noter :</strong> l'affichage sur l'écran de l'appareil (image et histogramme) est un JPEG construit à la volée avec une courbe de tonalité standard. Il ne reflète pas la réalité des données contenues dans le fichier RAW.</p>
                     </div>
                     
                     <div class="help-box">
@@ -491,6 +493,7 @@
         </div>
     </div>
 
+    <script src="i18n.js"></script>
     <script src="theme-switcher.js"></script>
     <script src="app.js"></script>
 </body>
