@@ -808,7 +808,7 @@ function getShutterLabel(value) {
 function openHelpModal() {
     const modal = document.getElementById('help-modal');
     if (modal) {
-        modal.classList.add('active');
+        modal.style.display = 'flex';
         document.body.style.overflow = 'hidden'; // Empêche le scroll du body
         // Afficher la première section par défaut
         showHelpSection('help-general');
@@ -821,7 +821,7 @@ function openHelpModal() {
 function closeHelpModal() {
     const modal = document.getElementById('help-modal');
     if (modal) {
-        modal.classList.remove('active');
+        modal.style.display = 'none';
         document.body.style.overflow = ''; // Restaure le scroll
     }
 }
@@ -836,7 +836,7 @@ function showHelpSection(sectionId) {
     });
     
     // Désactiver tous les boutons de navigation
-    document.querySelectorAll('.help-nav-btn').forEach(btn => {
+    document.querySelectorAll('.modal-nav-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     
@@ -847,7 +847,7 @@ function showHelpSection(sectionId) {
     }
     
     // Activer le bouton correspondant
-    const targetBtn = document.querySelector(`.help-nav-btn[data-section="${sectionId}"]`);
+    const targetBtn = document.querySelector(`.modal-nav-btn[data-section="${sectionId.replace('help-', '')}"]`);
     if (targetBtn) {
         targetBtn.classList.add('active');
     }
@@ -864,7 +864,7 @@ function initHelpModal() {
     }
     
     // Bouton de fermeture
-    const closeBtn = document.querySelector('.help-modal-close');
+    const closeBtn = document.getElementById('help-close');
     if (closeBtn) {
         closeBtn.addEventListener('click', closeHelpModal);
     }
@@ -887,9 +887,9 @@ function initHelpModal() {
     });
     
     // Navigation entre sections
-    document.querySelectorAll('.help-nav-btn').forEach(btn => {
+    document.querySelectorAll('.modal-nav-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            const sectionId = btn.getAttribute('data-section');
+            const sectionId = 'help-' + btn.getAttribute('data-section');
             showHelpSection(sectionId);
         });
     });
