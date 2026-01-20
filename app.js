@@ -356,6 +356,9 @@ function setupEventListeners() {
     ['estim-zone', 'estim-mesure', 'estim-iso', 'estim-vitesse'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', calculateEstimation);
     });
+    
+    // Modal d'aide
+    initHelpModal();
 }
 
 /**
@@ -793,4 +796,103 @@ function getShutterLabel(value) {
     // Utiliser une tolérance relative de 1% au lieu d'une tolérance absolue
     const shutter = SHUTTERSPEEDS.find(s => Math.abs(s.value - value) / s.value < 0.01);
     return shutter ? shutter.label : `1/${Math.round(1/value)}`;
+}
+
+// ============================================
+// MODAL D'AIDE
+// ============================================
+
+/**
+ * Ouvre la modal d'aide
+ */
+function openHelpModal() {
+    const modal = document.getElementById('help-modal');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Empêche le scroll du body
+        // Afficher la première section par défaut
+        showHelpSection('help-general');
+    }
+}
+
+/**
+ * Ferme la modal d'aide
+ */
+function closeHelpModal() {
+    const modal = document.getElementById('help-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // Restaure le scroll
+    }
+}
+
+/**
+ * Affiche une section d'aide spécifique
+ */
+function showHelpSection(sectionId) {
+    // Masquer toutes les sections
+    document.querySelectorAll('.help-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Désactiver tous les boutons de navigation
+    document.querySelectorAll('.help-nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Afficher la section demandée
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.classList.add('active');
+    }
+    
+    // Activer le bouton correspondant
+    const targetBtn = document.querySelector(`.help-nav-btn[data-section="${sectionId}"]`);
+    if (targetBtn) {
+        targetBtn.classList.add('active');
+    }
+}
+
+/**
+ * Initialise les événements de la modal d'aide
+ */
+function initHelpModal() {
+    // Bouton d'ouverture
+    const helpBtn = document.getElementById('help-btn');
+    if (helpBtn) {
+        helpBtn.addEventListener('click', openHelpModal);
+    }
+    
+    // Bouton de fermeture
+    const closeBtn = document.querySelector('.help-modal-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeHelpModal);
+    }
+    
+    // Fermer en cliquant sur l'overlay
+    const modal = document.getElementById('help-modal');
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeHelpModal();
+            }
+        });
+    }
+    
+    // Fermer avec Echap
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeHelpModal();
+        }
+    });
+    
+    // Navigation entre sections
+    document.querySelectorAll('.help-nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const sectionId = btn.getAttribute('data-section');
+            showHelpSection(sectionId);
+        });
+    });
+    
+    console.log('Help modal initialized');
 }
