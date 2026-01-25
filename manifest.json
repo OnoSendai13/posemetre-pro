@@ -112,5 +112,32 @@
   "handle_links": "preferred",
   "launch_handler": {
     "client_mode": ["navigate-existing", "auto"]
+  },
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "file_handlers": [
+    {
+      "action": "/",
+      "accept": {
+        "image/*": [".jpg", ".jpeg", ".png", ".webp"]
+      }
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+lightmeter",
+      "url": "/?data=%s"
+    }
+  ],
+  "iarc_rating_id": "",
+  "edge_side_panel": {
+    "preferred_width": 400
   }
 }
