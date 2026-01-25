@@ -6,7 +6,7 @@
   "scope": "/",
   "id": "/",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "background_color": "#1a1a1a",
   "theme_color": "#004e89",
   "orientation": "portrait-primary",
@@ -108,7 +108,12 @@
       "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
     }
   ],
-  "related_applications": [],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://onosendai13.github.io/lightmeter-app-pwa/"
+    }
+  ],
   "handle_links": "preferred",
   "launch_handler": {
     "client_mode": ["navigate-existing", "auto"]
@@ -139,5 +144,34 @@
   "iarc_rating_id": "",
   "edge_side_panel": {
     "preferred_width": 400
+  },
+  "scope_extensions": [
+    {
+      "origin": "https://onosendai13.github.io"
+    }
+  ],
+  "widgets": [
+    {
+      "name": "Posemètre Rapide",
+      "description": "Calculateur d'exposition rapide",
+      "tag": "posemetre-widget",
+      "ms_ac_template": "widget/posemetre-widget.json",
+      "screenshots": [
+        {
+          "src": "screenshots/screenshot-narrow.png",
+          "sizes": "750x1334",
+          "label": "Widget Posemètre"
+        }
+      ],
+      "icons": [
+        {
+          "src": "icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "note_taking": {
+    "new_note_url": "/?action=new-note"
   }
 }

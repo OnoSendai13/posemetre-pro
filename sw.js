@@ -142,3 +142,26 @@ self.addEventListener('notificationclick', event => {
     clients.openWindow('/')
   );
 });
+
+// Background Sync - pour les connexions réseau instables
+self.addEventListener('sync', event => {
+  console.log('[SW] Background Sync:', event.tag);
+  if (event.tag === 'sync-data') {
+    event.waitUntil(
+      // Synchroniser les données en attente
+      Promise.resolve()
+    );
+  }
+});
+
+// Periodic Background Sync - pour les mises à jour périodiques
+self.addEventListener('periodicsync', event => {
+  console.log('[SW] Periodic Sync:', event.tag);
+  if (event.tag === 'update-cache') {
+    event.waitUntil(
+      caches.open(STATIC_CACHE).then(cache => {
+        return cache.addAll(STATIC_ASSETS);
+      })
+    );
+  }
+});
