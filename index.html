@@ -291,18 +291,18 @@
                     <div class="input-group">
                         <label data-i18n="labelZoneMesuree">Zone mesurée (spot):</label>
                         <select id="estim-zone" class="input-field">
-                            <option value="5">Blanc pur / Neige plein soleil (+5 IL)</option>
-                            <option value="4">Blanc neige a l'ombre (+4 IL)</option>
-                            <option value="3">Ecorce de bouleau / Tronc d'arbre (+3 IL)</option>
-                            <option value="2">Peau tres claire / Pierre claire (+2 IL)</option>
-                            <option value="1" selected>Peau claire / Sable clair (+1 IL)</option>
-                            <option value="0.5">Peau moyenne claire (+0.5 IL)</option>
-                            <option value="0">Gris 18% / Beton / Herbe verte / Feuillage (0 IL)</option>
-                            <option value="-0.5">Peau moyenne foncee (-0.5 IL)</option>
-                            <option value="-1">Peau foncee / Feuillage ombre (-1 IL)</option>
-                            <option value="-2">Pierre sombre / Asphalte (-2 IL)</option>
-                            <option value="-3">Ecorce sombre / Ombre profonde (-3 IL)</option>
-                            <option value="-4">Noir profond (-4 IL)</option>
+                            <option value="4">⚠️ Blanc crame (+4 IL) - sans detail</option>
+                            <option value="3">Blanc avec details / Nuages blancs (+3 IL)</option>
+                            <option value="2">Peau tres claire / Mur blanc / Sable blanc (+2 IL)</option>
+                            <option value="1.5">Ciel couvert lumineux / Neige ombre (+1.5 IL)</option>
+                            <option value="1" selected>Peau claire / Sable clair / Ciel bleu clair (+1 IL)</option>
+                            <option value="0.5">Peau moyenne claire / Ciel bleu moyen (+0.5 IL)</option>
+                            <option value="0">Gris 18% / Herbe verte / Feuillage / Ciel bleu profond (0 IL)</option>
+                            <option value="-0.5">Peau moyenne foncee / Ciel coucher soleil (-0.5 IL)</option>
+                            <option value="-1">Peau foncee / Feuillage ombre / Ciel orageux (-1 IL)</option>
+                            <option value="-2">Pierre sombre / Asphalte sec / Terre sombre (-2 IL)</option>
+                            <option value="-3">Noir avec details / Ombres profondes (-3 IL)</option>
+                            <option value="-4">⚠️ Noir bouche (-4 IL) - sans detail</option>
                         </select>
                     </div>
 
@@ -354,16 +354,18 @@
                     <div class="info-box">
                         <h4 data-i18n="gridTitle">&#128203; Grille de réflectance (Exemples concrets)</h4>
                         <div class="reflectance-grid">
-                            <div><strong>+5 IL:</strong> Blanc pur, Neige plein soleil</div>
-                            <div><strong>+4 IL:</strong> Blanc neige a l'ombre</div>
-                            <div><strong>+3 IL:</strong> Ecorce de bouleau, Tronc d'arbre clair</div>
-                            <div><strong>+2 IL:</strong> Peau tres claire, Pierre claire, Mur blanc</div>
-                            <div><strong>+1 IL:</strong> Peau claire caucasienne, Sable clair</div>
-                            <div><strong>0 IL (Zone V):</strong> Gris neutre 18% (carte grise Kodak), Beton gris, Herbe verte, Feuillage moyen, Bois patine</div>
-                            <div><strong>-1 IL:</strong> Peau foncee, Feuillage a l'ombre</div>
-                            <div><strong>-2 IL:</strong> Pierre sombre, Asphalte, Terre humide</div>
-                            <div><strong>-3 IL:</strong> Ecorce sombre, Ombres profondes</div>
-                            <div><strong>-4 IL:</strong> Noir profond, Ombres tres denses</div>
+                            <div><strong>⚠️ +4 IL:</strong> Blanc crame, reflets speculaires - <em>sans detail exploitable</em></div>
+                            <div><strong>+3 IL:</strong> Blanc avec details, nuages blancs lumineux, neige plein soleil, ecorce de bouleau</div>
+                            <div><strong>+2 IL:</strong> Peau tres claire, mur blanc a l'ombre, sable blanc, pierre calcaire</div>
+                            <div><strong>+1.5 IL:</strong> Ciel couvert lumineux, neige a l'ombre, brouillard</div>
+                            <div><strong>+1 IL:</strong> Peau claire caucasienne, sable clair, ciel bleu clair, palmier</div>
+                            <div><strong>+0.5 IL:</strong> Peau moyenne claire, ciel bleu moyen, beton clair</div>
+                            <div><strong>0 IL (Zone V):</strong> Gris 18% (carte grise), herbe verte, feuillage ensoleille, ciel bleu profond, jean delave</div>
+                            <div><strong>-0.5 IL:</strong> Peau moyenne foncee, ciel au coucher du soleil (orange), tuiles</div>
+                            <div><strong>-1 IL:</strong> Peau foncee, feuillage a l'ombre, ciel orageux, bois fonce</div>
+                            <div><strong>-2 IL:</strong> Pierre sombre, asphalte sec, terre sombre, ecorce de chene</div>
+                            <div><strong>-3 IL:</strong> Noir avec details, ombres profondes, vetement noir texture, cheveux noirs</div>
+                            <div><strong>⚠️ -4 IL:</strong> Noir bouche, ombres tres denses - <em>sans detail exploitable</em></div>
                         </div>
                     </div>
                 </div>
