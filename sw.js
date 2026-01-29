@@ -1,9 +1,9 @@
-const CACHE_NAME = 'posemetre-pro-v3';
-const STATIC_CACHE = 'posemetre-static-v3';
-const DYNAMIC_CACHE = 'posemetre-dynamic-v3';
+const CACHE_NAME = 'posemetre-pro-v4';
+const STATIC_CACHE = 'posemetre-static-v4';
+const DYNAMIC_CACHE = 'posemetre-dynamic-v4';
 
 // Base path for GitHub Pages
-const BASE_PATH = '/lightmeter-app-pwa';
+const BASE_PATH = '/posemetre-pro';
 
 // Fichiers essentiels à mettre en cache
 const STATIC_ASSETS = [
