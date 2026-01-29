@@ -5,6 +5,10 @@
   "start_url": "/posemetre-pro/",
   "scope": "/posemetre-pro/",
   "id": "/posemetre-pro/",
+  "serviceworker": {
+    "src": "/posemetre-pro/sw.js",
+    "scope": "/posemetre-pro/"
+  },
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "background_color": "#1a1a1a",

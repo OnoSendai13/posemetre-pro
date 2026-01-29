@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeApp() {
     // Gestion PWA
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js', { scope: './' })
+        navigator.serviceWorker.register('/posemetre-pro/sw.js', { scope: '/posemetre-pro/' })
             .then(reg => console.log('Service Worker enregistré:', reg))
             .catch(err => console.log('Erreur Service Worker:', err));
     }
