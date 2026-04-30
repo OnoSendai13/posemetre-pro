@@ -47,8 +47,9 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="shortcut icon" href="favicon-32x32.png">
     
-    <!-- Stylesheet -->
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-light.css">
 </head>
 <body>
     <div id="app">
@@ -73,17 +74,17 @@
         </header>
 
         <nav class="tab-nav">
-            <button class="tab-btn active" data-tab="posemetre" data-i18n="navPosemetre">&#9728;&#65039; Continu</button>
+            <button class="tab-btn active" data-tab="posemetre" data-i18n="navPosemetre">&#128247; Posemètre</button>
             <button class="tab-btn" data-tab="flashmetre" data-i18n="navFlash">&#9889; Flash</button>
             <button class="tab-btn" data-tab="ratios" data-i18n="navRatios">&#128161; Ratios</button>
-            <button class="tab-btn" data-tab="estimation" data-i18n="navEstimation">&#127919; Sans Cellule</button>
+            <button class="tab-btn" data-tab="estimation" data-i18n="navEstimation">&#128202; Estimation</button>
         </nav>
 
         <main class="content">
             <!-- MODE POSEMETRE -->
             <section id="tab-posemetre" class="tab-content active">
                 <div class="meter-display">
-                    <h2 data-i18n="posemetreTitle">Mode Continu (Lumière ambiante)</h2>
+                    <h2 data-i18n="posemetreTitle">Mode Posemètre (Lumière continue)</h2>
                     
                     <div class="input-group">
                         <label data-i18n="labelMesureInitiale">Mesure initiale (Ouverture):</label>
@@ -189,20 +190,35 @@
                         </select>
                     </div>
 
-                    <div class="input-group" id="flash-current-power-group" style="display: none;">
+<div class="input-group" id="flash-current-power-group" style="display: none;">
                         <label data-i18n="labelPuissanceActuelle">Puissance flash actuelle:</label>
-                        <select id="flash-current-power" class="input-field">
-                            <option value="1">1/1 (Pleine puissance)</option>
-                            <option value="0.5" selected>1/2</option>
-                            <option value="0.25">1/4</option>
-                            <option value="0.125">1/8</option>
-                            <option value="0.0625">1/16</option>
-                            <option value="0.03125">1/32</option>
-                            <option value="0.015625">1/64</option>
-                            <option value="0.0078125">1/128</option>
-                            <option value="0.00390625">1/256</option>
-                            <option value="0.001953125">1/512</option>
-                        </select>
+                        <div class="power-fraction-row">
+                            <select id="flash-current-power" class="input-field">
+                                <option value="1">1/1 (Pleine puissance)</option>
+                                <option value="0.5" selected>1/2</option>
+                                <option value="0.25">1/4</option>
+                                <option value="0.125">1/8</option>
+                                <option value="0.0625">1/16</option>
+                                <option value="0.03125">1/32</option>
+                                <option value="0.015625">1/64</option>
+                                <option value="0.0078125">1/128</option>
+                                <option value="0.00390625">1/256</option>
+                                <option value="0.001953125">1/512</option>
+                            </select>
+                            <select id="flash-current-tenths" class="input-field power-tenths">
+                                <option value="0" selected>0</option>
+                                <option value="1">;1</option>
+                                <option value="2">;2</option>
+                                <option value="3">;3</option>
+                                <option value="4">;4</option>
+                                <option value="5">;5</option>
+                                <option value="6">;6</option>
+                                <option value="7">;7</option>
+                                <option value="8">;8</option>
+                                <option value="9">;9</option>
+                            </select>
+                        </div>
+                    </div>
                     </div>
 
                     <div class="compensation-section">
@@ -284,7 +300,7 @@
             <!-- MODE ESTIMATION -->
             <section id="tab-estimation" class="tab-content">
                 <div class="meter-display">
-                    <h2 data-i18n="estimationTitle">Sans Cellule (Estimation incidente)</h2>
+                    <h2 data-i18n="estimationTitle">Estimation sans posemètre</h2>
                     <p class="info-text">Mesure spot sur une zone de référence</p>
                     
                     <div class="input-group">
@@ -389,10 +405,10 @@
             
             <div class="modal-nav">
                 <button class="modal-nav-btn active" data-section="general" data-i18n="helpNavGeneral">Général</button>
-                <button class="modal-nav-btn" data-section="posemetre" data-i18n="helpNavPosemetre">Continu</button>
+                <button class="modal-nav-btn" data-section="posemetre" data-i18n="helpNavPosemetre">Posemètre</button>
                 <button class="modal-nav-btn" data-section="flash" data-i18n="helpNavFlash">Flash</button>
                 <button class="modal-nav-btn" data-section="ratios" data-i18n="helpNavRatios">Ratios</button>
-                <button class="modal-nav-btn" data-section="estimation" data-i18n="helpNavEstimation">Sans Cellule</button>
+                <button class="modal-nav-btn" data-section="estimation" data-i18n="helpNavEstimation">Estimation</button>
             </div>
             
             <div class="modal-content">
@@ -406,16 +422,8 @@
         </div>
     </div>
 
-    <!-- App Configuration -->
-    <script>
-        // Base path configurable — changer selon l'environnement de deploiement
-        // GitHub Pages: '/posemetre-pro'
-        // Local / Capacitor: ''
-        window.APP_CONFIG = { basePath: '' };
-    </script>
-
     <script src="i18n.js"></script>
     <script src="theme-switcher.js"></script>
-    <script type="module" src="src/main.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

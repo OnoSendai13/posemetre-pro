@@ -184,16 +184,24 @@ function ilToPowerIL(ilDelta) {
 
 /**
  * Convertit IL en puissance flash (format fractions)
+ * Utilise la fraction inférieure + dixièmes (ex: 1/64;3)
  */
 function ilToPowerFraction(ilDelta) {
-    const powerRatio = Math.pow(2, ilDelta);
+    if (ilDelta >= 0) return '1/1';
     
-    // Trouve la fraction la plus proche
-    const closest = FLASH_POWERS_FRACTIONS.reduce((prev, curr) => 
-        Math.abs(curr.value - powerRatio) < Math.abs(prev.value - powerRatio) ? curr : prev
-    );
+    let base = FLASH_POWERS_FRACTIONS[FLASH_POWERS_FRACTIONS.length - 1];
+    for (const f of FLASH_POWERS_FRACTIONS) {
+        if (f.ilValue <= ilDelta) {
+            base = f;
+            break;
+        }
+    }
     
-    return closest.label;
+    const residualIL = ilDelta - base.ilValue;
+    const tenths = Math.round(residualIL * 10);
+    
+    if (tenths <= 0) return base.label;
+    return `${base.label};${Math.min(9, tenths)}`;
 }
 
 /**
@@ -631,25 +639,24 @@ function calculateFlashmetre() {
     } else {
         // Mode FRACTIONS : calcul depuis la puissance actuelle
         const currentPowerElement = document.getElementById('flash-current-power');
+        const currentTenthsElement = document.getElementById('flash-current-tenths');
         const currentPower = currentPowerElement ? parseFloat(currentPowerElement.value) : 1.0;
+        const currentTenths = currentTenthsElement ? parseInt(currentTenthsElement.value) || 0 : 0;
         
-        // Trouve la puissance actuelle en IL
+        // Trouve la puissance actuelle en IL (fraction + dixièmes)
         const currentPowerObj = FLASH_POWERS_FRACTIONS.find(f => Math.abs(f.value - currentPower) < 0.01);
-        const currentPowerIL = currentPowerObj ? currentPowerObj.ilValue : 0;
+        const currentPowerIL = (currentPowerObj ? currentPowerObj.ilValue : 0) + currentTenths / 10;
         
         // Calcule la puissance cible en IL
         const targetPowerIL = currentPowerIL + ilDiff;
         
-        // Trouve la fraction cible la plus proche
-        const targetPowerObj = FLASH_POWERS_FRACTIONS.reduce((prev, curr) => 
-            Math.abs(curr.ilValue - targetPowerIL) < Math.abs(prev.ilValue - targetPowerIL) ? curr : prev
-        );
-        
+        // Formate avec la nouvelle notation fraction + dixièmes
         const currentFractionLabel = currentPowerObj ? currentPowerObj.label : '1/1';
-        const targetFraction = targetPowerObj.label;
+        const currentDisplay = currentTenths > 0 ? `${currentFractionLabel};${currentTenths}` : currentFractionLabel;
+        const targetDisplay = ilToPowerFraction(targetPowerIL);
         
-        powerDisplay = targetFraction;
-        powerExplanation = `${_t('resultFrom')} ${currentFractionLabel} ${_t('resultTo')} ${targetFraction}`;
+        powerDisplay = targetDisplay;
+        powerExplanation = `${_t('resultFrom')} ${currentDisplay} ${_t('resultTo')} ${targetDisplay}`;
     }
 
     // Affichage warning HSS

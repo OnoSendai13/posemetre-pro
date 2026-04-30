@@ -13,13 +13,13 @@ const translations = {
         themeBtn: 'Changer de thème',
         
         // Navigation
-        navPosemetre: '☀️ Continu',
+        navPosemetre: '📷 Posemètre',
         navFlash: '⚡ Flash',
         navRatios: '💡 Ratios',
-        navEstimation: '🎯 Sans Cellule',
+        navEstimation: '📊 Estimation',
         
         // Mode Posemètre
-        posemetreTitle: 'Mode Continu (Lumière ambiante)',
+        posemetreTitle: 'Mode Posemètre (Lumière continue)',
         labelMesureInitiale: 'Mesure initiale (Ouverture):',
         labelISO: 'ISO:',
         labelVitesse: 'Vitesse:',
@@ -44,11 +44,11 @@ const translations = {
         resultsFill: '💡 Fill Light à régler',
         
         // Mode Estimation
-        estimationTitle: 'Sans Cellule (Estimation incidente)',
+        estimationTitle: 'Estimation sans posemètre',
         estimationSubtitle: 'Mesure spot sur une zone de référence',
         labelZoneMesuree: 'Zone mesurée (spot):',
         labelLectureAppareil: 'Lecture appareil (f/):',
-        resultsEstimation: '🎯 Lumière incidente estimée',
+        resultsEstimation: '📊 Lumière incidente estimée',
         gridTitle: '📋 Grille de réflectance (Exemples concrets)',
         
         // Zones dropdown
@@ -126,10 +126,10 @@ const translations = {
         // Modal Aide - Titres
         helpTitle: '📖 Aide',
         helpNavGeneral: 'Général',
-        helpNavPosemetre: 'Continu',
+        helpNavPosemetre: 'Posemètre',
         helpNavFlash: 'Flash',
         helpNavRatios: 'Ratios',
-        helpNavEstimation: 'Sans Cellule',
+        helpNavEstimation: 'Estimation',
         
         // Unité
         evUnit: 'IL'
@@ -142,13 +142,13 @@ const translations = {
         themeBtn: 'Change theme',
         
         // Navigation
-        navPosemetre: '☀️ Ambient',
+        navPosemetre: '📷 Light Meter',
         navFlash: '⚡ Flash',
         navRatios: '💡 Ratios',
-        navEstimation: '🎯 No Meter',
+        navEstimation: '📊 Estimation',
         
         // Mode Posemètre
-        posemetreTitle: 'Ambient Mode (Continuous Light)',
+        posemetreTitle: 'Light Meter Mode (Continuous Light)',
         labelMesureInitiale: 'Initial reading (Aperture):',
         labelISO: 'ISO:',
         labelVitesse: 'Shutter Speed:',
@@ -173,11 +173,11 @@ const translations = {
         resultsFill: '💡 Set Fill Light to',
         
         // Mode Estimation
-        estimationTitle: 'No Meter (Incident Estimation)',
+        estimationTitle: 'Estimation without light meter',
         estimationSubtitle: 'Spot metering on a reference zone',
         labelZoneMesuree: 'Metered zone (spot):',
         labelLectureAppareil: 'Camera reading (f/):',
-        resultsEstimation: '🎯 Estimated incident light',
+        resultsEstimation: '📊 Estimated incident light',
         gridTitle: '📋 Reflectance Chart (Practical Examples)',
         
         // Zones dropdown
@@ -255,10 +255,10 @@ const translations = {
         // Modal Aide - Titres
         helpTitle: '📖 Help',
         helpNavGeneral: 'General',
-        helpNavPosemetre: 'Ambient',
+        helpNavPosemetre: 'Light Meter',
         helpNavFlash: 'Flash',
         helpNavRatios: 'Ratios',
-        helpNavEstimation: 'No Meter',
+        helpNavEstimation: 'Estimation',
         
         // Unité
         evUnit: 'EV'
@@ -355,8 +355,8 @@ const helpContent = {
             <p class="aperture-grid-credit">Tableau inspiré de @nathsakuraofficial — <a href="https://www.nath-sakura.com" target="_blank" rel="noopener">nath-sakura.com</a></p>
         `,
         posemetre: `
-            <h3>☀️ Mode Continu (lumière ambiante)</h3>
-            <p>Pour la photo en lumière naturelle ou continue (LED, tungstène...), avec votre posemètre.</p>
+            <h3>📷 Mode Posemètre (lumière continue)</h3>
+            <p>Pour la photo en lumière naturelle ou continue (LED, tungstène...).</p>
             
             <div class="help-box">
                 <h4>Utilisation</h4>
@@ -425,8 +425,8 @@ const helpContent = {
             <p>Entrez la mesure de votre Key light et le ratio souhaité, l'app calcule à quel f/ doit être réglée votre Fill light.</p>
         `,
         estimation: `
-            <h3>🎯 Mode Sans Cellule (estimation incidente)</h3>
-            <p>Pour estimer la lumière incidente sans posemètre externe, en utilisant la mesure spot de votre appareil sur une zone de référence.</p>
+            <h3>📊 Mode Estimation (sans posemètre)</h3>
+            <p>Pour estimer l'exposition sans posemètre, en utilisant la mesure spot de votre appareil sur une zone de référence.</p>
             
             <div class="help-box">
                 <h4>Principe</h4>
@@ -541,8 +541,8 @@ const helpContent = {
             <p class="aperture-grid-credit">Chart inspired by @nathsakuraofficial — <a href="https://www.nath-sakura.com" target="_blank" rel="noopener">nath-sakura.com</a></p>
         `,
         posemetre: `
-            <h3>☀️ Ambient Mode (continuous light)</h3>
-            <p>For photography in natural or continuous light (LED, tungsten...), using your light meter.</p>
+            <h3>📷 Light Meter Mode (continuous light)</h3>
+            <p>For photography in natural or continuous light (LED, tungsten...).</p>
             
             <div class="help-box">
                 <h4>How to use</h4>
@@ -611,8 +611,8 @@ const helpContent = {
             <p>Enter your Key light reading and desired ratio, the app calculates what f/ your Fill light should be set to.</p>
         `,
         estimation: `
-            <h3>🎯 No Meter Mode (incident estimation)</h3>
-            <p>To estimate incident light without an external light meter, using your camera's spot metering on a reference zone.</p>
+            <h3>📊 Estimation Mode (no light meter)</h3>
+            <p>To estimate exposure without a light meter, using your camera's spot metering on a reference zone.</p>
             
             <div class="help-box">
                 <h4>Principle</h4>
@@ -698,10 +698,10 @@ function setLanguage(lang) {
         applyTranslations();
         updateLanguageButton();
         // Recalculer les résultats pour mettre à jour les textes
-        if (typeof window.calculatePosemetre === 'function') window.calculatePosemetre();
-        if (typeof window.calculateFlashmetre === 'function') window.calculateFlashmetre();
-        if (typeof window.calculateRatios === 'function') window.calculateRatios();
-        if (typeof window.calculateEstimation === 'function') window.calculateEstimation();
+        if (typeof calculatePosemetre === 'function') calculatePosemetre();
+        if (typeof calculateFlashmetre === 'function') calculateFlashmetre();
+        if (typeof calculateRatios === 'function') calculateRatios();
+        if (typeof calculateEstimation === 'function') calculateEstimation();
         // Mettre à jour l'aide
         updateHelpContent();
         // Mettre à jour les zones de l'estimation
