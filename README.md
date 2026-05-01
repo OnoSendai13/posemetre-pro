@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-1.2-blue.svg)
+![Version](https://img.shields.io/badge/version-1.3-blue.svg)
 ![PWA](https://img.shields.io/badge/PWA-ready-green.svg)
 ![Capacitor](https://img.shields.io/badge/Capacitor-iOS%20%7C%20Android-purple.svg)
 ![Size](https://img.shields.io/badge/size-~35KB-brightgreen.svg)
@@ -17,31 +17,14 @@
 
 ---
 
-## 🌟 What's New in v1.2
+## 🌟 What's New in v1.3
 
-### 🌍 Multilingual Support (FR/EN)
-- **Complete i18n system** with automatic browser language detection
-- **FR ↔ EN toggle** in header
-- **Full translation** of all content including dynamic results and help modal
-- **IL/EV units** adapted per language
-
-### ⚡ High-Speed Sync (HSS) Mode
-- **Dedicated HSS toggle** in Flash Meter mode
-- **Configurable max sync speed** (1/200, 1/250, 1/320)
-- **Automatic power loss calculation** (approx. -2EV per stop above sync)
-- **Smart recommendations** with normal sync fallback suggestions
-
-### 📖 Integrated Help Modal
-- **5 comprehensive sections**: General, Light Meter, Flash, Ratios, Estimation
-- **Manual Mode warning** with RAW/JPEG histogram explanation
-- **Quick navigation** sidebar
-- **Keyboard support** (Escape to close)
-
-### 🎨 Dual Theme System
-- **Light Mode** - Pastel Mint (excellent in bright conditions)
-- **Dark Mode** - Dark Orange (professional, low-light friendly)
-- **Auto-detection** via `prefers-color-scheme`
-- **Manual toggle** with localStorage persistence
+### 🎯 Tenth-Stop Precision for Flash Meter Readings
+- **f-stop + tenths selectors** for real-world flash meter measurements
+- Dropdown for **whole f-stops** (f/1, f/1.4, f/2... f/32) + separate **tenths selector** (0–9/10)
+- Applied to: **Light Meter > Initial Reading**, **Flash > Current Flash Reading**, **Ratios > Key Light Reading**
+- Flash meters display readings like `f/5.6 + 0.3` — now you can enter them exactly as measured
+- Combined value converted to effective aperture for all calculations
 
 ---
 
@@ -220,16 +203,21 @@ Click the **☀️/🌙** icon to switch between light and dark themes.
 ## 📂 Project Structure
 
 ```
-lightmeter-app-pwa/
+posemetre-pro/
 ├── index.html          # Main application
-├── app.js              # Application logic
+├── app.js              # Application logic (bundled)
 ├── i18n.js             # Translation system
 ├── theme-switcher.js   # Theme management
-├── styles.css          # Dark theme styles
-├── styles-light.css    # Light theme styles
+├── styles.css          # Complete styles (dark + light)
 ├── manifest.json       # PWA manifest
 ├── sw.js               # Service Worker
-├── GUIDE.html          # Installation guide
+├── src/                # Modular source files
+│   ├── main.js         # Entry point + events
+│   ├── ui.js           # DOM interface logic
+│   ├── state.js        # State management
+│   ├── calculations.js # Photographic math
+│   └── constants.js    # Reference values
+├── www/                # Android build output
 ├── CHANGELOG.md        # Version history
 ├── README.md           # This file
 └── LICENSE             # MIT License
@@ -239,7 +227,12 @@ lightmeter-app-pwa/
 
 ## 📋 Changelog Highlights
 
-### v1.2 (Current)
+### v1.3 (Current)
+- ✅ f-stop + tenths selectors for flash meter readings
+- ✅ Whole f-stop dropdown + tenths precision selector
+- ✅ Applied to Light Meter, Flash, and Ratios modes
+
+### v1.2
 - ✅ Multilingual support (FR/EN)
 - ✅ HSS mode with power loss calculation
 - ✅ Integrated help modal

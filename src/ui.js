@@ -2,7 +2,7 @@
 // UI — Gestion de l'interface (DOM)
 // ============================================
 
-import { APERTURES, SHUTTERSPEEDS, FLASH_POWERS_FRACTIONS } from './constants.js';
+import { APERTURES, WHOLE_FSTOPS, TENTHS, SHUTTERSPEEDS, FLASH_POWERS_FRACTIONS } from './constants.js';
 import {
     calculateAperture, apertureToIL, calculateShutterSpeed,
     calculateISO, getShutterLabel, validateISO,
@@ -19,9 +19,33 @@ import { state, dom } from './state.js';
  * Remplit tous les selects avec les valeurs photographiques
  */
 export function populateSelects() {
+    // F-stops + dixièmes pour les champs de mesure flash/posemetre/ratios
+    const fstopPairs = [
+        { fstopId: 'pose-mesure-fstop', tenthsId: 'pose-mesure-tenths', defaultFstop: '5.6', defaultTenths: '0' },
+        { fstopId: 'flash-mesure-fstop', tenthsId: 'flash-mesure-tenths', defaultFstop: '5.6', defaultTenths: '0' },
+        { fstopId: 'ratio-key-fstop', tenthsId: 'ratio-key-tenths', defaultFstop: '8', defaultTenths: '0' },
+    ];
+
+    fstopPairs.forEach(({ fstopId, tenthsId, defaultFstop, defaultTenths }) => {
+        const fstopSelect = dom(fstopId);
+        if (fstopSelect) {
+            fstopSelect.innerHTML = WHOLE_FSTOPS.map(f =>
+                `<option value="${f}">f/${f}</option>`
+            ).join('');
+            fstopSelect.value = defaultFstop;
+        }
+        const tenthsSelect = dom(tenthsId);
+        if (tenthsSelect) {
+            tenthsSelect.innerHTML = TENTHS.map(t =>
+                `<option value="${t}">${t}</option>`
+            ).join('');
+            tenthsSelect.value = defaultTenths;
+        }
+    });
+
+    // Selects ouverture simple (flash-target, estim-mesure)
     const apertureSelects = [
-        'pose-mesure', 'flash-mesure', 'flash-target',
-        'ratio-key', 'estim-mesure'
+        'flash-target', 'estim-mesure'
     ];
 
     apertureSelects.forEach(id => {
@@ -31,11 +55,7 @@ export function populateSelects() {
                 `<option value="${f}">f/${f}</option>`
             ).join('');
 
-            if (id === 'pose-mesure' || id === 'flash-mesure') {
-                select.value = '5.6';
-            } else if (id === 'flash-target') {
-                select.value = '8';
-            } else if (id === 'ratio-key') {
+            if (id === 'flash-target') {
                 select.value = '8';
             } else if (id === 'estim-mesure') {
                 select.value = '8';
@@ -67,6 +87,23 @@ export function populateSelects() {
             }
         }
     });
+}
+
+// ============================================
+// HELPER: lit f-stop + dixièmes et retourne la valeur d'ouverture combinée
+// ============================================
+
+/**
+ * Convertit un f-stop entier + dixièmes en valeur d'ouverture effective
+ * @param {string} fstopId - DOM id du select f-stop
+ * @param {string} tenthsId - DOM id du select dixièmes
+ * @returns {number}
+ */
+function getApertureFromPair(fstopId, tenthsId) {
+    const baseFstop = parseFloat(dom(fstopId)?.value);
+    const tenths = parseInt(dom(tenthsId)?.value || '0');
+    if (tenths === 0) return baseFstop;
+    return baseFstop * Math.pow(2, tenths / 20);
 }
 
 // ============================================
@@ -176,7 +213,7 @@ function _t(key, params) {
  * Calcule les reglages en mode POSEMETRE (Continu)
  */
 export function calculatePosemetre() {
-    const baseFstop = parseFloat(dom('pose-mesure')?.value);
+    const baseFstop = getApertureFromPair('pose-mesure-fstop', 'pose-mesure-tenths');
     const baseISO = validateISO(parseInt(dom('pose-iso')?.value));
     const baseShutter = parseFloat(dom('pose-vitesse')?.value);
     const comp = state.compensation.posemetre;
@@ -211,7 +248,7 @@ export function calculatePosemetre() {
  * Calcule les reglages en mode FLASHMETRE
  */
 export function calculateFlashmetre() {
-    const currentFstop = parseFloat(dom('flash-mesure')?.value);
+    const currentFstop = getApertureFromPair('flash-mesure-fstop', 'flash-mesure-tenths');
     const targetFstop = parseFloat(dom('flash-target')?.value);
     const shootingSpeed = parseFloat(dom('flash-vitesse')?.value);
     const iso = validateISO(parseInt(dom('flash-iso')?.value));
@@ -311,7 +348,7 @@ export function calculateFlashmetre() {
  * Calcule les ratios KEY/FILL LIGHT
  */
 export function calculateRatios() {
-    const keyFstop = parseFloat(dom('ratio-key')?.value);
+    const keyFstop = getApertureFromPair('ratio-key-fstop', 'ratio-key-tenths');
     const ratioIL = state.compensation.ratios;
     const iso = validateISO(parseInt(dom('ratio-iso')?.value));
     const shutter = parseFloat(dom('ratio-vitesse')?.value);

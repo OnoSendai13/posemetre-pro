@@ -282,7 +282,8 @@ header h1 {
     appearance: none;
 }
 
-.power-fraction-row {
+.power-fraction-row,
+.fstop-tenths-row {
     display: flex;
     gap: 8px;
     align-items: center;
@@ -290,6 +291,30 @@ header h1 {
 
 .power-fraction-row .input-field {
     flex: 1;
+}
+
+.fstop-tenths-row .fstop-select {
+    flex: 1;
+    min-width: 0;
+}
+
+.fstop-tenths-row .tenths-select {
+    width: 70px !important;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.fstop-tenths-row .tenths-plus {
+    color: var(--text-secondary, #aaa);
+    font-size: 16px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.fstop-tenths-row .tenths-label {
+    color: var(--text-secondary, #aaa);
+    font-size: 13px;
+    flex-shrink: 0;
 }
 
 .power-tenths {

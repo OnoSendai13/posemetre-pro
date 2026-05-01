@@ -10,6 +10,9 @@ const ISO_STANDARD = [
 ];
 
 // Valeurs d'ouverture standard (f-stops)
+const WHOLE_FSTOPS = [1, 1.4, 2, 2.8, 4, 5.6, 8, 11, 16, 22, 32];
+const TENTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 const APERTURES = [
     1.0, 1.1, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.5, 2.8, 
     3.2, 3.5, 4.0, 4.5, 5.0, 5.6, 6.3, 7.1, 8.0, 9.0, 
@@ -340,12 +343,12 @@ function setupEventListeners() {
     });
 
     // Changements inputs POSEMETRE
-    ['pose-mesure', 'pose-iso', 'pose-vitesse'].forEach(id => {
+    ['pose-mesure-fstop', 'pose-mesure-tenths', 'pose-iso', 'pose-vitesse'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', calculatePosemetre);
     });
 
     // Changements inputs FLASHMETRE
-    ['flash-vitesse', 'flash-iso', 'flash-mesure', 'flash-target', 'flash-current-power', 'hss-sync-max'].forEach(id => {
+    ['flash-vitesse', 'flash-iso', 'flash-mesure-fstop', 'flash-mesure-tenths', 'flash-target', 'flash-current-power', 'flash-current-tenths', 'hss-sync-max'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', calculateFlashmetre);
     });
 
@@ -363,7 +366,7 @@ function setupEventListeners() {
     }
 
     // Changements inputs RATIOS
-    ['ratio-key', 'ratio-iso', 'ratio-vitesse'].forEach(id => {
+    ['ratio-key-fstop', 'ratio-key-tenths', 'ratio-iso', 'ratio-vitesse'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', calculateRatios);
     });
 
@@ -380,25 +383,43 @@ function setupEventListeners() {
  * Remplit tous les selects avec les valeurs
  */
 function populateSelects() {
-    // Ouvertures
-    const apertureSelects = [
-        'pose-mesure', 'flash-mesure', 'flash-target', 
-        'ratio-key', 'estim-mesure'
+    // F-stops + dixièmes pour les champs de mesure flash/posemetre/ratios
+    const fstopPairs = [
+        { fstopId: 'pose-mesure-fstop', tenthsId: 'pose-mesure-tenths', defaultFstop: '5.6', defaultTenths: '0' },
+        { fstopId: 'flash-mesure-fstop', tenthsId: 'flash-mesure-tenths', defaultFstop: '5.6', defaultTenths: '0' },
+        { fstopId: 'ratio-key-fstop', tenthsId: 'ratio-key-tenths', defaultFstop: '8', defaultTenths: '0' },
     ];
-    
+
+    fstopPairs.forEach(({ fstopId, tenthsId, defaultFstop, defaultTenths }) => {
+        const fstopSelect = document.getElementById(fstopId);
+        if (fstopSelect) {
+            fstopSelect.innerHTML = WHOLE_FSTOPS.map(f =>
+                `<option value="${f}">f/${f}</option>`
+            ).join('');
+            fstopSelect.value = defaultFstop;
+        }
+        const tenthsSelect = document.getElementById(tenthsId);
+        if (tenthsSelect) {
+            tenthsSelect.innerHTML = TENTHS.map(t =>
+                `<option value="${t}">${t}</option>`
+            ).join('');
+            tenthsSelect.value = defaultTenths;
+        }
+    });
+
+    // Selects ouverture simple (flash-target, estim-mesure)
+    const apertureSelects = [
+        'flash-target', 'estim-mesure'
+    ];
+
     apertureSelects.forEach(id => {
         const select = document.getElementById(id);
         if (select) {
-            select.innerHTML = APERTURES.map(f => 
+            select.innerHTML = APERTURES.map(f =>
                 `<option value="${f}">f/${f}</option>`
             ).join('');
-            
-            // Valeurs par défaut
-            if (id === 'pose-mesure' || id === 'flash-mesure') {
-                select.value = '5.6';
-            } else if (id === 'flash-target') {
-                select.value = '8';
-            } else if (id === 'ratio-key') {
+
+            if (id === 'flash-target') {
                 select.value = '8';
             } else if (id === 'estim-mesure') {
                 select.value = '8';
@@ -433,6 +454,17 @@ function populateSelects() {
             }
         }
     });
+}
+
+// ============================================
+// HELPER: lit f-stop + dixièmes et retourne la valeur d'ouverture combinée
+// ============================================
+
+function getApertureFromPair(fstopId, tenthsId) {
+    const baseFstop = parseFloat(document.getElementById(fstopId)?.value);
+    const tenths = parseInt(document.getElementById(tenthsId)?.value || '0');
+    if (tenths === 0) return baseFstop;
+    return baseFstop * Math.pow(2, tenths / 20);
 }
 
 // ============================================
@@ -551,7 +583,7 @@ function validateISO(iso) {
  * Calcule les réglages en mode POSEMÈTRE
  */
 function calculatePosemetre() {
-    const baseFstop = parseFloat(document.getElementById('pose-mesure').value);
+    const baseFstop = getApertureFromPair('pose-mesure-fstop', 'pose-mesure-tenths');
     const baseISO = validateISO(parseInt(document.getElementById('pose-iso').value));
     const baseShutter = parseFloat(document.getElementById('pose-vitesse').value);
     const comp = currentCompensation.posemetre;
@@ -599,7 +631,7 @@ function calculatePosemetre() {
  * 3. PAS a modifier les calculs de base (la mesure est correcte)
  */
 function calculateFlashmetre() {
-    const currentFstop = parseFloat(document.getElementById('flash-mesure').value);
+    const currentFstop = getApertureFromPair('flash-mesure-fstop', 'flash-mesure-tenths');
     const targetFstop = parseFloat(document.getElementById('flash-target').value);
     const shootingSpeed = parseFloat(document.getElementById('flash-vitesse').value);
     const iso = validateISO(parseInt(document.getElementById('flash-iso').value));
@@ -713,7 +745,7 @@ function calculateFlashmetre() {
  * Calcule les ratios KEY/FILL LIGHT
  */
 function calculateRatios() {
-    const keyFstop = parseFloat(document.getElementById('ratio-key').value);
+    const keyFstop = getApertureFromPair('ratio-key-fstop', 'ratio-key-tenths');
     const ratioIL = currentCompensation.ratios;
     const iso = validateISO(parseInt(document.getElementById('ratio-iso').value));
     const shutter = parseFloat(document.getElementById('ratio-vitesse').value);

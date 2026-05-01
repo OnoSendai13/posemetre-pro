@@ -7,7 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [1.2] - 2026-01-20
+## [1.3] - 2026-05-01
+
+### 🎯 Tenth-Stop Precision for Flash Meter Readings
+
+**Status**: ✅ Production-ready  
+**New Feature**: f-stop + tenths selectors  
+
+### ✨ New Features
+
+#### 🎯 Tenth-Stop Precision Selectors
+- **Whole f-stop dropdown** for 3 key input fields:
+  - Light Meter > Initial Reading
+  - Flash > Current Flash Reading
+  - Ratios > Key Light reading
+- **Separate tenths selector** (0–9/10) alongside each f-stop dropdown
+- Displays and works like real flash meters: `f/5.6 + 3/10`
+- Combined effective aperture value used in all calculations
+- Full stops only in dropdown: f/1, f/1.4, f/2, f/2.8, f/4, f/5.6, f/8, f/11, f/16, f/22, f/32
+
+### 🛠️ Files Modified
+- `index.html` — 3 fields converted to fstop + tenths pairs
+- `app.js` — `populateSelects()`, `calculatePosemetre()`, `calculateFlashmetre()`, `calculateRatios()`, event listeners
+- `styles.css` — `.fstop-tenths-row`, `.fstop-select`, `.tenths-select` styles
+- `src/ui.js` — Same changes as app.js (modular source)
+- `src/constants.js` — Added `WHOLE_FSTOPS` and `TENTHS` arrays
+- `src/main.js` — Updated event listener IDs
+- `src/state.js` — Updated DOM cache IDs
+- `www/` — All files synced
+
+### ✅ Tests
+- ✅ f-stop dropdowns populate with whole stops only
+- ✅ Tenths selectors populate with values 0–9
+- ✅ Combined f-stop + tenths value computed correctly
+- ✅ Light Meter calculations use new input pair
+- ✅ Flash Meter calculations use new input pair
+- ✅ Ratios calculations use new input pair
+- ✅ All files synced to www/ for Android build
 
 ### 🌍 Multilingual Support + HSS Mode + Help System
 
@@ -410,6 +446,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   - HSS mode
   - Help modal
 
+- **May 1, 2026**: v1.3 Release
+  - Tenth-stop precision selectors
+  - f-stop + tenths input for flash meter readings
+
 ---
 
 ## 🚀 Future Versions
@@ -438,6 +478,6 @@ MIT License - Copyright (c) 2026 Laurent Suchet IG:@ono_sendai
 
 **Happy shooting!** 📸✨
 
-Current version: **1.2** (January 20, 2026)
+Current version: **1.3** (May 1, 2026)
 
 </div>
