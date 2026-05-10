@@ -703,6 +703,9 @@ function setLanguage(lang) {
         localStorage.setItem(LANG_KEY, lang);
         applyTranslations();
         updateLanguageButton();
+        // Mettre à jour les zones de l'estimation AVANT de recalculer
+        updateEstimationZones();
+        updateReflectanceGrid();
         // Recalculer les résultats pour mettre à jour les textes
         if (typeof calculatePosemetre === 'function') calculatePosemetre();
         if (typeof calculateFlashmetre === 'function') calculateFlashmetre();
@@ -710,10 +713,6 @@ function setLanguage(lang) {
         if (typeof calculateEstimation === 'function') calculateEstimation();
         // Mettre à jour l'aide
         updateHelpContent();
-        // Mettre à jour les zones de l'estimation
-        updateEstimationZones();
-        // Mettre à jour la grille de réflectance
-        updateReflectanceGrid();
         console.log('Language changed to:', lang);
     }
 }
