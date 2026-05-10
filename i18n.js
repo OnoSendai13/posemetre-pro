@@ -11,6 +11,15 @@ const translations = {
         appTitle: '📷 Assistant Posemètre Pro',
         helpBtn: '?',
         themeBtn: 'Changer de thème',
+        settingsTitle: 'Réglages',
+        settingsTheme: 'Thème',
+        themeLight: 'Clair',
+        themeDark: 'Sombre',
+        themeSystem: 'Système',
+        rateAppBtn: '⭐ Noter l\'application',
+        walkthroughTitle: 'Tutoriel d\'initiation',
+        startWalkthrough: 'Recommencer le tutoriel',
+        walkthroughNote: 'Guide pas à pas pour découvrir l\'application',
         
         // Navigation
         navPosemetre: '📷 Posemètre',
@@ -143,6 +152,17 @@ const translations = {
         appTitle: '📷 Light Meter Pro Assistant',
         helpBtn: '?',
         themeBtn: 'Change theme',
+        
+        // Settings
+        settingsTitle: 'Settings',
+        settingsTheme: 'Theme',
+        themeLight: 'Light',
+        themeDark: 'Dark',
+        themeSystem: 'System',
+        rateAppBtn: '⭐ Rate this app',
+        walkthroughTitle: 'Onboarding Tutorial',
+        startWalkthrough: 'Restart tutorial',
+        walkthroughNote: 'Step-by-step guide to discover the app',
         
         // Navigation
         navPosemetre: '📷 Light Meter',

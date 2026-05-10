@@ -58,6 +58,7 @@
                 <div class="header-buttons">
                     <button id="lang-btn" class="header-btn" title="Switch to English">EN</button>
                     <button id="help-btn" class="header-btn" title="Aide">?</button>
+                    <button id="settings-btn" class="header-btn" title="Réglages">&#9881;</button>
                     <button id="theme-toggle" class="header-btn" title="Changer de thème"></button>
                 </div>
             </div>
@@ -426,6 +427,37 @@
                 <div class="help-section" id="help-flash"></div>
                 <div class="help-section" id="help-ratios"></div>
                 <div class="help-section" id="help-estimation"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Réglages -->
+    <div id="settings-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 data-i18n="settingsTitle">&#9881; Réglages</h2>
+                <button id="settings-close" class="modal-close">&times;</button>
+            </div>
+            
+            <div class="modal-content">
+                <div class="settings-section">
+                    <h3 data-i18n="settingsTheme">Thème</h3>
+                    <div class="theme-options">
+                        <button id="theme-light" class="theme-btn" data-i18n="themeLight">Clair</button>
+                        <button id="theme-dark" class="theme-btn" data-i18n="themeDark">Sombre</button>
+                        <button id="theme-system" class="theme-btn active" data-i18n="themeSystem">Système</button>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <button id="rate-app-btn" class="settings-btn" data-i18n="rateAppBtn">⭐ Noter l'application</button>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 data-i18n="walkthroughTitle">Tutoriel d'initiation</h3>
+                    <button id="start-walkthrough" class="settings-btn" data-i18n="startWalkthrough">Recommencer le tutoriel</button>
+                    <p class="settings-note" data-i18n="walkthroughNote">Guide pas à pas pour découvrir l'application</p>
+                </div>
             </div>
         </div>
     </div>
