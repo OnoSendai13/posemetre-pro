@@ -29,3 +29,10 @@ Thumbs.db
 # Backup files
 *-backup.js
 *-corrected.js
+
+# Test/QA artifacts
+.playwright-cli/
+graphify-out/
+
+# Reports and docs
+*.pdf
