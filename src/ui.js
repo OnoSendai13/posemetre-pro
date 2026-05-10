@@ -372,7 +372,7 @@ export function calculateRatios() {
             <span class="result-detail">${_t('resultAtIsoSpeed', {iso: iso, speed: getShutterLabel(shutter)})}</span>
         </div>
         <div class="result-item">
-            <span class="result-label">${_t('resultRatio')} Fill vs Key</span>
+            <span class="result-label">${_t('resultRatio')} ${_t('resultRatioLabel')}</span>
             <span class="result-value">${powerDisplay}</span>
             <span class="result-detail">${ratioIL.toFixed(1)} ${evUnit}</span>
         </div>
@@ -403,7 +403,7 @@ export function calculateEstimation() {
     const finalISO = calculateISO(iso, comp);
 
     const zoneSelect = dom('estim-zone');
-    const zoneName = zoneSelect?.selectedOptions?.[0]?.text || 'Zone';
+    const zoneName = zoneSelect?.selectedOptions?.[0]?.text || _t('zoneDefault');
     const evUnit = _t('evUnit');
 
     const resultsHTML = `

@@ -234,7 +234,7 @@
                     </div>
 
                     <div class="compensation-section">
-                        <label>Compensation supplementaire:</label>
+                        <label data-i18n="labelCompensationSupp">Compensation supplémentaire:</label>
                         <div class="compensation-controls">
                             <button class="comp-btn flash-comp" data-value="-2">-2 IL</button>
                             <button class="comp-btn flash-comp" data-value="-1">-1 IL</button>
@@ -320,24 +320,13 @@
             <section id="tab-estimation" class="tab-content">
                 <div class="meter-display">
                     <h2 data-i18n="estimationTitle">Estimation sans posemètre</h2>
-                    <p class="info-text">Mesure spot sur une zone de référence</p>
+                    <p class="info-text" data-i18n="estimationIntro">Mesure spot sur une zone de référence</p>
                     
                     <div class="input-group">
                         <label data-i18n="labelZoneMesuree">Zone mesurée (spot):</label>
-                        <select id="estim-zone" class="input-field">
-                            <option value="4">⚠️ Blanc crame (+4 IL) - sans detail</option>
-                            <option value="3">Blanc avec details / Nuages blancs (+3 IL)</option>
-                            <option value="2">Peau tres claire / Mur blanc / Sable blanc (+2 IL)</option>
-                            <option value="1.5">Ciel couvert lumineux / Neige ombre (+1.5 IL)</option>
-                            <option value="1" selected>Peau claire / Sable clair / Ciel bleu clair (+1 IL)</option>
-                            <option value="0.5">Peau moyenne claire / Ciel bleu moyen (+0.5 IL)</option>
-                            <option value="0">Gris 18% / Herbe verte / Feuillage / Ciel bleu profond (0 IL)</option>
-                            <option value="-0.5">Peau moyenne foncee / Ciel coucher soleil (-0.5 IL)</option>
-                            <option value="-1">Peau foncee / Feuillage ombre / Ciel orageux (-1 IL)</option>
-                            <option value="-2">Pierre sombre / Asphalte sec / Terre sombre (-2 IL)</option>
-                            <option value="-3">Noir avec details / Ombres profondes (-3 IL)</option>
-                            <option value="-4">⚠️ Noir bouche (-4 IL) - sans detail</option>
-                        </select>
+<select id="estim-zone" class="input-field">
+                             <!-- Options populated dynamically by i18n.js -->
+                         </select>
                     </div>
 
                     <div class="input-row">

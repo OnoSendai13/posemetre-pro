@@ -41,18 +41,20 @@ const translations = {
         ratiosTitle: 'Ratios Key/Fill Light',
         labelKeyLight: 'Key Light (mesure):',
         labelRatioFill: 'Ratio Fill vs Key:',
+         labelCompensationSupp: 'Compensation supplémentaire:',
         resultsFill: '💡 Fill Light à régler',
         
-        // Mode Estimation
-        estimationTitle: 'Estimation sans posemètre',
-        estimationSubtitle: 'Mesure spot sur une zone de référence',
+// Mode Estimation
+         estimationTitle: 'Estimation sans posemètre',
+         estimationIntro: 'Mesure spot sur une zone de référence',
         labelZoneMesuree: 'Zone mesurée (spot):',
         labelLectureAppareil: 'Lecture appareil (f/):',
         resultsEstimation: '📊 Lumière incidente estimée',
         gridTitle: '📋 Grille de réflectance (Exemples concrets)',
         
-        // Zones dropdown
-        zoneWhiteBurnt: '⚠️ Blanc cramé (+4 IL) - sans détail',
+// Zones dropdown
+         zoneDefault: 'Zone',
+         zoneWhiteBurnt: '⚠️ Blanc cramé (+4 IL) - sans détail',
         zoneWhiteDetail: 'Blanc avec détails / Nuages blancs (+3 IL)',
         zoneLightSkin: 'Peau très claire / Mur blanc / Sable blanc (+2 IL)',
         zoneSkyOvercast: 'Ciel couvert lumineux / Neige ombre (+1.5 IL)',
@@ -99,10 +101,11 @@ const translations = {
         resultDecrease: 'Diminuer de',
         resultNoChange: 'Pas de changement',
         
-        // Results - Ratios
-        resultFillLight: 'Fill Light',
-        resultRatio: 'Ratio',
-        resultLightingRatio: 'Ratio d\'éclairage',
+// Results - Ratios
+         resultFillLight: 'Fill Light',
+         resultRatio: 'Ratio',
+         resultRatioLabel: 'Fill vs Key',
+         resultLightingRatio: 'Ratio d\'éclairage',
         
         // Results - Estimation
         resultIncidentLight: 'Lumière incidente équivalente',
@@ -164,6 +167,7 @@ const translations = {
         labelHSSEnabled: 'HSS Mode (High-Speed Sync)',
         labelHSSSyncMax: 'Flash max sync speed:',
         labelCompSupp: 'Additional compensation:',
+         labelCompensationSupp: 'Additional compensation:',
         resultsFlash: '⚡ Adjust flash to',
         
         // Mode Ratios
@@ -172,16 +176,17 @@ const translations = {
         labelRatioFill: 'Fill vs Key ratio:',
         resultsFill: '💡 Set Fill Light to',
         
-        // Mode Estimation
-        estimationTitle: 'Estimation without light meter',
-        estimationSubtitle: 'Spot metering on a reference zone',
+// Mode Estimation
+         estimationTitle: 'Estimation without light meter',
+         estimationIntro: 'Spot metering on a reference zone',
         labelZoneMesuree: 'Metered zone (spot):',
         labelLectureAppareil: 'Camera reading (f/):',
         resultsEstimation: '📊 Estimated incident light',
         gridTitle: '📋 Reflectance Chart (Practical Examples)',
         
-        // Zones dropdown
-        zoneWhiteBurnt: '⚠️ Blown white (+4 EV) - no detail',
+// Zones dropdown
+         zoneDefault: 'Zone',
+         zoneWhiteBurnt: '⚠️ Blown white (+4 EV) - no detail',
         zoneWhiteDetail: 'White with detail / Bright clouds (+3 EV)',
         zoneLightSkin: 'Very light skin / White wall / White sand (+2 EV)',
         zoneSkyOvercast: 'Bright overcast sky / Snow in shade (+1.5 EV)',
@@ -228,10 +233,11 @@ const translations = {
         resultDecrease: 'Decrease by',
         resultNoChange: 'No change',
         
-        // Results - Ratios
-        resultFillLight: 'Fill Light',
-        resultRatio: 'Ratio',
-        resultLightingRatio: 'Lighting ratio',
+// Results - Ratios
+         resultFillLight: 'Fill Light',
+         resultRatio: 'Ratio',
+         resultRatioLabel: 'Fill vs Key',
+         resultLightingRatio: 'Lighting ratio',
         
         // Results - Estimation
         resultIncidentLight: 'Equivalent incident light',

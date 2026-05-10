@@ -45,12 +45,13 @@
     "url": "https://github.com/laurentsuchet/assistant-posemetre-pro/issues"
   },
   "dependencies": {
-    "@capacitor/app": "^8.3.0",
+    "@capacitor/android": "^8.3.1",
+    "@capacitor/app": "^8.1.0",
     "@capacitor/cli": "^8.3.0",
     "@capacitor/core": "^8.3.0",
-    "@capacitor/haptics": "^8.3.0",
-    "@capacitor/splash-screen": "^8.3.0",
-    "@capacitor/status-bar": "^8.3.0"
+    "@capacitor/haptics": "^8.0.0",
+    "@capacitor/splash-screen": "^8.0.0",
+    "@capacitor/status-bar": "^8.0.0"
   },
   "devDependencies": {
     "gh-pages": "^6.1.1",

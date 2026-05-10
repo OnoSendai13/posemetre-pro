@@ -1,7 +1,7 @@
 {
-  "appId": "com.laurent.posemetre",
+  "appId": "com.onosendai.posemetrepro",
   "appName": "Posemètre Pro",
-  "webDir": ".",
+  "webDir": "www",
   "bundledWebRuntime": false,
   "backgroundColor": "#1a1a1a",
   "ios": {

@@ -825,7 +825,7 @@ function calculateEstimation() {
     const finalISO = calculateISO(iso, comp);
 
     const zoneSelect = document.getElementById('estim-zone');
-    const zoneName = zoneSelect && zoneSelect.selectedOptions[0] ? zoneSelect.selectedOptions[0].text : 'Zone';
+    const zoneName = zoneSelect && zoneSelect.selectedOptions[0] ? zoneSelect.selectedOptions[0].text : _t('zoneDefault');
     
     const _t = window.i18n ? window.i18n.t : (k) => k;
     const evUnit = _t('evUnit');
