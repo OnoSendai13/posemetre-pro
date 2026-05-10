@@ -265,6 +265,17 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeApp();
     setupEventListeners();
     populateSelects();
+    initSettingsModal();
+    
+    // Démarrer le tutoriel si première visite
+    if (window.walkthrough && window.walkthrough.isFirstVisit()) {
+        // Délai pour laisser le temps à l'app de se charger
+        setTimeout(() => {
+            if (confirm(window.i18n ? window.i18n.t('walkthroughTitle') + '? ' + window.i18n.t('walkthroughNote') : 'Start the tutorial?')) {
+                window.walkthrough.start();
+            }
+        }, 1000);
+    }
     
     // Calcul initial pour chaque onglet
     calculatePosemetre();
@@ -978,4 +989,86 @@ function initHelpModal() {
     });
     
     console.log('Help modal initialized');
+}
+
+// ============================================
+// SETTINGS MODAL
+// ============================================
+
+function initSettingsModal() {
+    // Open settings modal
+    document.getElementById('settings-btn')?.addEventListener('click', openSettingsModal);
+    document.getElementById('settings-close')?.addEventListener('click', closeSettingsModal);
+
+    const modal = document.getElementById('settings-modal');
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeSettingsModal();
+        });
+    }
+
+
+    // Rate app button
+    document.getElementById('rate-app-btn')?.addEventListener('click', openRateApp);
+
+    // Walkthrough button
+    document.getElementById('start-walkthrough')?.addEventListener('click', () => {
+        closeSettingsModal();
+        if (window.walkthrough) {
+            window.walkthrough.start();
+        } else {
+            alert('Walkthrough module not loaded');
+        }
+    });
+
+    // Keyboard handling
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeSettingsModal();
+    });
+}
+
+function openSettingsModal() {
+    const modal = document.getElementById('settings-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    updateThemeButtonStates();
+}
+
+function closeSettingsModal() {
+    const modal = document.getElementById('settings-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
+function updateThemeButtonStates() {
+    document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+    const currentTheme = window.themeSwitcher?.get();
+    if (currentTheme === 'light') {
+        document.getElementById('theme-light')?.classList.add('active');
+    } else if (currentTheme === 'dark') {
+        document.getElementById('theme-dark')?.classList.add('active');
+    } else {
+        document.getElementById('theme-system')?.classList.add('active');
+    }
+}
+
+function setTheme(theme) {
+    if (theme === 'system') {
+        const systemTheme = window.themeSwitcher?.getSystem();
+        window.themeSwitcher?.set(systemTheme);
+        localStorage.setItem('app-theme-auto', 'true');
+    } else {
+        window.themeSwitcher?.set(theme);
+        localStorage.setItem('app-theme-auto', 'false');
+    }
+    updateThemeButtonStates();
+}
+
+function openRateApp() {
+    const userLang = window.i18n?.getLanguage() || 'en';
+    alert(window.i18n ? window.i18n.t('rateAppBtn') + '! ' + (userLang === 'fr' ? 'Merci pour votre soutien!' : 'Thank you for your support!') : 'Rate this app!');
 }

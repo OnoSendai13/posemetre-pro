@@ -1,6 +1,6 @@
 {
   "name": "assistant-posemetre-pro",
-  "version": "1.3.0",
+  "version": "1.5.0",
   "description": "Assistant Posemetre Pro - Application professionnelle de posemetrie et flashmetrie pour photographes",
   "main": "index.html",
   "scripts": {

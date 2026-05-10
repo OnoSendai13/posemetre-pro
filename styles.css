@@ -1242,3 +1242,56 @@ footer {
     color: var(--text-muted);
     text-align: center;
 }
+
+/* Walkthrough popup */
+.walkthrough-popup {
+    position: absolute;
+    background: var(--card-bg);
+    border: 2px solid var(--accent-color);
+    border-radius: 12px;
+    padding: 16px;
+    max-width: 300px;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.walkthrough-popup h3 {
+    margin: 0 0 8px 0;
+    color: var(--accent-color);
+}
+
+.walkthrough-popup p {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+}
+
+.walkthrough-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.walkthrough-nav button {
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    background: var(--btn-bg);
+    color: var(--text-primary);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.walkthrough-nav button:hover {
+    background: var(--btn-hover-bg);
+}
+
+.walkthrough-highlight {
+    animation: walkthrough-pulse 1.5s infinite;
+    position: relative;
+    z-index: 999;
+}
+
+@keyframes walkthrough-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(129, 199, 132, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(129, 199, 132, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(129, 199, 132, 0); }
+}

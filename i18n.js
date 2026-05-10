@@ -20,6 +20,20 @@ const translations = {
         walkthroughTitle: 'Tutoriel d\'initiation',
         startWalkthrough: 'Recommencer le tutoriel',
         walkthroughNote: 'Guide pas à pas pour découvrir l\'application',
+         // Walkthrough
+         walkthroughWelcome: 'Bienvenue !',
+         walkthroughWelcomeText: 'Cet outil vous aide à calculer vos réglages photo.',
+         walkthroughPosemetre: 'Posemètre',
+         walkthroughPosemetreText: 'Mesurez la lumière et calculez vos réglages de base.',
+         walkthroughFlashmetre: 'Flashmètre',
+         walkthroughFlashmetreText: 'Calculez la puissance du flash nécessaire.',
+         walkthroughRatios: 'Ratios',
+         walkthroughRatiosText: 'Comparez les éclairages avec les ratios d\'exposition.',
+         walkthroughEstimation: 'Estimation',
+         walkthroughEstimationText: "Estimez l'exposition depuis une photo existante.",
+         walkthroughNext: 'Suivant',
+         walkthroughPrev: 'Précédent',
+         walkthroughFinish: 'Terminer',
         
         // Navigation
         navPosemetre: '📷 Posemètre',
@@ -163,6 +177,21 @@ const translations = {
         walkthroughTitle: 'Onboarding Tutorial',
         startWalkthrough: 'Restart tutorial',
         walkthroughNote: 'Step-by-step guide to discover the app',
+         
+         // Walkthrough
+         walkthroughWelcome: 'Welcome !',
+         walkthroughWelcomeText: 'This tool helps you calculate your photo settings.',
+         walkthroughPosemetre: 'Light Meter',
+         walkthroughPosemetreText: 'Measure light and calculate your base settings.',
+         walkthroughFlashmetre: 'Flash Meter',
+         walkthroughFlashmetreText: 'Calculate the flash power needed.',
+         walkthroughRatios: 'Ratios',
+         walkthroughRatiosText: 'Compare lighting with exposure ratios.',
+         walkthroughEstimation: 'Estimation',
+         walkthroughEstimationText: 'Estimate exposure from an existing photo.',
+         walkthroughNext: 'Next',
+         walkthroughPrev: 'Previous',
+         walkthroughFinish: 'Finish',
         
         // Navigation
         navPosemetre: '📷 Light Meter',
