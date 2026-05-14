@@ -22,6 +22,12 @@ export const ISO_STANDARD = [
     16000, 20000, 25600, 32000, 40000, 51200, 64000, 80000, 102400
 ];
 
+/** @type {number[]} Valeurs d'ouverture standard (f-stops - pleins seulement) */
+export const WHOLE_FSTOPS = [1, 1.4, 2, 2.8, 4, 5.6, 8, 11, 16, 22, 32];
+
+/** @type {number[]} Valeurs d'ouverture 1-9 pour les dixiemes */
+export const TENTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 /** @type {number[]} Valeurs d'ouverture standard (f-stops) */
 export const APERTURES = [
     1.0, 1.1, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.5, 2.8,

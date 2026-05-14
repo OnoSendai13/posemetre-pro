@@ -114,12 +114,12 @@ function setupEventListeners() {
     });
 
     // Input changes — POSEMETRE
-    ['pose-mesure', 'pose-iso', 'pose-vitesse'].forEach(id => {
+    ['pose-mesure-fstop', 'pose-mesure-tenths', 'pose-iso', 'pose-vitesse'].forEach(id => {
         dom(id)?.addEventListener('change', calculatePosemetre);
     });
 
     // Input changes — FLASH
-    ['flash-vitesse', 'flash-iso', 'flash-mesure', 'flash-target', 'flash-current-power', 'hss-sync-max'].forEach(id => {
+    ['flash-vitesse', 'flash-iso', 'flash-mesure-fstop', 'flash-mesure-tenths', 'flash-target', 'flash-current-power', 'flash-current-tenths', 'hss-sync-max'].forEach(id => {
         dom(id)?.addEventListener('change', calculateFlashmetre);
     });
 
@@ -137,7 +137,7 @@ function setupEventListeners() {
     }
 
     // Input changes — RATIOS
-    ['ratio-key', 'ratio-iso', 'ratio-vitesse'].forEach(id => {
+    ['ratio-key-fstop', 'ratio-key-tenths', 'ratio-iso', 'ratio-vitesse'].forEach(id => {
         dom(id)?.addEventListener('change', calculateRatios);
     });
 

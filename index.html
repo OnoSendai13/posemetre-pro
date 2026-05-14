@@ -87,9 +87,16 @@
                     
                     <div class="input-group">
                         <label data-i18n="labelMesureInitiale">Mesure initiale (Ouverture):</label>
-                        <select id="pose-mesure" class="input-field">
-                            <!-- Options generees par JS -->
-                        </select>
+                        <div class="fstop-tenths-row">
+                            <select id="pose-mesure-fstop" class="input-field fstop-select">
+                                <!-- Options generees par JS -->
+                            </select>
+                            <span class="tenths-plus">+</span>
+                            <select id="pose-mesure-tenths" class="input-field tenths-select">
+                                <!-- Options generees par JS -->
+                            </select>
+                            <span class="tenths-label">/10</span>
+                        </div>
                     </div>
 
                     <div class="input-row">
@@ -177,9 +184,16 @@
 
                     <div class="input-group">
                         <label data-i18n="labelMesureFlash">Mesure flash actuelle:</label>
-                        <select id="flash-mesure" class="input-field">
-                            <!-- Options generees par JS -->
-                        </select>
+                        <div class="fstop-tenths-row">
+                            <select id="flash-mesure-fstop" class="input-field fstop-select">
+                                <!-- Options generees par JS -->
+                            </select>
+                            <span class="tenths-plus">+</span>
+                            <select id="flash-mesure-tenths" class="input-field tenths-select">
+                                <!-- Options generees par JS -->
+                            </select>
+                            <span class="tenths-label">/10</span>
+                        </div>
                     </div>
 
                     <div class="input-group">
@@ -239,9 +253,16 @@
                     
                     <div class="input-group">
                         <label data-i18n="labelKeyLight">Key Light (mesure):</label>
-                        <select id="ratio-key" class="input-field">
-                            <!-- Options generees par JS -->
-                        </select>
+                        <div class="fstop-tenths-row">
+                            <select id="ratio-key-fstop" class="input-field fstop-select">
+                                <!-- Options generees par JS -->
+                            </select>
+                            <span class="tenths-plus">+</span>
+                            <select id="ratio-key-tenths" class="input-field tenths-select">
+                                <!-- Options generees par JS -->
+                            </select>
+                            <span class="tenths-label">/10</span>
+                        </div>
                     </div>
 
                     <div class="compensation-section">
