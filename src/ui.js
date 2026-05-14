@@ -141,14 +141,18 @@ export function togglePowerMode() {
     if (!btn) return;
 
     const options = btn.querySelectorAll('.toggle-option');
+    const ratioFillGroup = dom('ratio-fill-power-group');
+
     if (state.powerMode === 'IL') {
         state.powerMode = 'FRACTIONS';
         options[0].classList.remove('active');
         options[1].classList.add('active');
+        if (ratioFillGroup) ratioFillGroup.style.display = 'block';
     } else {
         state.powerMode = 'IL';
         options[0].classList.add('active');
         options[1].classList.remove('active');
+        if (ratioFillGroup) ratioFillGroup.style.display = 'none';
     }
 
     calculateFlashmetre();

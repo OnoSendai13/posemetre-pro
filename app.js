@@ -491,16 +491,20 @@ function switchTab(tabName) {
 function togglePowerMode() {
     const btn = document.getElementById('powerModeToggle');
     const options = btn.querySelectorAll('.toggle-option');
+    const ratioFillGroup = document.getElementById('ratio-fill-power-group');
+
     if (powerMode === 'IL') {
         powerMode = 'FRACTIONS';
         options[0].classList.remove('active');
         options[1].classList.add('active');
+        if (ratioFillGroup) ratioFillGroup.style.display = 'block';
     } else {
         powerMode = 'IL';
         options[0].classList.add('active');
         options[1].classList.remove('active');
+        if (ratioFillGroup) ratioFillGroup.style.display = 'none';
     }
-    
+
     // Recalcule les résultats avec le nouveau format
     calculateFlashmetre();
     calculateRatios();
