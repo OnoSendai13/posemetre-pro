@@ -359,7 +359,7 @@ function setupEventListeners() {
     }
 
     // Changements inputs RATIOS
-    ['ratio-key-fstop', 'ratio-key-tenths', 'ratio-iso', 'ratio-vitesse'].forEach(id => {
+    ['ratio-key-fstop', 'ratio-key-tenths', 'ratio-iso', 'ratio-vitesse', 'ratio-fill-power'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', calculateRatios);
     });
 
@@ -491,24 +491,14 @@ function switchTab(tabName) {
 function togglePowerMode() {
     const btn = document.getElementById('powerModeToggle');
     const options = btn.querySelectorAll('.toggle-option');
-    const currentPowerGroup = document.getElementById('flash-current-power-group');
-    
     if (powerMode === 'IL') {
         powerMode = 'FRACTIONS';
         options[0].classList.remove('active');
         options[1].classList.add('active');
-        // Affiche le champ puissance actuelle en mode Fractions
-        if (currentPowerGroup) {
-            currentPowerGroup.style.display = 'block';
-        }
     } else {
         powerMode = 'IL';
         options[0].classList.add('active');
         options[1].classList.remove('active');
-        // Masque le champ puissance actuelle en mode IL
-        if (currentPowerGroup) {
-            currentPowerGroup.style.display = 'none';
-        }
     }
     
     // Recalcule les résultats avec le nouveau format
@@ -744,18 +734,35 @@ function calculateRatios() {
     const iso = validateISO(parseInt(document.getElementById('ratio-iso').value));
     const shutter = parseFloat(document.getElementById('ratio-vitesse').value);
 
-    // Calcule le fill light
+    // Calcule le fill light (ouverture cible)
     const fillFstop = calculateAperture(keyFstop, ratioIL);
-    
+
     const _t = window.i18n ? window.i18n.t : (k) => k;
     const evUnit = _t('evUnit');
-    
-    // Format puissance
+
+    // Format ajustement puissance fill
     let powerDisplay;
+    let powerExplanation;
+
     if (powerMode === 'IL') {
         powerDisplay = `${ratioIL >= 0 ? '+' : ''}${ilToPowerIL(ratioIL)} ${evUnit}`;
+        powerExplanation = ratioIL.toFixed(1) + ' ' + evUnit;
     } else {
-        powerDisplay = ilToPowerFraction(ratioIL);
+        // Mode Fractions : calcul depuis la puissance fill actuelle
+        const fillPowerElement = document.getElementById('ratio-fill-power');
+        const fillPower = fillPowerElement ? parseFloat(fillPowerElement.value) : 0.5;
+
+        const fillPowerObj = FLASH_POWERS_FRACTIONS.find(f => Math.abs(f.value - fillPower) < 0.01);
+        const fillPowerIL = fillPowerObj ? fillPowerObj.ilValue : -1;
+
+        const targetPowerIL = fillPowerIL + ratioIL;
+        const targetPowerObj = FLASH_POWERS_FRACTIONS.reduce((prev, curr) =>
+            Math.abs(curr.ilValue - targetPowerIL) < Math.abs(prev.ilValue - targetPowerIL) ? curr : prev
+        );
+
+        const currentFractionLabel = fillPowerObj ? fillPowerObj.label : '1/2';
+        powerDisplay = targetPowerObj.label;
+        powerExplanation = `${_t('resultFrom')} ${currentFractionLabel} ${_t('resultTo')} ${targetPowerObj.label}`;
     }
 
     const lightingRatio = calculateLightingRatio(ratioIL);
@@ -767,9 +774,9 @@ function calculateRatios() {
             <span class="result-detail">${_t('resultAtIsoSpeed', {iso: iso, speed: getShutterLabel(shutter)})}</span>
         </div>
         <div class="result-item">
-            <span class="result-label">${_t('resultRatio')} Fill vs Key</span>
+            <span class="result-label">${_t('resultPowerAdjust')} Fill</span>
             <span class="result-value">${powerDisplay}</span>
-            <span class="result-detail">${ratioIL.toFixed(1)} ${evUnit}</span>
+            <span class="result-detail">${powerExplanation}</span>
         </div>
         <div class="result-item">
             <span class="result-label">${_t('resultLightingRatio')}</span>

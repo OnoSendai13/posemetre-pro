@@ -77,6 +77,7 @@ export function initDomCache() {
         'hss-enabled', 'hss-options', 'hss-sync-max', 'hss-warning', 'hss-warning-text',
         // Ratios
         'ratio-key-fstop', 'ratio-key-tenths', 'ratio-iso', 'ratio-vitesse', 'ratio-comp-value', 'ratio-results',
+        'ratio-fill-power',
         // Estimation
         'estim-zone', 'estim-mesure', 'estim-iso', 'estim-vitesse',
         'estim-comp-value', 'estim-results',

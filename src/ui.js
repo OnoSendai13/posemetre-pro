@@ -141,18 +141,14 @@ export function togglePowerMode() {
     if (!btn) return;
 
     const options = btn.querySelectorAll('.toggle-option');
-    const currentPowerGroup = dom('flash-current-power-group');
-
     if (state.powerMode === 'IL') {
         state.powerMode = 'FRACTIONS';
         options[0].classList.remove('active');
         options[1].classList.add('active');
-        if (currentPowerGroup) currentPowerGroup.style.display = 'block';
     } else {
         state.powerMode = 'IL';
         options[0].classList.add('active');
         options[1].classList.remove('active');
-        if (currentPowerGroup) currentPowerGroup.style.display = 'none';
     }
 
     calculateFlashmetre();
@@ -353,14 +349,33 @@ export function calculateRatios() {
     const iso = validateISO(parseInt(dom('ratio-iso')?.value));
     const shutter = parseFloat(dom('ratio-vitesse')?.value);
 
+    // Calcule le fill light (ouverture cible)
     const fillFstop = calculateAperture(keyFstop, ratioIL);
     const evUnit = _t('evUnit');
 
+    // Format ajustement puissance fill
     let powerDisplay;
+    let powerExplanation;
+
     if (state.powerMode === 'IL') {
         powerDisplay = `${ratioIL >= 0 ? '+' : ''}${ilToPowerIL(ratioIL)} ${evUnit}`;
+        powerExplanation = ratioIL.toFixed(1) + ' ' + evUnit;
     } else {
-        powerDisplay = ilToPowerFraction(ratioIL);
+        // Mode Fractions : calcul depuis la puissance fill actuelle
+        const fillPowerElement = dom('ratio-fill-power');
+        const fillPower = fillPowerElement ? parseFloat(fillPowerElement.value) : 0.5;
+
+        const fillPowerObj = FLASH_POWERS_FRACTIONS.find(f => Math.abs(f.value - fillPower) < 0.01);
+        const fillPowerIL = fillPowerObj ? fillPowerObj.ilValue : -1;
+
+        const targetPowerIL = fillPowerIL + ratioIL;
+        const targetPowerObj = FLASH_POWERS_FRACTIONS.reduce((prev, curr) =>
+            Math.abs(curr.ilValue - targetPowerIL) < Math.abs(prev.ilValue - targetPowerIL) ? curr : prev
+        );
+
+        const currentFractionLabel = fillPowerObj ? fillPowerObj.label : '1/2';
+        powerDisplay = targetPowerObj.label;
+        powerExplanation = `${_t('resultFrom')} ${currentFractionLabel} ${_t('resultTo')} ${targetPowerObj.label}`;
     }
 
     const lightingRatio = calculateLightingRatio(ratioIL);
@@ -372,9 +387,9 @@ export function calculateRatios() {
             <span class="result-detail">${_t('resultAtIsoSpeed', {iso: iso, speed: getShutterLabel(shutter)})}</span>
         </div>
         <div class="result-item">
-            <span class="result-label">${_t('resultRatio')} Fill vs Key</span>
+            <span class="result-label">${_t('resultPowerAdjust')} Fill</span>
             <span class="result-value">${powerDisplay}</span>
-            <span class="result-detail">${ratioIL.toFixed(1)} ${evUnit}</span>
+            <span class="result-detail">${powerExplanation}</span>
         </div>
         <div class="result-item">
             <span class="result-label">${_t('resultLightingRatio')}</span>

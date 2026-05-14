@@ -203,7 +203,7 @@
                         </select>
                     </div>
 
-                    <div class="input-group" id="flash-current-power-group" style="display: none;">
+                    <div class="input-group" id="flash-current-power-group">
                         <label data-i18n="labelPuissanceActuelle">Puissance flash actuelle:</label>
                         <select id="flash-current-power" class="input-field">
                             <option value="1">1/1 (Pleine puissance)</option>
@@ -291,6 +291,22 @@
                                 <!-- Options generees par JS -->
                             </select>
                         </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label data-i18n="labelPuissanceFill">Puissance flash Fill actuelle:</label>
+                        <select id="ratio-fill-power" class="input-field">
+                            <option value="1">1/1 (Pleine puissance)</option>
+                            <option value="0.5" selected>1/2</option>
+                            <option value="0.25">1/4</option>
+                            <option value="0.125">1/8</option>
+                            <option value="0.0625">1/16</option>
+                            <option value="0.03125">1/32</option>
+                            <option value="0.015625">1/64</option>
+                            <option value="0.0078125">1/128</option>
+                            <option value="0.00390625">1/256</option>
+                            <option value="0.001953125">1/512</option>
+                        </select>
                     </div>
 
                     <div class="results-box">

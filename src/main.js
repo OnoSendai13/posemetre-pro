@@ -137,7 +137,7 @@ function setupEventListeners() {
     }
 
     // Input changes — RATIOS
-    ['ratio-key-fstop', 'ratio-key-tenths', 'ratio-iso', 'ratio-vitesse'].forEach(id => {
+    ['ratio-key-fstop', 'ratio-key-tenths', 'ratio-iso', 'ratio-vitesse', 'ratio-fill-power'].forEach(id => {
         dom(id)?.addEventListener('change', calculateRatios);
     });
 
