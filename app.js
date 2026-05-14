@@ -10,9 +10,6 @@ const ISO_STANDARD = [
 ];
 
 // Valeurs d'ouverture standard (f-stops)
-const WHOLE_FSTOPS = [1, 1.4, 2, 2.8, 4, 5.6, 8, 11, 16, 22, 32];
-const TENTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 const APERTURES = [
     1.0, 1.1, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.5, 2.8, 
     3.2, 3.5, 4.0, 4.5, 5.0, 5.6, 6.3, 7.1, 8.0, 9.0, 
@@ -187,24 +184,16 @@ function ilToPowerIL(ilDelta) {
 
 /**
  * Convertit IL en puissance flash (format fractions)
- * Utilise la fraction inférieure + dixièmes (ex: 1/64;3)
  */
 function ilToPowerFraction(ilDelta) {
-    if (ilDelta >= 0) return '1/1';
+    const powerRatio = Math.pow(2, ilDelta);
     
-    let base = FLASH_POWERS_FRACTIONS[FLASH_POWERS_FRACTIONS.length - 1];
-    for (const f of FLASH_POWERS_FRACTIONS) {
-        if (f.ilValue <= ilDelta) {
-            base = f;
-            break;
-        }
-    }
+    // Trouve la fraction la plus proche
+    const closest = FLASH_POWERS_FRACTIONS.reduce((prev, curr) => 
+        Math.abs(curr.value - powerRatio) < Math.abs(prev.value - powerRatio) ? curr : prev
+    );
     
-    const residualIL = ilDelta - base.ilValue;
-    const tenths = Math.round(residualIL * 10);
-    
-    if (tenths <= 0) return base.label;
-    return `${base.label};${Math.min(9, tenths)}`;
+    return closest.label;
 }
 
 /**
@@ -265,17 +254,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeApp();
     setupEventListeners();
     populateSelects();
-    initSettingsModal();
-    
-    // Démarrer le tutoriel si première visite
-    if (window.walkthrough && window.walkthrough.isFirstVisit()) {
-        // Délai pour laisser le temps à l'app de se charger
-        setTimeout(() => {
-            if (confirm(window.i18n ? window.i18n.t('walkthroughTitle') + '? ' + window.i18n.t('walkthroughNote') : 'Start the tutorial?')) {
-                window.walkthrough.start();
-            }
-        }, 1000);
-    }
     
     // Calcul initial pour chaque onglet
     calculatePosemetre();
@@ -354,12 +332,12 @@ function setupEventListeners() {
     });
 
     // Changements inputs POSEMETRE
-    ['pose-mesure-fstop', 'pose-mesure-tenths', 'pose-iso', 'pose-vitesse'].forEach(id => {
+    ['pose-mesure', 'pose-iso', 'pose-vitesse'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', calculatePosemetre);
     });
 
     // Changements inputs FLASHMETRE
-    ['flash-vitesse', 'flash-iso', 'flash-mesure-fstop', 'flash-mesure-tenths', 'flash-target', 'flash-current-power', 'flash-current-tenths', 'hss-sync-max'].forEach(id => {
+    ['flash-vitesse', 'flash-iso', 'flash-mesure', 'flash-target', 'flash-current-power', 'hss-sync-max'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', calculateFlashmetre);
     });
 
@@ -377,7 +355,7 @@ function setupEventListeners() {
     }
 
     // Changements inputs RATIOS
-    ['ratio-key-fstop', 'ratio-key-tenths', 'ratio-iso', 'ratio-vitesse'].forEach(id => {
+    ['ratio-key', 'ratio-iso', 'ratio-vitesse'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', calculateRatios);
     });
 
@@ -394,43 +372,25 @@ function setupEventListeners() {
  * Remplit tous les selects avec les valeurs
  */
 function populateSelects() {
-    // F-stops + dixièmes pour les champs de mesure flash/posemetre/ratios
-    const fstopPairs = [
-        { fstopId: 'pose-mesure-fstop', tenthsId: 'pose-mesure-tenths', defaultFstop: '5.6', defaultTenths: '0' },
-        { fstopId: 'flash-mesure-fstop', tenthsId: 'flash-mesure-tenths', defaultFstop: '5.6', defaultTenths: '0' },
-        { fstopId: 'ratio-key-fstop', tenthsId: 'ratio-key-tenths', defaultFstop: '8', defaultTenths: '0' },
-    ];
-
-    fstopPairs.forEach(({ fstopId, tenthsId, defaultFstop, defaultTenths }) => {
-        const fstopSelect = document.getElementById(fstopId);
-        if (fstopSelect) {
-            fstopSelect.innerHTML = WHOLE_FSTOPS.map(f =>
-                `<option value="${f}">f/${f}</option>`
-            ).join('');
-            fstopSelect.value = defaultFstop;
-        }
-        const tenthsSelect = document.getElementById(tenthsId);
-        if (tenthsSelect) {
-            tenthsSelect.innerHTML = TENTHS.map(t =>
-                `<option value="${t}">${t}</option>`
-            ).join('');
-            tenthsSelect.value = defaultTenths;
-        }
-    });
-
-    // Selects ouverture simple (flash-target, estim-mesure)
+    // Ouvertures
     const apertureSelects = [
-        'flash-target', 'estim-mesure'
+        'pose-mesure', 'flash-mesure', 'flash-target', 
+        'ratio-key', 'estim-mesure'
     ];
-
+    
     apertureSelects.forEach(id => {
         const select = document.getElementById(id);
         if (select) {
-            select.innerHTML = APERTURES.map(f =>
+            select.innerHTML = APERTURES.map(f => 
                 `<option value="${f}">f/${f}</option>`
             ).join('');
-
-            if (id === 'flash-target') {
+            
+            // Valeurs par défaut
+            if (id === 'pose-mesure' || id === 'flash-mesure') {
+                select.value = '5.6';
+            } else if (id === 'flash-target') {
+                select.value = '8';
+            } else if (id === 'ratio-key') {
                 select.value = '8';
             } else if (id === 'estim-mesure') {
                 select.value = '8';
@@ -465,17 +425,6 @@ function populateSelects() {
             }
         }
     });
-}
-
-// ============================================
-// HELPER: lit f-stop + dixièmes et retourne la valeur d'ouverture combinée
-// ============================================
-
-function getApertureFromPair(fstopId, tenthsId) {
-    const baseFstop = parseFloat(document.getElementById(fstopId)?.value);
-    const tenths = parseInt(document.getElementById(tenthsId)?.value || '0');
-    if (tenths === 0) return baseFstop;
-    return baseFstop * Math.pow(2, tenths / 20);
 }
 
 // ============================================
@@ -594,7 +543,7 @@ function validateISO(iso) {
  * Calcule les réglages en mode POSEMÈTRE
  */
 function calculatePosemetre() {
-    const baseFstop = getApertureFromPair('pose-mesure-fstop', 'pose-mesure-tenths');
+    const baseFstop = parseFloat(document.getElementById('pose-mesure').value);
     const baseISO = validateISO(parseInt(document.getElementById('pose-iso').value));
     const baseShutter = parseFloat(document.getElementById('pose-vitesse').value);
     const comp = currentCompensation.posemetre;
@@ -642,7 +591,7 @@ function calculatePosemetre() {
  * 3. PAS a modifier les calculs de base (la mesure est correcte)
  */
 function calculateFlashmetre() {
-    const currentFstop = getApertureFromPair('flash-mesure-fstop', 'flash-mesure-tenths');
+    const currentFstop = parseFloat(document.getElementById('flash-mesure').value);
     const targetFstop = parseFloat(document.getElementById('flash-target').value);
     const shootingSpeed = parseFloat(document.getElementById('flash-vitesse').value);
     const iso = validateISO(parseInt(document.getElementById('flash-iso').value));
@@ -682,24 +631,25 @@ function calculateFlashmetre() {
     } else {
         // Mode FRACTIONS : calcul depuis la puissance actuelle
         const currentPowerElement = document.getElementById('flash-current-power');
-        const currentTenthsElement = document.getElementById('flash-current-tenths');
         const currentPower = currentPowerElement ? parseFloat(currentPowerElement.value) : 1.0;
-        const currentTenths = currentTenthsElement ? parseInt(currentTenthsElement.value) || 0 : 0;
         
-        // Trouve la puissance actuelle en IL (fraction + dixièmes)
+        // Trouve la puissance actuelle en IL
         const currentPowerObj = FLASH_POWERS_FRACTIONS.find(f => Math.abs(f.value - currentPower) < 0.01);
-        const currentPowerIL = (currentPowerObj ? currentPowerObj.ilValue : 0) + currentTenths / 10;
+        const currentPowerIL = currentPowerObj ? currentPowerObj.ilValue : 0;
         
         // Calcule la puissance cible en IL
         const targetPowerIL = currentPowerIL + ilDiff;
         
-        // Formate avec la nouvelle notation fraction + dixièmes
-        const currentFractionLabel = currentPowerObj ? currentPowerObj.label : '1/1';
-        const currentDisplay = currentTenths > 0 ? `${currentFractionLabel};${currentTenths}` : currentFractionLabel;
-        const targetDisplay = ilToPowerFraction(targetPowerIL);
+        // Trouve la fraction cible la plus proche
+        const targetPowerObj = FLASH_POWERS_FRACTIONS.reduce((prev, curr) => 
+            Math.abs(curr.ilValue - targetPowerIL) < Math.abs(prev.ilValue - targetPowerIL) ? curr : prev
+        );
         
-        powerDisplay = targetDisplay;
-        powerExplanation = `${_t('resultFrom')} ${currentDisplay} ${_t('resultTo')} ${targetDisplay}`;
+        const currentFractionLabel = currentPowerObj ? currentPowerObj.label : '1/1';
+        const targetFraction = targetPowerObj.label;
+        
+        powerDisplay = targetFraction;
+        powerExplanation = `${_t('resultFrom')} ${currentFractionLabel} ${_t('resultTo')} ${targetFraction}`;
     }
 
     // Affichage warning HSS
@@ -756,7 +706,7 @@ function calculateFlashmetre() {
  * Calcule les ratios KEY/FILL LIGHT
  */
 function calculateRatios() {
-    const keyFstop = getApertureFromPair('ratio-key-fstop', 'ratio-key-tenths');
+    const keyFstop = parseFloat(document.getElementById('ratio-key').value);
     const ratioIL = currentCompensation.ratios;
     const iso = validateISO(parseInt(document.getElementById('ratio-iso').value));
     const shutter = parseFloat(document.getElementById('ratio-vitesse').value);
@@ -836,7 +786,7 @@ function calculateEstimation() {
     const finalISO = calculateISO(iso, comp);
 
     const zoneSelect = document.getElementById('estim-zone');
-    const zoneName = zoneSelect && zoneSelect.selectedOptions[0] ? zoneSelect.selectedOptions[0].text : _t('zoneDefault');
+    const zoneName = zoneSelect && zoneSelect.selectedOptions[0] ? zoneSelect.selectedOptions[0].text : 'Zone';
     
     const _t = window.i18n ? window.i18n.t : (k) => k;
     const evUnit = _t('evUnit');
@@ -989,86 +939,4 @@ function initHelpModal() {
     });
     
     console.log('Help modal initialized');
-}
-
-// ============================================
-// SETTINGS MODAL
-// ============================================
-
-function initSettingsModal() {
-    // Open settings modal
-    document.getElementById('settings-btn')?.addEventListener('click', openSettingsModal);
-    document.getElementById('settings-close')?.addEventListener('click', closeSettingsModal);
-
-    const modal = document.getElementById('settings-modal');
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeSettingsModal();
-        });
-    }
-
-
-    // Rate app button
-    document.getElementById('rate-app-btn')?.addEventListener('click', openRateApp);
-
-    // Walkthrough button
-    document.getElementById('start-walkthrough')?.addEventListener('click', () => {
-        closeSettingsModal();
-        if (window.walkthrough) {
-            window.walkthrough.start();
-        } else {
-            alert('Walkthrough module not loaded');
-        }
-    });
-
-    // Keyboard handling
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeSettingsModal();
-    });
-}
-
-function openSettingsModal() {
-    const modal = document.getElementById('settings-modal');
-    if (modal) {
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-    updateThemeButtonStates();
-}
-
-function closeSettingsModal() {
-    const modal = document.getElementById('settings-modal');
-    if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-    }
-}
-
-function updateThemeButtonStates() {
-    document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-    const currentTheme = window.themeSwitcher?.get();
-    if (currentTheme === 'light') {
-        document.getElementById('theme-light')?.classList.add('active');
-    } else if (currentTheme === 'dark') {
-        document.getElementById('theme-dark')?.classList.add('active');
-    } else {
-        document.getElementById('theme-system')?.classList.add('active');
-    }
-}
-
-function setTheme(theme) {
-    if (theme === 'system') {
-        const systemTheme = window.themeSwitcher?.getSystem();
-        window.themeSwitcher?.set(systemTheme);
-        localStorage.setItem('app-theme-auto', 'true');
-    } else {
-        window.themeSwitcher?.set(theme);
-        localStorage.setItem('app-theme-auto', 'false');
-    }
-    updateThemeButtonStates();
-}
-
-function openRateApp() {
-    const userLang = window.i18n?.getLanguage() || 'en';
-    alert(window.i18n ? window.i18n.t('rateAppBtn') + '! ' + (userLang === 'fr' ? 'Merci pour votre soutien!' : 'Thank you for your support!') : 'Rate this app!');
 }

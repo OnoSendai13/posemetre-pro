@@ -4,7 +4,7 @@
  * Fonctionnalités :
  * - Détection automatique de la préférence système
  * - Sauvegarde du choix utilisateur dans localStorage
- * - Toggle manuel entre les thèmes (cycle 3 états)
+ * - Toggle manuel entre les thèmes
  * - Mise à jour de l'icône du bouton
  * - Transition douce entre les thèmes
  */
@@ -70,58 +70,37 @@
     
     /**
      * Met à jour l'icône du bouton de switch
+     * @param {string} theme - 'light' ou 'dark'
      */
-    function updateThemeButtonIcon() {
+    function updateThemeButtonIcon(theme) {
         const button = document.getElementById('theme-toggle');
-        if (!button) return;
-        
-        const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-        const isAuto = localStorage.getItem(THEME_AUTO_KEY) === 'true';
-        
-        if (isAuto) {
-            button.textContent = '🔄';
-            button.setAttribute('aria-label', 'Thème système (cliquer pour changer)');
-            button.classList.add('auto-mode');
-        } else {
+        if (button) {
+            // Icône lune pour mode clair (clic pour passer en sombre)
+            // Icône soleil pour mode sombre (clic pour passer en clair)
             button.textContent = theme === 'light' ? '🌙' : '☀️';
             button.setAttribute('aria-label', 
-                theme === 'light' ? 'Mode clair (cliquer pour mode sombre)' : 'Mode sombre (cliquer pour mode système)'
+                theme === 'light' ? 'Activer le mode sombre' : 'Activer le mode clair'
             );
-            button.classList.remove('auto-mode');
         }
     }
     
     /**
-     * Toggle entre les thèmes (cycle 3 états: light → dark → system → light)
+     * Toggle entre les thèmes
      */
     function toggleTheme() {
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-        const isAuto = localStorage.getItem(THEME_AUTO_KEY) === 'true';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
         
-        let newTheme, newAuto;
+        // Désactiver le mode auto
+        localStorage.setItem(THEME_AUTO_KEY, 'false');
         
-        if (isAuto) {
-            // system → light
-            newTheme = 'light';
-            newAuto = false;
-        } else if (currentTheme === 'light') {
-            // light → dark
-            newTheme = 'dark';
-            newAuto = false;
-        } else {
-            // dark → system
-            newTheme = getSystemTheme();
-            newAuto = true;
-        }
-        
-        localStorage.setItem(THEME_AUTO_KEY, newAuto ? 'true' : 'false');
-        
+        // Appliquer le nouveau thème avec transition
         document.documentElement.classList.add('theme-transitioning');
         applyTheme(newTheme);
         
+        // Retirer la classe de transition après l'animation
         setTimeout(() => {
             document.documentElement.classList.remove('theme-transitioning');
-            updateThemeButtonIcon();
         }, 300);
     }
     
@@ -140,7 +119,6 @@
             if (autoMode === 'true') {
                 const newTheme = e.matches ? 'dark' : 'light';
                 applyTheme(newTheme);
-                updateThemeButtonIcon();
             }
         };
         
@@ -169,7 +147,7 @@
             const button = document.getElementById('theme-toggle');
             if (button) {
                 button.addEventListener('click', toggleTheme);
-                updateThemeButtonIcon();
+                updateThemeButtonIcon(initialTheme);
             } else {
                 console.warn('Theme toggle button not found');
             }

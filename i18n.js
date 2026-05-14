@@ -11,38 +11,15 @@ const translations = {
         appTitle: '📷 Assistant Posemètre Pro',
         helpBtn: '?',
         themeBtn: 'Changer de thème',
-        settingsTitle: 'Réglages',
-        settingsTheme: 'Thème',
-        themeLight: 'Clair',
-        themeDark: 'Sombre',
-        themeSystem: 'Système',
-        rateAppBtn: '⭐ Noter l\'application',
-        walkthroughTitle: 'Tutoriel d\'initiation',
-        startWalkthrough: 'Recommencer le tutoriel',
-        walkthroughNote: 'Guide pas à pas pour découvrir l\'application',
-         // Walkthrough
-         walkthroughWelcome: 'Bienvenue !',
-         walkthroughWelcomeText: 'Cet outil vous aide à calculer vos réglages photo.',
-         walkthroughPosemetre: 'Posemètre',
-         walkthroughPosemetreText: 'Mesurez la lumière et calculez vos réglages de base.',
-         walkthroughFlashmetre: 'Flashmètre',
-         walkthroughFlashmetreText: 'Calculez la puissance du flash nécessaire.',
-         walkthroughRatios: 'Ratios',
-         walkthroughRatiosText: 'Comparez les éclairages avec les ratios d\'exposition.',
-         walkthroughEstimation: 'Estimation',
-         walkthroughEstimationText: "Estimez l'exposition depuis une photo existante.",
-         walkthroughNext: 'Suivant',
-         walkthroughPrev: 'Précédent',
-         walkthroughFinish: 'Terminer',
         
         // Navigation
-        navPosemetre: '📷 Posemètre',
+        navPosemetre: '☀️ Continu',
         navFlash: '⚡ Flash',
         navRatios: '💡 Ratios',
-        navEstimation: '📊 Estimation',
+        navEstimation: '🎯 Sans Cellule',
         
         // Mode Posemètre
-        posemetreTitle: 'Mode Posemètre (Lumière continue)',
+        posemetreTitle: 'Mode Continu (Lumière ambiante)',
         labelMesureInitiale: 'Mesure initiale (Ouverture):',
         labelISO: 'ISO:',
         labelVitesse: 'Vitesse:',
@@ -64,20 +41,18 @@ const translations = {
         ratiosTitle: 'Ratios Key/Fill Light',
         labelKeyLight: 'Key Light (mesure):',
         labelRatioFill: 'Ratio Fill vs Key:',
-         labelCompensationSupp: 'Compensation supplémentaire:',
         resultsFill: '💡 Fill Light à régler',
         
-// Mode Estimation
-         estimationTitle: 'Estimation sans posemètre',
-         estimationIntro: 'Mesure spot sur une zone de référence',
+        // Mode Estimation
+        estimationTitle: 'Sans Cellule (Estimation incidente)',
+        estimationSubtitle: 'Mesure spot sur une zone de référence',
         labelZoneMesuree: 'Zone mesurée (spot):',
         labelLectureAppareil: 'Lecture appareil (f/):',
-        resultsEstimation: '📊 Lumière incidente estimée',
+        resultsEstimation: '🎯 Lumière incidente estimée',
         gridTitle: '📋 Grille de réflectance (Exemples concrets)',
         
-// Zones dropdown
-         zoneDefault: 'Zone',
-         zoneWhiteBurnt: '⚠️ Blanc cramé (+4 IL) - sans détail',
+        // Zones dropdown
+        zoneWhiteBurnt: '⚠️ Blanc cramé (+4 IL) - sans détail',
         zoneWhiteDetail: 'Blanc avec détails / Nuages blancs (+3 IL)',
         zoneLightSkin: 'Peau très claire / Mur blanc / Sable blanc (+2 IL)',
         zoneSkyOvercast: 'Ciel couvert lumineux / Neige ombre (+1.5 IL)',
@@ -124,11 +99,10 @@ const translations = {
         resultDecrease: 'Diminuer de',
         resultNoChange: 'Pas de changement',
         
-// Results - Ratios
-         resultFillLight: 'Fill Light',
-         resultRatio: 'Ratio',
-         resultRatioLabel: 'Fill vs Key',
-         resultLightingRatio: 'Ratio d\'éclairage',
+        // Results - Ratios
+        resultFillLight: 'Fill Light',
+        resultRatio: 'Ratio',
+        resultLightingRatio: 'Ratio d\'éclairage',
         
         // Results - Estimation
         resultIncidentLight: 'Lumière incidente équivalente',
@@ -152,10 +126,10 @@ const translations = {
         // Modal Aide - Titres
         helpTitle: '📖 Aide',
         helpNavGeneral: 'Général',
-        helpNavPosemetre: 'Posemètre',
+        helpNavPosemetre: 'Continu',
         helpNavFlash: 'Flash',
         helpNavRatios: 'Ratios',
-        helpNavEstimation: 'Estimation',
+        helpNavEstimation: 'Sans Cellule',
         
         // Unité
         evUnit: 'IL'
@@ -167,40 +141,14 @@ const translations = {
         helpBtn: '?',
         themeBtn: 'Change theme',
         
-        // Settings
-        settingsTitle: 'Settings',
-        settingsTheme: 'Theme',
-        themeLight: 'Light',
-        themeDark: 'Dark',
-        themeSystem: 'System',
-        rateAppBtn: '⭐ Rate this app',
-        walkthroughTitle: 'Onboarding Tutorial',
-        startWalkthrough: 'Restart tutorial',
-        walkthroughNote: 'Step-by-step guide to discover the app',
-         
-         // Walkthrough
-         walkthroughWelcome: 'Welcome !',
-         walkthroughWelcomeText: 'This tool helps you calculate your photo settings.',
-         walkthroughPosemetre: 'Light Meter',
-         walkthroughPosemetreText: 'Measure light and calculate your base settings.',
-         walkthroughFlashmetre: 'Flash Meter',
-         walkthroughFlashmetreText: 'Calculate the flash power needed.',
-         walkthroughRatios: 'Ratios',
-         walkthroughRatiosText: 'Compare lighting with exposure ratios.',
-         walkthroughEstimation: 'Estimation',
-         walkthroughEstimationText: 'Estimate exposure from an existing photo.',
-         walkthroughNext: 'Next',
-         walkthroughPrev: 'Previous',
-         walkthroughFinish: 'Finish',
-        
         // Navigation
-        navPosemetre: '📷 Light Meter',
+        navPosemetre: '☀️ Ambient',
         navFlash: '⚡ Flash',
         navRatios: '💡 Ratios',
-        navEstimation: '📊 Estimation',
+        navEstimation: '🎯 No Meter',
         
         // Mode Posemètre
-        posemetreTitle: 'Light Meter Mode (Continuous Light)',
+        posemetreTitle: 'Ambient Mode (Continuous Light)',
         labelMesureInitiale: 'Initial reading (Aperture):',
         labelISO: 'ISO:',
         labelVitesse: 'Shutter Speed:',
@@ -216,7 +164,6 @@ const translations = {
         labelHSSEnabled: 'HSS Mode (High-Speed Sync)',
         labelHSSSyncMax: 'Flash max sync speed:',
         labelCompSupp: 'Additional compensation:',
-         labelCompensationSupp: 'Additional compensation:',
         resultsFlash: '⚡ Adjust flash to',
         
         // Mode Ratios
@@ -225,17 +172,16 @@ const translations = {
         labelRatioFill: 'Fill vs Key ratio:',
         resultsFill: '💡 Set Fill Light to',
         
-// Mode Estimation
-         estimationTitle: 'Estimation without light meter',
-         estimationIntro: 'Spot metering on a reference zone',
+        // Mode Estimation
+        estimationTitle: 'No Meter (Incident Estimation)',
+        estimationSubtitle: 'Spot metering on a reference zone',
         labelZoneMesuree: 'Metered zone (spot):',
         labelLectureAppareil: 'Camera reading (f/):',
-        resultsEstimation: '📊 Estimated incident light',
+        resultsEstimation: '🎯 Estimated incident light',
         gridTitle: '📋 Reflectance Chart (Practical Examples)',
         
-// Zones dropdown
-         zoneDefault: 'Zone',
-         zoneWhiteBurnt: '⚠️ Blown white (+4 EV) - no detail',
+        // Zones dropdown
+        zoneWhiteBurnt: '⚠️ Blown white (+4 EV) - no detail',
         zoneWhiteDetail: 'White with detail / Bright clouds (+3 EV)',
         zoneLightSkin: 'Very light skin / White wall / White sand (+2 EV)',
         zoneSkyOvercast: 'Bright overcast sky / Snow in shade (+1.5 EV)',
@@ -282,11 +228,10 @@ const translations = {
         resultDecrease: 'Decrease by',
         resultNoChange: 'No change',
         
-// Results - Ratios
-         resultFillLight: 'Fill Light',
-         resultRatio: 'Ratio',
-         resultRatioLabel: 'Fill vs Key',
-         resultLightingRatio: 'Lighting ratio',
+        // Results - Ratios
+        resultFillLight: 'Fill Light',
+        resultRatio: 'Ratio',
+        resultLightingRatio: 'Lighting ratio',
         
         // Results - Estimation
         resultIncidentLight: 'Equivalent incident light',
@@ -310,10 +255,10 @@ const translations = {
         // Modal Aide - Titres
         helpTitle: '📖 Help',
         helpNavGeneral: 'General',
-        helpNavPosemetre: 'Light Meter',
+        helpNavPosemetre: 'Ambient',
         helpNavFlash: 'Flash',
         helpNavRatios: 'Ratios',
-        helpNavEstimation: 'Estimation',
+        helpNavEstimation: 'No Meter',
         
         // Unité
         evUnit: 'EV'
@@ -410,8 +355,8 @@ const helpContent = {
             <p class="aperture-grid-credit">Tableau inspiré de @nathsakuraofficial — <a href="https://www.nath-sakura.com" target="_blank" rel="noopener">nath-sakura.com</a></p>
         `,
         posemetre: `
-            <h3>📷 Mode Posemètre (lumière continue)</h3>
-            <p>Pour la photo en lumière naturelle ou continue (LED, tungstène...).</p>
+            <h3>☀️ Mode Continu (lumière ambiante)</h3>
+            <p>Pour la photo en lumière naturelle ou continue (LED, tungstène...), avec votre posemètre.</p>
             
             <div class="help-box">
                 <h4>Utilisation</h4>
@@ -480,8 +425,8 @@ const helpContent = {
             <p>Entrez la mesure de votre Key light et le ratio souhaité, l'app calcule à quel f/ doit être réglée votre Fill light.</p>
         `,
         estimation: `
-            <h3>📊 Mode Estimation (sans posemètre)</h3>
-            <p>Pour estimer l'exposition sans posemètre, en utilisant la mesure spot de votre appareil sur une zone de référence.</p>
+            <h3>🎯 Mode Sans Cellule (estimation incidente)</h3>
+            <p>Pour estimer la lumière incidente sans posemètre externe, en utilisant la mesure spot de votre appareil sur une zone de référence.</p>
             
             <div class="help-box">
                 <h4>Principe</h4>
@@ -596,8 +541,8 @@ const helpContent = {
             <p class="aperture-grid-credit">Chart inspired by @nathsakuraofficial — <a href="https://www.nath-sakura.com" target="_blank" rel="noopener">nath-sakura.com</a></p>
         `,
         posemetre: `
-            <h3>📷 Light Meter Mode (continuous light)</h3>
-            <p>For photography in natural or continuous light (LED, tungsten...).</p>
+            <h3>☀️ Ambient Mode (continuous light)</h3>
+            <p>For photography in natural or continuous light (LED, tungsten...), using your light meter.</p>
             
             <div class="help-box">
                 <h4>How to use</h4>
@@ -666,8 +611,8 @@ const helpContent = {
             <p>Enter your Key light reading and desired ratio, the app calculates what f/ your Fill light should be set to.</p>
         `,
         estimation: `
-            <h3>📊 Estimation Mode (no light meter)</h3>
-            <p>To estimate exposure without a light meter, using your camera's spot metering on a reference zone.</p>
+            <h3>🎯 No Meter Mode (incident estimation)</h3>
+            <p>To estimate incident light without an external light meter, using your camera's spot metering on a reference zone.</p>
             
             <div class="help-box">
                 <h4>Principle</h4>
@@ -752,16 +697,17 @@ function setLanguage(lang) {
         localStorage.setItem(LANG_KEY, lang);
         applyTranslations();
         updateLanguageButton();
-        // Mettre à jour les zones de l'estimation AVANT de recalculer
-        updateEstimationZones();
-        updateReflectanceGrid();
         // Recalculer les résultats pour mettre à jour les textes
-        if (typeof calculatePosemetre === 'function') calculatePosemetre();
-        if (typeof calculateFlashmetre === 'function') calculateFlashmetre();
-        if (typeof calculateRatios === 'function') calculateRatios();
-        if (typeof calculateEstimation === 'function') calculateEstimation();
+        if (typeof window.calculatePosemetre === 'function') window.calculatePosemetre();
+        if (typeof window.calculateFlashmetre === 'function') window.calculateFlashmetre();
+        if (typeof window.calculateRatios === 'function') window.calculateRatios();
+        if (typeof window.calculateEstimation === 'function') window.calculateEstimation();
         // Mettre à jour l'aide
         updateHelpContent();
+        // Mettre à jour les zones de l'estimation
+        updateEstimationZones();
+        // Mettre à jour la grille de réflectance
+        updateReflectanceGrid();
         console.log('Language changed to:', lang);
     }
 }

@@ -69,14 +69,14 @@ const _domCache = {};
 export function initDomCache() {
     const ids = [
         // Posemetre
-        'pose-mesure-fstop', 'pose-mesure-tenths', 'pose-iso', 'pose-vitesse', 'pose-comp-value', 'pose-results',
+        'pose-mesure', 'pose-iso', 'pose-vitesse', 'pose-comp-value', 'pose-results',
         // Flash
-        'flash-vitesse', 'flash-iso', 'flash-mesure-fstop', 'flash-mesure-tenths', 'flash-target',
-        'flash-current-power', 'flash-current-power-group', 'flash-current-tenths',
+        'flash-vitesse', 'flash-iso', 'flash-mesure', 'flash-target',
+        'flash-current-power', 'flash-current-power-group',
         'flash-comp-value', 'flash-results',
         'hss-enabled', 'hss-options', 'hss-sync-max', 'hss-warning', 'hss-warning-text',
         // Ratios
-        'ratio-key-fstop', 'ratio-key-tenths', 'ratio-iso', 'ratio-vitesse', 'ratio-comp-value', 'ratio-results',
+        'ratio-key', 'ratio-iso', 'ratio-vitesse', 'ratio-comp-value', 'ratio-results',
         // Estimation
         'estim-zone', 'estim-mesure', 'estim-iso', 'estim-vitesse',
         'estim-comp-value', 'estim-results',

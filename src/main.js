@@ -9,7 +9,6 @@ import {
     calculatePosemetre, calculateFlashmetre, calculateRatios, calculateEstimation,
     openHelpModal, closeHelpModal, showHelpSection
 } from './ui.js';
-import { isFirstVisit, completeWalkthrough, startWalkthrough } from './walkthrough.js';
 
 // ============================================
 // CONFIGURATION
@@ -47,11 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. PWA
     initPWA();
-
-    // 6. Walkthrough for first visit
-    if (isFirstVisit()) {
-        startWalkthrough();
-    }
 
     console.log('App initialized (modular)');
 });
@@ -94,9 +88,6 @@ function setupEventListeners() {
     // Power mode toggle (IL / Fractions)
     dom('powerModeToggle')?.addEventListener('click', togglePowerMode);
 
-    // Settings modal
-    initSettingsModal();
-
     // Tabs
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', (e) => switchTab(e.target.dataset.tab));
@@ -123,12 +114,12 @@ function setupEventListeners() {
     });
 
     // Input changes — POSEMETRE
-    ['pose-mesure-fstop', 'pose-mesure-tenths', 'pose-iso', 'pose-vitesse'].forEach(id => {
+    ['pose-mesure', 'pose-iso', 'pose-vitesse'].forEach(id => {
         dom(id)?.addEventListener('change', calculatePosemetre);
     });
 
     // Input changes — FLASH
-    ['flash-vitesse', 'flash-iso', 'flash-mesure-fstop', 'flash-mesure-tenths', 'flash-target', 'flash-current-power', 'flash-current-tenths', 'hss-sync-max'].forEach(id => {
+    ['flash-vitesse', 'flash-iso', 'flash-mesure', 'flash-target', 'flash-current-power', 'hss-sync-max'].forEach(id => {
         dom(id)?.addEventListener('change', calculateFlashmetre);
     });
 
@@ -146,7 +137,7 @@ function setupEventListeners() {
     }
 
     // Input changes — RATIOS
-    ['ratio-key-fstop', 'ratio-key-tenths', 'ratio-iso', 'ratio-vitesse'].forEach(id => {
+    ['ratio-key', 'ratio-iso', 'ratio-vitesse'].forEach(id => {
         dom(id)?.addEventListener('change', calculateRatios);
     });
 
@@ -157,100 +148,6 @@ function setupEventListeners() {
 
     // Help modal
     initHelpModal();
-}
-
-// ============================================
-// SETTINGS MODAL
-// ============================================
-
-function initSettingsModal() {
-    // Open settings modal
-    dom('settings-btn')?.addEventListener('click', openSettingsModal);
-    dom('settings-close')?.addEventListener('click', closeSettingsModal);
-
-    const modal = dom('settings-modal');
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeSettingsModal();
-        });
-    }
-
-    // Theme buttons
-    dom('theme-light')?.addEventListener('click', () => setTheme('light'));
-    dom('theme-dark')?.addEventListener('click', () => setTheme('dark'));
-    dom('theme-system')?.addEventListener('click', () => setTheme('system'));
-
-    // Rate app button
-    dom('rate-app-btn')?.addEventListener('click', openRateApp);
-
-    // Walkthrough button
-    dom('start-walkthrough')?.addEventListener('click', () => {
-        closeSettingsModal();
-        startWalkthrough();
-    });
-
-    // Keyboard handling
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeSettingsModal();
-    });
-}
-
-function openSettingsModal() {
-    const modal = dom('settings-modal');
-    if (modal) {
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-    // Update active theme button
-    updateThemeButtonStates();
-}
-
-function closeSettingsModal() {
-    const modal = dom('settings-modal');
-    if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-    }
-}
-
-function updateThemeButtonStates() {
-    // Remove active class from all theme buttons
-    document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-    
-    // Get current theme and add active class
-    const currentTheme = window.themeSwitcher?.get();
-    if (currentTheme === 'light') {
-        dom('theme-light')?.classList.add('active');
-    } else if (currentTheme === 'dark') {
-        dom('theme-dark')?.classList.add('active');
-    } else {
-        dom('theme-system')?.classList.add('active');
-    }
-}
-
-function setTheme(theme) {
-    if (theme === 'system') {
-        // Let the theme switcher auto-detect and apply
-        const systemTheme = window.themeSwitcher?.getSystem();
-        window.themeSwitcher?.set(systemTheme);
-        localStorage.setItem('app-theme-auto', 'true');
-    } else {
-        window.themeSwitcher?.set(theme);
-        localStorage.setItem('app-theme-auto', 'false');
-    }
-    updateThemeButtonStates();
-}
-
-function openRateApp() {
-    // For Play Store/App Store - adjust URL as needed
-    const userLang = window.i18n?.getLanguage() || 'en';
-    const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.posemetre.pro';
-    
-    // For now, just show an alert - in production, redirect to store
-    alert(window.i18n ? window.i18n.t('rateAppBtn') + '! ' + (userLang === 'fr' ? 'Merci pour votre soutien!' : 'Thank you for your support!') : 'Rate this app!');
-    
-    // Optionally open store in new tab
-    // window.open(playStoreUrl, '_blank');
 }
 
 // ============================================
