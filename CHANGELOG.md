@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.4] - 2026-05-27
+
+### 🎯 Tenth-Stop Precision for Flash Power Fractions & Max Power Capping
+
+**Status**: ✅ Production-ready  
+**New Features**: 
+- Added 1/10th stop precision input to "Current Flash Power" when in Fractions mode.
+- Capped target flash power calculations at a maximum of 1/1 (Full Power) or 10.0 EV.
+- Added visual warnings when the required flash power correction exceeds the maximum capable power of the flash.
+
+### 🛠️ Files Modified
+- `index.html` — Updated current flash power fields to support fstop + tenths in fraction mode.
+- `app.js` — Logic for max power capping and dynamic fraction conversions (`formatFractionPower`).
+- `i18n.js` — Added translation strings for max capacity warning.
+
+---
+
 ## [1.3] - 2026-05-01
 
 ### 🎯 Tenth-Stop Precision for Flash Meter Readings

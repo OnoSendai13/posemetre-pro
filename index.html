@@ -205,18 +205,16 @@
 
                     <div class="input-group" id="flash-current-power-group">
                         <label data-i18n="labelPuissanceActuelle">Puissance flash actuelle:</label>
-                        <select id="flash-current-power" class="input-field">
-                            <option value="1">1/1 (Pleine puissance)</option>
-                            <option value="0.5" selected>1/2</option>
-                            <option value="0.25">1/4</option>
-                            <option value="0.125">1/8</option>
-                            <option value="0.0625">1/16</option>
-                            <option value="0.03125">1/32</option>
-                            <option value="0.015625">1/64</option>
-                            <option value="0.0078125">1/128</option>
-                            <option value="0.00390625">1/256</option>
-                            <option value="0.001953125">1/512</option>
-                        </select>
+                        <div class="fstop-tenths-row">
+                            <select id="flash-current-power" class="input-field fstop-select">
+                                <!-- Options generees par JS -->
+                            </select>
+                            <span class="tenths-plus">+</span>
+                            <select id="flash-power-tenths" class="input-field tenths-select">
+                                <!-- Options generees par JS -->
+                            </select>
+                            <span class="tenths-label">/10</span>
+                        </div>
                     </div>
 
                     <div class="compensation-section">
@@ -295,18 +293,16 @@
 
                     <div class="input-group" id="ratio-fill-power-group" style="display: none;">
                         <label data-i18n="labelPuissanceFill">Puissance flash Fill actuelle:</label>
-                        <select id="ratio-fill-power" class="input-field">
-                            <option value="1">1/1 (Pleine puissance)</option>
-                            <option value="0.5" selected>1/2</option>
-                            <option value="0.25">1/4</option>
-                            <option value="0.125">1/8</option>
-                            <option value="0.0625">1/16</option>
-                            <option value="0.03125">1/32</option>
-                            <option value="0.015625">1/64</option>
-                            <option value="0.0078125">1/128</option>
-                            <option value="0.00390625">1/256</option>
-                            <option value="0.001953125">1/512</option>
-                        </select>
+                        <div class="fstop-tenths-row">
+                            <select id="ratio-fill-power" class="input-field fstop-select">
+                                <!-- Options generees par JS -->
+                            </select>
+                            <span class="tenths-plus">+</span>
+                            <select id="ratio-power-tenths" class="input-field tenths-select">
+                                <!-- Options generees par JS -->
+                            </select>
+                            <span class="tenths-label">/10</span>
+                        </div>
                     </div>
 
                     <div class="results-box">
@@ -412,7 +408,7 @@
             <button id="installBtn" class="install-btn" style="display:none;">
                 <span data-i18n="footerInstall">&#128241; Installer l'application</span>
             </button>
-            <p class="footer-text" data-i18n="footerText">Assistant Posemètre Pro v1.2 | Développé pour Laurent Suchet IG:@ono_sendai</p>
+            <p class="footer-text" data-i18n="footerText">Assistant Posemètre Pro v1.6 | Développé pour Laurent Suchet IG:@ono_sendai</p>
         </footer>
     </div>
 
@@ -430,6 +426,7 @@
                 <button class="modal-nav-btn" data-section="flash" data-i18n="helpNavFlash">Flash</button>
                 <button class="modal-nav-btn" data-section="ratios" data-i18n="helpNavRatios">Ratios</button>
                 <button class="modal-nav-btn" data-section="estimation" data-i18n="helpNavEstimation">Sans Cellule</button>
+                <button class="modal-nav-btn" data-section="equiv" data-i18n="helpNavEquiv">Table IL</button>
             </div>
             
             <div class="modal-content">
@@ -439,6 +436,7 @@
                 <div class="help-section" id="help-flash"></div>
                 <div class="help-section" id="help-ratios"></div>
                 <div class="help-section" id="help-estimation"></div>
+                <div class="help-section" id="help-equiv"></div>
             </div>
         </div>
     </div>
@@ -453,6 +451,6 @@
 
     <script src="i18n.js"></script>
     <script src="theme-switcher.js"></script>
-    <script type="module" src="src/main.js"></script>
+    <script type="module" src="/app.js"></script>
 </body>
 </html>

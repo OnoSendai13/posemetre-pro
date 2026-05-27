@@ -2,12 +2,12 @@
   "name": "Assistant Posemètre Pro",
   "short_name": "Posemètre Pro",
   "description": "Assistant professionnel de posemètre et flashmètre pour photographes. Calcul d'exposition, mode flash HSS, ratios d'éclairage et estimation sans posemètre.",
-  "start_url": "/posemetre-pro/",
-  "scope": "/posemetre-pro/",
-  "id": "/posemetre-pro/",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
   "serviceworker": {
-    "src": "/posemetre-pro/sw.js",
-    "scope": "/posemetre-pro/"
+    "src": "/sw.js",
+    "scope": "/"
   },
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
@@ -101,14 +101,14 @@
       "name": "Mode Posemètre",
       "short_name": "Posemètre",
       "description": "Calculer l'exposition en lumière continue",
-      "url": "/posemetre-pro/?tab=posemetre",
+      "url": "/?tab=posemetre",
       "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
     },
     {
       "name": "Mode Flash",
       "short_name": "Flash",
       "description": "Calculer la puissance du flash",
-      "url": "/posemetre-pro/?tab=flashmetre",
+      "url": "/?tab=flashmetre",
       "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
     }
   ],
@@ -123,7 +123,7 @@
     "client_mode": ["navigate-existing", "auto"]
   },
   "share_target": {
-    "action": "/posemetre-pro/",
+    "action": "/",
     "method": "GET",
     "params": {
       "title": "title",
@@ -133,7 +133,7 @@
   },
   "file_handlers": [
     {
-      "action": "/posemetre-pro/",
+      "action": "/",
       "accept": {
         "image/*": [".jpg", ".jpeg", ".png", ".webp"]
       }
@@ -142,7 +142,7 @@
   "protocol_handlers": [
     {
       "protocol": "web+lightmeter",
-      "url": "/posemetre-pro/?data=%s"
+      "url": "/?data=%s"
     }
   ],
   "iarc_rating_id": "",
@@ -176,6 +176,6 @@
     }
   ],
   "note_taking": {
-    "new_note_url": "/posemetre-pro/?action=new-note"
+    "new_note_url": "/?action=new-note"
   }
 }

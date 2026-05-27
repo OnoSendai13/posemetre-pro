@@ -179,6 +179,31 @@ function calculateISO(baseISO, ilDelta) {
 }
 
 /**
+ * Formate une puissance absolue en IL (ex: -3.2) vers une notation fraction (ex: 1/8+8)
+ */
+function formatFractionPower(powerIL) {
+    // Eviter les problemes de virgule flottante
+    let scaledIL = Math.round(powerIL * 10) / 10; 
+    let currentIL = scaledIL + 10;
+    
+    if (currentIL >= 10) {
+        let over = Math.round((currentIL - 10) * 10);
+        return over > 0 ? '1/1+' + over : '1/1';
+    }
+    
+    let basePowerNum = 10 - Math.floor(currentIL); 
+    let baseDen = Math.pow(2, basePowerNum);
+    let decimals = Math.round((currentIL - Math.floor(currentIL)) * 10);
+    
+    let fracText = '1/' + baseDen;
+    if (decimals > 0) {
+        fracText += '+' + decimals;
+    }
+    
+    return fracText;
+}
+
+/**
  * Convertit IL en puissance flash (format Profoto: IL et dixièmes)
  */
 function ilToPowerIL(ilDelta) {
@@ -272,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeApp() {
     // Gestion PWA
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/posemetre-pro/sw.js', { scope: '/posemetre-pro/' })
+        navigator.serviceWorker.register('/sw.js', { scope: '/' })
             .then(reg => console.log('Service Worker enregistré:', reg))
             .catch(err => console.log('Erreur Service Worker:', err));
     }
@@ -341,7 +366,7 @@ function setupEventListeners() {
     });
 
     // Changements inputs FLASHMETRE
-    ['flash-vitesse', 'flash-iso', 'flash-mesure-fstop', 'flash-mesure-tenths', 'flash-target', 'flash-current-power', 'flash-current-tenths', 'hss-sync-max'].forEach(id => {
+    ['flash-vitesse', 'flash-iso', 'flash-mesure-fstop', 'flash-mesure-tenths', 'flash-target', 'flash-current-power', 'flash-power-tenths', 'hss-sync-max'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', calculateFlashmetre);
     });
 
@@ -359,7 +384,7 @@ function setupEventListeners() {
     }
 
     // Changements inputs RATIOS
-    ['ratio-key-fstop', 'ratio-key-tenths', 'ratio-iso', 'ratio-vitesse', 'ratio-fill-power'].forEach(id => {
+    ['ratio-key-fstop', 'ratio-key-tenths', 'ratio-iso', 'ratio-vitesse', 'ratio-fill-power', 'ratio-power-tenths'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', calculateRatios);
     });
 
@@ -447,6 +472,8 @@ function populateSelects() {
             }
         }
     });
+
+    updatePowerSelectStructure();
 }
 
 // ============================================
@@ -497,17 +524,103 @@ function togglePowerMode() {
         powerMode = 'FRACTIONS';
         options[0].classList.remove('active');
         options[1].classList.add('active');
-        if (ratioFillGroup) ratioFillGroup.style.display = 'block';
     } else {
         powerMode = 'IL';
         options[0].classList.add('active');
         options[1].classList.remove('active');
-        if (ratioFillGroup) ratioFillGroup.style.display = 'none';
     }
+
+    updatePowerSelectStructure();
 
     // Recalcule les résultats avec le nouveau format
     calculateFlashmetre();
     calculateRatios();
+}
+
+/**
+ * Mettre a jour les options de puissance basees sur le mode FRACTION/IL
+ */
+function updatePowerSelectStructure() {
+    const isFractions = powerMode === 'FRACTIONS';
+    
+    const selectsToUpdate = [
+        { fstopId: 'flash-current-power', tenthsId: 'flash-power-tenths', defaultV: isFractions ? '0.5' : '8' },
+        { fstopId: 'ratio-fill-power', tenthsId: 'ratio-power-tenths', defaultV: isFractions ? '0.5' : '8' }
+    ];
+    
+    selectsToUpdate.forEach(({ fstopId, tenthsId, defaultV }) => {
+        const powerSelect = document.getElementById(fstopId);
+        const tenthsSelect = document.getElementById(tenthsId);
+        
+        if (powerSelect) {
+            // Sauvegarder l'ancienne valeur si possible
+            const oldVal = powerSelect.value;
+            
+            if (isFractions) {
+                powerSelect.innerHTML = FLASH_POWERS_FRACTIONS.map(f =>
+                    `<option value="${f.value}">${f.label}</option>`
+                ).join('');
+            } else {
+                let html = [];
+                for (let i = 10; i >= 1; i--) {
+                    html.push(`<option value="${i}">${i}</option>`);
+                }
+                powerSelect.innerHTML = html.join('');
+            }
+            
+            // Essayons de restaurer si la valeur existe
+            const optionExists = Array.from(powerSelect.options).some(opt => opt.value === oldVal);
+            if(optionExists) powerSelect.value = oldVal;
+            else powerSelect.value = defaultV;
+        }
+        
+        if (tenthsSelect && tenthsSelect.options.length === 0) {
+            tenthsSelect.innerHTML = TENTHS.map(t =>
+                `<option value="${t}">${t}</option>`
+            ).join('');
+            tenthsSelect.value = "0";
+        }
+    });
+
+    const ratioFillGroup = document.getElementById('ratio-fill-power-group');
+    if (ratioFillGroup) ratioFillGroup.style.display = 'flex';
+}
+
+function getCurrentPowerIL(powerSelectId, tenthsSelectId) {
+    const powerSelect = document.getElementById(powerSelectId);
+    const tenthsSelect = document.getElementById(tenthsSelectId);
+    if (!powerSelect) return 0;
+    
+    // Si c'est un sélecteur qui a des f-stops/dixièmes
+    const baseValue = parseFloat(powerSelect.value);
+    const tenthsValue = tenthsSelect ? parseFloat(tenthsSelect.value) / 10 : 0;
+    
+    if (powerMode === 'IL') {
+        return baseValue + tenthsValue;
+    } else {
+        const currentPowerObj = FLASH_POWERS_FRACTIONS.find(f => Math.abs(f.value - baseValue) < 0.001);
+        const baseIL = currentPowerObj ? currentPowerObj.ilValue : 0;
+        return baseIL + tenthsValue;
+    }
+}
+
+function getCurrentPowerFractionLabel(powerSelectId, tenthsSelectId) {
+    const powerSelect = document.getElementById(powerSelectId);
+    const tenthsSelect = document.getElementById(tenthsSelectId);
+    if (!powerSelect) return '1/1';
+    
+    if (powerMode === 'IL') {
+        const baseValue = parseFloat(powerSelect.value);
+        const tenthsValue = tenthsSelect ? parseFloat(tenthsSelect.value) / 10 : 0;
+        return (baseValue + tenthsValue).toFixed(1) + ' IL';
+    } else {
+        const baseValue = parseFloat(powerSelect.value);
+        const currentPowerObj = FLASH_POWERS_FRACTIONS.find(f => Math.abs(f.value - baseValue) < 0.001);
+        let label = currentPowerObj ? currentPowerObj.label : '1/1';
+        const tenthsValue = tenthsSelect ? parseInt(tenthsSelect.value) : 0;
+        if (tenthsValue > 0) label += '+' + tenthsValue;
+        return label;
+    }
 }
 
 /**
@@ -652,31 +765,26 @@ function calculateFlashmetre() {
     const _t = window.i18n ? window.i18n.t : (k) => k;
     const evUnit = _t('evUnit');
     
+    let currentPowerIL = getCurrentPowerIL('flash-current-power', 'flash-power-tenths');
+    let targetPowerIL = currentPowerIL + ilDiff;
+    const currentLabel = getCurrentPowerFractionLabel('flash-current-power', 'flash-power-tenths');
+    let maxPowerExceeded = false;
+
     if (powerMode === 'IL') {
-        powerDisplay = `${ilDiff >= 0 ? '+' : ''}${ilToPowerIL(ilDiff)} ${evUnit}`;
-        powerExplanation = ilDiff >= 0 ? _t('resultIncrease') + ` ${Math.abs(ilDiff).toFixed(1)} ${evUnit}` : _t('resultDecrease') + ` ${Math.abs(ilDiff).toFixed(1)} ${evUnit}`;
+        if (targetPowerIL > 10.0) {
+            targetPowerIL = 10.0;
+            maxPowerExceeded = true;
+        }
+        powerDisplay = targetPowerIL.toFixed(1);
+        powerExplanation = `${_t('resultFrom')} ${currentLabel} ${_t('resultTo')} ${powerDisplay} IL (${ilDiff >= 0 ? '+' : ''}${ilDiff.toFixed(1)} ${evUnit})`;
     } else {
-        // Mode FRACTIONS : calcul depuis la puissance actuelle
-        const currentPowerElement = document.getElementById('flash-current-power');
-        const currentPower = currentPowerElement ? parseFloat(currentPowerElement.value) : 1.0;
-        
-        // Trouve la puissance actuelle en IL
-        const currentPowerObj = FLASH_POWERS_FRACTIONS.find(f => Math.abs(f.value - currentPower) < 0.01);
-        const currentPowerIL = currentPowerObj ? currentPowerObj.ilValue : 0;
-        
-        // Calcule la puissance cible en IL
-        const targetPowerIL = currentPowerIL + ilDiff;
-        
-        // Trouve la fraction cible la plus proche
-        const targetPowerObj = FLASH_POWERS_FRACTIONS.reduce((prev, curr) => 
-            Math.abs(curr.ilValue - targetPowerIL) < Math.abs(prev.ilValue - targetPowerIL) ? curr : prev
-        );
-        
-        const currentFractionLabel = currentPowerObj ? currentPowerObj.label : '1/1';
-        const targetFraction = targetPowerObj.label;
-        
+        if (targetPowerIL > 0.0) {
+            targetPowerIL = 0.0;
+            maxPowerExceeded = true;
+        }
+        const targetFraction = formatFractionPower(targetPowerIL);
         powerDisplay = targetFraction;
-        powerExplanation = `${_t('resultFrom')} ${currentFractionLabel} ${_t('resultTo')} ${targetFraction}`;
+        powerExplanation = `${_t('resultFrom')} ${currentLabel} ${_t('resultTo')} ${targetFraction}`;
     }
 
     // Affichage warning HSS
@@ -705,8 +813,14 @@ function calculateFlashmetre() {
         </div>
         <div class="result-item">
             <span class="result-label">${_t('resultPowerAdjust')}</span>
-            <span class="result-value">${powerDisplay}</span>
-            <span class="result-detail">${powerExplanation}</span>
+            <span class="result-value" ${maxPowerExceeded ? 'style="color: var(--danger-color);"' : ''}>
+                ${powerDisplay}
+                ${maxPowerExceeded ? `<span title="${_t('maxPowerReached')}" style="cursor: help;">⚠️</span>` : ''}
+            </span>
+            <span class="result-detail">
+                ${powerExplanation}
+                ${maxPowerExceeded ? `<br><strong style="color: var(--danger-color);">${_t('maxPowerReached')}</strong>` : ''}
+            </span>
         </div>
         <div class="result-item">
             <span class="result-label">${_t('resultBaseDiff')}</span>
@@ -748,25 +862,26 @@ function calculateRatios() {
     let powerDisplay;
     let powerExplanation;
 
+    let fillPowerIL = getCurrentPowerIL('ratio-fill-power', 'ratio-power-tenths');
+    let targetPowerIL = fillPowerIL + ratioIL;
+    const currentLabel = getCurrentPowerFractionLabel('ratio-fill-power', 'ratio-power-tenths');
+    let maxPowerExceeded = false;
+
     if (powerMode === 'IL') {
-        powerDisplay = `${ratioIL >= 0 ? '+' : ''}${ilToPowerIL(ratioIL)} ${evUnit}`;
-        powerExplanation = ratioIL.toFixed(1) + ' ' + evUnit;
+        if (targetPowerIL > 10.0) {
+            targetPowerIL = 10.0;
+            maxPowerExceeded = true;
+        }
+        powerDisplay = targetPowerIL.toFixed(1);
+        powerExplanation = `${_t('resultFrom')} ${currentLabel} ${_t('resultTo')} ${powerDisplay} IL (${ratioIL >= 0 ? '+' : ''}${ratioIL.toFixed(1)} ${evUnit})`;
     } else {
-        // Mode Fractions : calcul depuis la puissance fill actuelle
-        const fillPowerElement = document.getElementById('ratio-fill-power');
-        const fillPower = fillPowerElement ? parseFloat(fillPowerElement.value) : 0.5;
-
-        const fillPowerObj = FLASH_POWERS_FRACTIONS.find(f => Math.abs(f.value - fillPower) < 0.01);
-        const fillPowerIL = fillPowerObj ? fillPowerObj.ilValue : -1;
-
-        const targetPowerIL = fillPowerIL + ratioIL;
-        const targetPowerObj = FLASH_POWERS_FRACTIONS.reduce((prev, curr) =>
-            Math.abs(curr.ilValue - targetPowerIL) < Math.abs(prev.ilValue - targetPowerIL) ? curr : prev
-        );
-
-        const currentFractionLabel = fillPowerObj ? fillPowerObj.label : '1/2';
-        powerDisplay = targetPowerObj.label;
-        powerExplanation = `${_t('resultFrom')} ${currentFractionLabel} ${_t('resultTo')} ${targetPowerObj.label}`;
+        if (targetPowerIL > 0.0) {
+            targetPowerIL = 0.0;
+            maxPowerExceeded = true;
+        }
+        const targetFraction = formatFractionPower(targetPowerIL);
+        powerDisplay = targetFraction;
+        powerExplanation = `${_t('resultFrom')} ${currentLabel} ${_t('resultTo')} ${targetFraction}`;
     }
 
     const lightingRatio = calculateLightingRatio(ratioIL);
@@ -779,8 +894,14 @@ function calculateRatios() {
         </div>
         <div class="result-item">
             <span class="result-label">${_t('resultPowerAdjust')} Fill</span>
-            <span class="result-value">${powerDisplay}</span>
-            <span class="result-detail">${powerExplanation}</span>
+            <span class="result-value" ${maxPowerExceeded ? 'style="color: var(--danger-color);"' : ''}>
+                ${powerDisplay}
+                ${maxPowerExceeded ? `<span title="${_t('maxPowerReached')}" style="cursor: help;">⚠️</span>` : ''}
+            </span>
+            <span class="result-detail">
+                ${powerExplanation}
+                ${maxPowerExceeded ? `<br><strong style="color: var(--danger-color);">${_t('maxPowerReached')}</strong>` : ''}
+            </span>
         </div>
         <div class="result-item">
             <span class="result-label">${_t('resultLightingRatio')}</span>
@@ -984,3 +1105,9 @@ function initHelpModal() {
     
     console.log('Help modal initialized');
 }
+
+// Exposer les fonctions globalement pour i18n
+window.calculatePosemetre = calculatePosemetre;
+window.calculateFlashmetre = calculateFlashmetre;
+window.calculateRatios = calculateRatios;
+window.calculateEstimation = calculateEstimation;

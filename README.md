@@ -17,6 +17,15 @@
 
 ---
 
+## 🌟 What's New in v1.4
+
+### 🎯 Decimal Precision & Max Power Cap for Flash Fractions
+- **1/10th decimal precision** for the "Current Flash Power" setting directly in Fractions Mode.
+- **Maximum Flash Capacity Capping**: Flash adjustments are automatically top-capped at **10.0 EV** or **1/1 (Full Power)**.
+- **Visual Warnings**: If an adjustment exceeds the max flash power, a clear interface warning alerts the photographer.
+
+---
+
 ## 🌟 What's New in v1.3
 
 ### 🎯 Tenth-Stop Precision for Flash Meter Readings
@@ -227,7 +236,12 @@ posemetre-pro/
 
 ## 📋 Changelog Highlights
 
-### v1.3 (Current)
+### v1.4 (Current)
+- ✅ 1/10th stop precision input to "Current Flash Power" when in Fractions mode.
+- ✅ Capped target flash power calculations at a maximum of 1/1 (Full Power) or 10.0 EV.
+- ✅ Added visual warnings when the required flash power correction exceeds the maximum capable power of the flash.
+
+### v1.3
 - ✅ f-stop + tenths selectors for flash meter readings
 - ✅ Whole f-stop dropdown + tenths precision selector
 - ✅ Applied to Light Meter, Flash, and Ratios modes

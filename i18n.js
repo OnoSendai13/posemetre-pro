@@ -118,10 +118,11 @@ const translations = {
         hssWarningText: 'Perte estimée: ~{loss} IL. Ces réglages tiennent compte de votre mesure en HSS. Si les réglages sont difficiles, essayez en sync normale ({speed}) et remesurez.',
         hssActive: 'HSS actif',
         hssNotRequired: 'HSS non nécessaire',
+        maxPowerReached: '⚠️ Correction dépassant la puissance max du flash (Plafonné à 1/1 ou 10 IL)',
         
         // Footer
         footerInstall: '📱 Installer l\'application',
-        footerText: 'Assistant Posemètre Pro v1.2 | Développé pour Laurent Suchet IG:@ono_sendai',
+        footerText: 'Assistant Posemètre Pro v1.6 | Développé pour Laurent Suchet IG:@ono_sendai',
         
         // Modal Aide - Titres
         helpTitle: '📖 Aide',
@@ -130,6 +131,7 @@ const translations = {
         helpNavFlash: 'Flash',
         helpNavRatios: 'Ratios',
         helpNavEstimation: 'Sans Cellule',
+        helpNavEquiv: 'Table IL',
         
         // Unité
         evUnit: 'IL'
@@ -247,10 +249,11 @@ const translations = {
         hssWarningText: 'Estimated loss: ~{loss} EV. These settings account for your HSS reading. If settings are difficult, try normal sync ({speed}) and re-measure.',
         hssActive: 'HSS active',
         hssNotRequired: 'HSS not required',
+        maxPowerReached: '⚠️ Correction exceeding max flash power (Capped at 1/1 or 10 EV)',
         
         // Footer
         footerInstall: '📱 Install app',
-        footerText: 'Light Meter Pro Assistant v1.2 | Developed for Laurent Suchet IG:@ono_sendai',
+        footerText: 'Light Meter Pro Assistant v1.6 | Developed for Laurent Suchet IG:@ono_sendai',
         
         // Modal Aide - Titres
         helpTitle: '📖 Help',
@@ -259,6 +262,7 @@ const translations = {
         helpNavFlash: 'Flash',
         helpNavRatios: 'Ratios',
         helpNavEstimation: 'No Meter',
+        helpNavEquiv: 'EV Table',
         
         // Unité
         evUnit: 'EV'
@@ -682,9 +686,51 @@ function t(key, params = {}) {
 }
 
 /**
+ * Génère la table d'équivalence IL / Fractions
+ */
+function generateEquivTable(lang) {
+    const isFr = (lang === 'fr');
+    let html = `
+        <h3>${isFr ? "Table d'équivalence IL / Fractions" : "EV / Fractions Equivalence Table"}</h3>
+        <p>${isFr ? "Correspondance entre la puissance de flash en IL et la notation en fraction. Les IL entiers sont en surbrillance." : "Correspondence between flash power in EV and fraction notation. Whole EVs are highlighted."}</p>
+        <div style="max-height: 400px; overflow-y: auto; margin-top: 15px;">
+        <table class="equiv-table" style="width: 100%; border-collapse: collapse; text-align: center;">
+        <thead style="position: sticky; top: 0; background: var(--bg-card); z-index: 1;">
+            <tr>
+                <th style="padding: 8px; border-bottom: 2px solid var(--border-color);">${isFr ? "IL" : "EV"}</th>
+                <th style="padding: 8px; border-bottom: 2px solid var(--border-color);">${isFr ? "Fraction" : "Fraction"}</th>
+            </tr>
+        </thead>
+        <tbody>`;
+        
+    for (let i = 100; i >= 10; i--) {
+        let currentIL = (i / 10).toFixed(1).replace('.0', '');
+        let basePower = 10 - Math.floor(i / 10);
+        let baseDen = Math.pow(2, basePower);
+        let decimals = i % 10;
+        let fracText = '1/' + baseDen;
+        if (decimals > 0) fracText += '+' + decimals;
+        
+        let rowStyle = (decimals === 0) ? 'font-weight: bold; color: #ff4444; background: rgba(255, 68, 68, 0.1);' : 'border-bottom: 1px solid var(--border-color);';
+        let tdStyle = 'padding: 6px;';
+        
+        html += `<tr style="${rowStyle}">
+            <td style="${tdStyle}">${currentIL}</td>
+            <td style="${tdStyle}">${fracText}</td>
+        </tr>`;
+    }
+    
+    html += `</tbody></table></div>`;
+    return html;
+}
+
+/**
  * Obtient le contenu d'aide pour une section
  */
 function getHelpContent(section) {
+    if (section === 'equiv') {
+        return generateEquivTable(currentLang);
+    }
     return helpContent[currentLang]?.[section] || helpContent['fr'][section] || '';
 }
 
@@ -697,17 +743,19 @@ function setLanguage(lang) {
         localStorage.setItem(LANG_KEY, lang);
         applyTranslations();
         updateLanguageButton();
-        // Recalculer les résultats pour mettre à jour les textes
-        if (typeof window.calculatePosemetre === 'function') window.calculatePosemetre();
-        if (typeof window.calculateFlashmetre === 'function') window.calculateFlashmetre();
-        if (typeof window.calculateRatios === 'function') window.calculateRatios();
-        if (typeof window.calculateEstimation === 'function') window.calculateEstimation();
         // Mettre à jour l'aide
         updateHelpContent();
         // Mettre à jour les zones de l'estimation
         updateEstimationZones();
         // Mettre à jour la grille de réflectance
         updateReflectanceGrid();
+        
+        // Recalculer les résultats pour mettre à jour les textes dynamique (après mise à jour UI)
+        if (typeof window.calculatePosemetre === 'function') window.calculatePosemetre();
+        if (typeof window.calculateFlashmetre === 'function') window.calculateFlashmetre();
+        if (typeof window.calculateRatios === 'function') window.calculateRatios();
+        if (typeof window.calculateEstimation === 'function') window.calculateEstimation();
+        
         console.log('Language changed to:', lang);
     }
 }
@@ -742,7 +790,7 @@ function updateLanguageButton() {
  * Met à jour le contenu de l'aide
  */
 function updateHelpContent() {
-    const sections = ['general', 'posemetre', 'flash', 'ratios', 'estimation'];
+    const sections = ['general', 'posemetre', 'flash', 'ratios', 'estimation', 'equiv'];
     sections.forEach(section => {
         const el = document.getElementById(`help-${section}`);
         if (el) {
