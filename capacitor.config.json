@@ -2,7 +2,6 @@
   "appId": "com.laurent.posemetre",
   "appName": "Posemètre Pro",
   "webDir": ".",
-  "bundledWebRuntime": false,
   "backgroundColor": "#1a1a1a",
   "ios": {
     "contentInset": "always",
