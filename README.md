@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-1.3-blue.svg)
+![Version](https://img.shields.io/badge/version-1.6-blue.svg)
 ![PWA](https://img.shields.io/badge/PWA-ready-green.svg)
 ![Capacitor](https://img.shields.io/badge/Capacitor-iOS%20%7C%20Android-purple.svg)
 ![Size](https://img.shields.io/badge/size-~35KB-brightgreen.svg)
@@ -14,6 +14,18 @@
 [Features](#-features) • [Installation](#-installation) • [Modes](#-modes) • [Documentation](#-documentation)
 
 </div>
+
+---
+
+## 🌟 What's New in v1.6
+
+### 🎨 Theme, i18n, Onboarding & Android Edge-to-Edge
+- **Explicit Theme Selector**: 🌓 Auto / ☀️ Light / 🌙 Dark with tooltips in FR/EN
+- **Live Language Updates**: All UI refreshes instantly on language change (compensation buttons, help, onboarding)
+- **Google Play Rating Button**: Gold button in footer linking to Play Store rating
+- **First-Use Onboarding Tour**: 5-step interactive guided tour with swipe navigation
+- **EV Equivalence Table**: IL 10→1 with fractions + tenths in Help modal
+- **Android Edge-to-Edge**: Full screen rendering for SDK 35 with safe area insets
 
 ---
 
@@ -236,7 +248,19 @@ posemetre-pro/
 
 ## 📋 Changelog Highlights
 
-### v1.4 (Current)
+### v1.6 (Current)
+- ✅ Explicit Theme Selector (Auto/Light/Dark) with translated tooltips
+- ✅ Live language updates on all dynamic content
+- ✅ First-use onboarding guided tour (5 steps, swipe navigation)
+- ✅ EV equivalence table (IL ↔ fractions) in Help modal
+- ✅ Google Play rating button in footer
+- ✅ Android Edge-to-Edge for SDK 35 with safe area insets
+
+### v1.5
+- ✅ Published on Google Play Store (Version 3)
+- ✅ Target SDK 35, app signing and bundle config
+
+### v1.4
 - ✅ 1/10th stop precision input to "Current Flash Power" when in Fractions mode.
 - ✅ Capped target flash power calculations at a maximum of 1/1 (Full Power) or 10.0 EV.
 - ✅ Added visual warnings when the required flash power correction exceeds the maximum capable power of the flash.

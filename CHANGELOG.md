@@ -7,6 +7,76 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.6] - 2026-05-29
+
+### 🎨 Theme Selector, Live i18n, Onboarding & Android Edge-to-Edge
+
+**Status**: ✅ Production-ready  
+**Google Play**: Version 4 (1.6)  
+
+### ✨ New Features
+
+#### 🌓 Explicit Theme Selector (Auto/Light/Dark)
+- Theme button now shows distinct icons for each state: 🌓 Auto / ☀️ Light / 🌙 Dark
+- Tooltips translated in FR/EN ("Auto (système)" / "Auto (system)")
+- Rotation logic: Auto → Light → Dark → Auto
+
+#### 🌍 Live Language Updates
+- Changing language now instantly refreshes all dynamic content
+- Compensation button labels (`-2 IL`, `+1 IL`, etc.) are now translated on language change
+- Help modal content regenerated in the new language
+- Onboarding steps update in real-time on language switch
+- Theme button title follows the current language
+
+#### ⭐ Google Play Rating Button
+- Gold gradient button in footer linking to Google Play rating
+- Uses `market://` intent on Android with 500ms fallback to web URL
+
+#### 🧭 First-Use Onboarding Guided Tour
+- 5-step interactive tour triggered on first visit (localStorage flag)
+- Steps: Welcome → Light Meter → Flash → Ratios → Go!
+- Touch gestures: swipe left/right to navigate
+- Navigation: dot indicators + Previous/Next/Skip buttons
+- Language-aware: all steps translated in FR/EN
+
+#### 📊 EV Equivalence Table in Help Modal
+- 3-column table: IL (EV), Fraction, Écart (Step) from IL 10.0 → 1.0
+- Shows photographic fractions (1/1, 1/2 ... 1/512) alongside tenth-stop IL values
+- Explanatory note about the relationship between IL and flash power fractions
+
+#### 📱 Android Edge-to-Edge (SDK 35)
+- `viewport-fit=cover` for full screen rendering
+- CSS `env(safe-area-inset-*)` variables for notch/navbar safe areas
+- Safe area padding on body, header, footer, modals, tabs
+- Capacitor `edgeToEdgeEnabled: true` in config
+- StatusBar `overlaysWebView: false`
+
+### 🛠️ Files Modified
+- `index.html` — viewport-fit=cover, onboarding modal overlay, rate button, safe-area CSS vars
+- `i18n.js` — 30+ new translation keys, `updateCompensationButtons()`, enhanced `setLanguage()`, EV equivalence table
+- `theme-switcher.js` — Language-aware tooltips, explicit Auto/Light/Dark icon rotation
+- `app.js` — Fixed code corruption, added `initOnboarding()` (~120 lines), `initRateButton()`, translated compensation display
+- `styles.css` — Safe-area padding, rate button gold gradient, complete onboarding styles, equiv-table styles, edge-to-edge fixes
+- `capacitor.config.json` — Added `edgeToEdgeEnabled`, `webContentsDebuggingEnabled`, StatusBar config
+
+---
+
+## [1.5] - 2026-05-28
+
+### 📦 Google Play Publication
+
+**Status**: ✅ Published on Google Play  
+**Google Play**: Version 3 (1.5)  
+
+### ✨ Changes
+- First publication on Google Play Store
+- Package name: `com.onosendai.assistantposemetrepro`
+- Target SDK 35 (Android 15)
+- App signing and bundle configuration for Play Store
+- Play Store listing metadata (FR/EN descriptions, screenshots)
+
+---
+
 ## [1.4] - 2026-05-27
 
 ### 🎯 Tenth-Stop Precision for Flash Power Fractions & Max Power Capping
@@ -471,7 +541,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## 🚀 Future Versions
 
-### v1.3 (Planned)
+### v1.7 (Planned)
 - [ ] History of last 10 measurements
 - [ ] Saved favorites / Presets
 - [ ] Export to CSV/PDF
@@ -479,7 +549,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### v2.0 (Future)
 - [ ] Additional languages (ES, DE, IT)
 - [ ] Native iOS app (App Store)
-- [ ] Native Android app (Play Store)
 - [ ] Bluetooth integration (Sekonic)
 - [ ] DOF/Hyperfocal calculator
 
@@ -495,6 +564,6 @@ MIT License - Copyright (c) 2026 Laurent Suchet IG:@ono_sendai
 
 **Happy shooting!** 📸✨
 
-Current version: **1.3** (May 1, 2026)
+Current version: **1.6** (May 29, 2026)
 
 </div>

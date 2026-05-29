@@ -11,6 +11,9 @@ const translations = {
         appTitle: '📷 Assistant Posemètre Pro',
         helpBtn: '?',
         themeBtn: 'Changer de thème',
+        themeAuto: 'Système (Auto)',
+        themeLight: 'Mode Clair',
+        themeDark: 'Mode Sombre',
         
         // Navigation
         navPosemetre: '☀️ Continu',
@@ -123,6 +126,7 @@ const translations = {
         // Footer
         footerInstall: '📱 Installer l\'application',
         footerText: 'Assistant Posemètre Pro v1.6 | Développé pour Laurent Suchet IG:@ono_sendai',
+        footerRateApp: '⭐ Noter l\'application',
         
         // Modal Aide - Titres
         helpTitle: '📖 Aide',
@@ -134,7 +138,38 @@ const translations = {
         helpNavEquiv: 'Table IL',
         
         // Unité
-        evUnit: 'IL'
+        evUnit: 'IL',
+        
+        // Compensation buttons
+        compMinus2: '-2 IL',
+        compMinus1: '-1 IL',
+        compMinus033: '-1/3 IL',
+        comp0: '0',
+        compPlus033: '+1/3 IL',
+        compPlus1: '+1 IL',
+        compPlus133: '+1 1/3 IL',
+        compPlus2: '+2 IL',
+        compPlus3: '+3 IL',
+        compMinus3: '-3 IL',
+        compMinus25: '-2.5 IL',
+        compMinus15: '-1.5 IL',
+        compMinus05: '-0.5 IL',
+        
+        // Onboarding
+        onboardingSkip: 'Passer',
+        onboardingNext: 'Suivant',
+        onboardingPrev: 'Précédent',
+        onboardingFinish: 'C\'est parti !',
+        onboardingStep1Title: 'Bienvenue !',
+        onboardingStep1Text: 'Assistant Posemètre Pro vous aide à calculer vos réglages d\'exposition à partir de mesures de lumière incidente. Découvrons les fonctionnalités ensemble.',
+        onboardingStep2Title: 'Mode Continu',
+        onboardingStep2Text: 'Mesurez la lumière ambiante avec votre posemètre, entrez l\'ouverture indiquée, et l\'app vous propose les réglages équivalents en ouverture, vitesse et ISO.',
+        onboardingStep3Title: 'Mode Flash',
+        onboardingStep3Text: 'Entrez la mesure de votre flashmètre et l\'ouverture souhaitée. L\'app calcule l\'ajustement de puissance nécessaire en IL ou en fractions.',
+        onboardingStep4Title: 'Mode Ratios',
+        onboardingStep4Text: 'Gérez l\'éclairage multi-sources. Entrez la mesure Key light et le ratio Fill souhaité pour obtenir les réglages.',
+        onboardingStep5Title: 'Sans Cellule',
+        onboardingStep5Text: 'Utilisez la mesure spot de votre appareil sur une zone de référence (peau, mur, ciel...). L\'app corrige l\'exposition selon la réflectance de la zone.',
     },
     
     en: {
@@ -142,6 +177,9 @@ const translations = {
         appTitle: '📷 Light Meter Pro Assistant',
         helpBtn: '?',
         themeBtn: 'Change theme',
+        themeAuto: 'System (Auto)',
+        themeLight: 'Light Mode',
+        themeDark: 'Dark Mode',
         
         // Navigation
         navPosemetre: '☀️ Ambient',
@@ -254,6 +292,7 @@ const translations = {
         // Footer
         footerInstall: '📱 Install app',
         footerText: 'Light Meter Pro Assistant v1.6 | Developed for Laurent Suchet IG:@ono_sendai',
+        footerRateApp: '⭐ Rate the app',
         
         // Modal Aide - Titres
         helpTitle: '📖 Help',
@@ -265,7 +304,38 @@ const translations = {
         helpNavEquiv: 'EV Table',
         
         // Unité
-        evUnit: 'EV'
+        evUnit: 'EV',
+        
+        // Compensation buttons
+        compMinus2: '-2 EV',
+        compMinus1: '-1 EV',
+        compMinus033: '-1/3 EV',
+        comp0: '0',
+        compPlus033: '+1/3 EV',
+        compPlus1: '+1 EV',
+        compPlus133: '+1 1/3 EV',
+        compPlus2: '+2 EV',
+        compPlus3: '+3 EV',
+        compMinus3: '-3 EV',
+        compMinus25: '-2.5 EV',
+        compMinus15: '-1.5 EV',
+        compMinus05: '-0.5 EV',
+        
+        // Onboarding
+        onboardingSkip: 'Skip',
+        onboardingNext: 'Next',
+        onboardingPrev: 'Previous',
+        onboardingFinish: 'Let\'s go!',
+        onboardingStep1Title: 'Welcome!',
+        onboardingStep1Text: 'Light Meter Pro helps you calculate exposure settings from incident light readings. Let\'s discover the features together.',
+        onboardingStep2Title: 'Ambient Mode',
+        onboardingStep2Text: 'Measure ambient light with your light meter, enter the indicated aperture, and the app suggests equivalent settings for aperture, shutter speed, and ISO.',
+        onboardingStep3Title: 'Flash Mode',
+        onboardingStep3Text: 'Enter your flash meter reading and desired aperture. The app calculates the necessary power adjustment in EV or fractions.',
+        onboardingStep4Title: 'Ratios Mode',
+        onboardingStep4Text: 'Manage multi-source lighting. Enter the Key light reading and desired Fill ratio to get your settings.',
+        onboardingStep5Title: 'No Meter Mode',
+        onboardingStep5Text: 'Use your camera\'s spot metering on a reference zone (skin, wall, sky...). The app corrects exposure based on the zone\'s reflectance.',
     }
 };
 
@@ -672,51 +742,61 @@ function initLanguage() {
 }
 
 /**
- * Obtient une traduction
- */
-function t(key, params = {}) {
-    let text = translations[currentLang]?.[key] || translations['fr'][key] || key;
-    
-    // Remplacer les paramètres {param}
-    Object.keys(params).forEach(param => {
-        text = text.replace(new RegExp(`\\{${param}\\}`, 'g'), params[param]);
-    });
-    
-    return text;
-}
-
-/**
  * Génère la table d'équivalence IL / Fractions
+ * Inclut les IL entiers et dixièmes, de 10 IL à 1 IL
  */
 function generateEquivTable(lang) {
     const isFr = (lang === 'fr');
+    const unitStr = isFr ? 'IL' : 'EV';
+    
     let html = `
-        <h3>${isFr ? "Table d'équivalence IL / Fractions" : "EV / Fractions Equivalence Table"}</h3>
-        <p>${isFr ? "Correspondance entre la puissance de flash en IL et la notation en fraction. Les IL entiers sont en surbrillance." : "Correspondence between flash power in EV and fraction notation. Whole EVs are highlighted."}</p>
-        <div style="max-height: 400px; overflow-y: auto; margin-top: 15px;">
-        <table class="equiv-table" style="width: 100%; border-collapse: collapse; text-align: center;">
+        <h3>${isFr ? "Table d'équivalence IL / Fractions de puissance" : "EV / Power Fraction Equivalence Table"}</h3>
+        <p style="margin-bottom: 12px;">${isFr ? "Correspondance entre l'indice de lumination (IL) et la fraction de puissance du flash. Les valeurs entières (1 IL = doublement de puissance) sont en surbrillance rouge. Les dixièmes permettent un réglage fin." : "Correspondence between Exposure Value (EV) and flash power fraction. Whole values (1 EV = doubling of power) are highlighted in red. Tenths allow fine adjustment."}</p>
+        <p style="margin-bottom: 16px; font-size: 13px; color: var(--text-muted);">
+            ${isFr 
+                ? "📌 <strong>Exemple :</strong> 10 IL = 1/1 (pleine puissance), 9 IL = 1/2, 8 IL = 1/4, ... 1 IL = 1/512. Les dixièmes ajoutent une précision : 9.9 IL = 1/2+9 (presque 1/2), 9.1 IL = 1/2+1 (un peu au-dessus de 1/2)."
+                : "📌 <strong>Example:</strong> 10 EV = 1/1 (full power), 9 EV = 1/2, 8 EV = 1/4, ... 1 EV = 1/512. Tenths add precision: 9.9 EV = 1/2+9 (almost 1/2), 9.1 EV = 1/2+1 (just above 1/2)."}
+        </p>
+        <div style="max-height: 450px; overflow-y: auto; margin-top: 15px; border-radius: 8px;">
+        <table class="equiv-table" style="width: 100%; border-collapse: collapse; text-align: center; font-size: 14px;">
         <thead style="position: sticky; top: 0; background: var(--bg-card); z-index: 1;">
             <tr>
-                <th style="padding: 8px; border-bottom: 2px solid var(--border-color);">${isFr ? "IL" : "EV"}</th>
-                <th style="padding: 8px; border-bottom: 2px solid var(--border-color);">${isFr ? "Fraction" : "Fraction"}</th>
+                <th style="padding: 10px; border-bottom: 2px solid var(--border-color); width: 35%;">${unitStr}</th>
+                <th style="padding: 10px; border-bottom: 2px solid var(--border-color); width: 35%;">${isFr ? "Fraction" : "Fraction"}</th>
+                <th style="padding: 10px; border-bottom: 2px solid var(--border-color); width: 30%;">${isFr ? "Écart" : "Step"}</th>
             </tr>
         </thead>
         <tbody>`;
         
     for (let i = 100; i >= 10; i--) {
-        let currentIL = (i / 10).toFixed(1).replace('.0', '');
+        let currentIL = (i / 10).toFixed(1);
+        let displayIL = (i / 10).toFixed(1).replace('.0', '');
         let basePower = 10 - Math.floor(i / 10);
         let baseDen = Math.pow(2, basePower);
         let decimals = i % 10;
         let fracText = '1/' + baseDen;
-        if (decimals > 0) fracText += '+' + decimals;
+        let stepText = '';
         
-        let rowStyle = (decimals === 0) ? 'font-weight: bold; color: #ff4444; background: rgba(255, 68, 68, 0.1);' : 'border-bottom: 1px solid var(--border-color);';
-        let tdStyle = 'padding: 6px;';
+        if (decimals === 0) {
+            // IL entier
+            stepText = isFr ? '▼ 1 IL complet' : '▼ 1 full EV';
+        } else {
+            fracText += '+' + decimals;
+            stepText = isFr ? '▸ +' + decimals + '/10 IL' : '▸ +' + decimals + '/10 EV';
+        }
+        
+        // Les IL entiers en surbrillance rouge
+        let rowStyle = (decimals === 0) 
+            ? 'font-weight: bold; background: rgba(255, 68, 68, 0.12); border-bottom: 2px solid rgba(255, 68, 68, 0.3);' 
+            : 'border-bottom: 1px solid var(--border-color);';
+        let ilStyle = (decimals === 0) ? 'color: #ff4444; font-size: 16px;' : 'color: var(--text-muted);';
+        let fracStyle = (decimals === 0) ? 'color: #ff4444; font-size: 15px;' : 'color: var(--text-light);';
+        let tdStyle = 'padding: 8px 6px;';
         
         html += `<tr style="${rowStyle}">
-            <td style="${tdStyle}">${currentIL}</td>
-            <td style="${tdStyle}">${fracText}</td>
+            <td style="${tdStyle}${ilStyle}"><strong>${displayIL}</strong> ${unitStr}</td>
+            <td style="${tdStyle}${fracStyle}"><strong>${fracText}</strong></td>
+            <td style="${tdStyle}color: var(--text-muted); font-size: 12px;">${stepText}</td>
         </tr>`;
     }
     
@@ -735,6 +815,48 @@ function getHelpContent(section) {
 }
 
 /**
+ * Obtient une traduction
+ */
+function t(key, params = {}) {
+    let text = translations[currentLang]?.[key] || translations['fr'][key] || key;
+    
+    // Remplacer les paramètres {param}
+    Object.keys(params).forEach(param => {
+        text = text.replace(new RegExp(`\\{${param}\\}`, 'g'), params[param]);
+    });
+    
+    return text;
+}
+
+/**
+ * Met à jour les libellés des boutons de compensation
+ */
+function updateCompensationButtons() {
+    const mapping = {
+        '-2': t('compMinus2'),
+        '-1': t('compMinus1'),
+        '-0.33': t('compMinus033'),
+        '0': t('comp0'),
+        '0.33': t('compPlus033'),
+        '1': t('compPlus1'),
+        '1.33': t('compPlus133'),
+        '2': t('compPlus2'),
+        '3': t('compPlus3'),
+        '-3': t('compMinus3'),
+        '-2.5': t('compMinus25'),
+        '-1.5': t('compMinus15'),
+        '-0.5': t('compMinus05')
+    };
+    
+    document.querySelectorAll('.comp-btn').forEach(btn => {
+        const val = btn.getAttribute('data-value');
+        if (val && mapping[val]) {
+            btn.textContent = mapping[val];
+        }
+    });
+}
+
+/**
  * Change la langue
  */
 function setLanguage(lang) {
@@ -743,14 +865,34 @@ function setLanguage(lang) {
         localStorage.setItem(LANG_KEY, lang);
         applyTranslations();
         updateLanguageButton();
+        // Mettre à jour les boutons de compensation
+        updateCompensationButtons();
         // Mettre à jour l'aide
         updateHelpContent();
         // Mettre à jour les zones de l'estimation
         updateEstimationZones();
         // Mettre à jour la grille de réflectance
         updateReflectanceGrid();
+        // Mettre à jour le bouton de thème (son title dépend de la langue)
+        if (window.themeSwitcher && typeof window.themeSwitcher.get === 'function') {
+            const themeState = window.themeSwitcher.get();
+            const themeBtn = document.getElementById('theme-toggle');
+            if (themeBtn) {
+                if (themeState === 'auto') {
+                    themeBtn.title = lang === 'fr' ? 'Système (Auto)' : 'System (Auto)';
+                } else if (themeState === 'light') {
+                    themeBtn.title = lang === 'fr' ? 'Mode Clair' : 'Light Mode';
+                } else {
+                    themeBtn.title = lang === 'fr' ? 'Mode Sombre' : 'Dark Mode';
+                }
+            }
+        }
+        // Mettre à jour l'onboarding s'il est visible
+        if (typeof window.updateOnboardingLanguage === 'function') {
+            window.updateOnboardingLanguage();
+        }
         
-        // Recalculer les résultats pour mettre à jour les textes dynamique (après mise à jour UI)
+        // Recalculer les résultats pour mettre à jour les textes dynamiques (après mise à jour UI)
         if (typeof window.calculatePosemetre === 'function') window.calculatePosemetre();
         if (typeof window.calculateFlashmetre === 'function') window.calculateFlashmetre();
         if (typeof window.calculateRatios === 'function') window.calculateRatios();
@@ -893,6 +1035,7 @@ function initI18n() {
     // Appliquer les traductions initiales
     applyTranslations();
     updateLanguageButton();
+    updateCompensationButtons();
     updateHelpContent();
     updateEstimationZones();
     updateReflectanceGrid();
@@ -909,5 +1052,6 @@ window.i18n = {
     applyTranslations,
     initI18n,
     getHelpContent,
-    updateHelpContent
+    updateHelpContent,
+    updateCompensationButtons
 };

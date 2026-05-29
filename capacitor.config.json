@@ -10,7 +10,9 @@
   },
   "android": {
     "backgroundColor": "#1a1a1a",
-    "allowMixedContent": true
+    "allowMixedContent": true,
+    "webContentsDebuggingEnabled": false,
+    "edgeToEdgeEnabled": true
   },
   "plugins": {
     "SplashScreen": {
@@ -25,7 +27,8 @@
     },
     "StatusBar": {
       "style": "dark",
-      "backgroundColor": "#1a1a1a"
+      "backgroundColor": "#1a1a1a",
+      "overlaysWebView": false
     }
   }
 }

@@ -97,6 +97,11 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    /* Edge-to-Edge: padding for safe areas on Android 15+ and iOS */
+    padding-top: var(--safe-area-top);
+    padding-bottom: var(--safe-area-bottom);
+    padding-left: var(--safe-area-left);
+    padding-right: var(--safe-area-right);
 }
 
 #app {
@@ -114,6 +119,7 @@ body {
 header {
     background: linear-gradient(135deg, var(--header-bg-start) 0%, var(--header-bg-end) 100%);
     padding: 16px 20px;
+    padding-top: calc(16px + var(--safe-area-top));
     box-shadow: 0 4px 12px var(--shadow-header);
     position: sticky;
     top: 0;
@@ -1236,6 +1242,298 @@ footer {
 
     .comp-btn:active {
         transform: scale(0.95);
+    }
+}
+
+/* =====================================================
+   RATE BUTTON (Google Play)
+   ===================================================== */
+
+.rate-btn {
+    background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
+    color: #1a1a1a;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 8px 0;
+    box-shadow: 0 4px 12px rgba(255, 179, 0, 0.4);
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 300px;
+}
+
+.rate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 179, 0, 0.5);
+}
+
+.rate-btn:active {
+    transform: scale(0.97);
+}
+
+/* =====================================================
+   ONBOARDING (Première utilisation)
+   ===================================================== */
+
+.onboarding-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.onboarding-container {
+    background: var(--bg-card);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.4s ease;
+    overflow: hidden;
+}
+
+[data-theme="light"] .onboarding-container {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+}
+
+.onboarding-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 16px 0;
+}
+
+.onboarding-skip-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.onboarding-skip-btn:hover {
+    color: var(--text-light);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.onboarding-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 32px 32px;
+    min-height: 280px;
+    position: relative;
+}
+
+.onboarding-step {
+    display: none;
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+    width: 100%;
+}
+
+.onboarding-step.active {
+    display: block;
+}
+
+.onboarding-icon {
+    font-size: 56px;
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.onboarding-step h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 16px;
+}
+
+[data-theme="light"] .onboarding-step h2 {
+    color: var(--secondary-color);
+}
+
+.onboarding-step p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 340px;
+    margin: 0 auto;
+}
+
+[data-theme="light"] .onboarding-step p {
+    color: var(--text-light);
+}
+
+.onboarding-footer {
+    padding: 16px 32px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.onboarding-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.onboarding-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.onboarding-dot.active {
+    background: var(--primary-color);
+    width: 24px;
+    border-radius: 4px;
+}
+
+[data-theme="light"] .onboarding-dot.active {
+    background: var(--secondary-color);
+}
+
+.onboarding-nav {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.onboarding-nav-btn {
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid var(--border-color);
+    background: transparent;
+    color: var(--text-muted);
+}
+
+.onboarding-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+}
+
+.onboarding-nav-btn.onboarding-primary {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    margin-left: auto;
+}
+
+.onboarding-nav-btn.onboarding-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+[data-theme="light"] .onboarding-nav-btn.onboarding-primary {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* =====================================================
+   EQUIV TABLE (Table IL/Fractions dans l'aide)
+   ===================================================== */
+
+.equiv-table {
+    font-size: 14px;
+}
+
+.equiv-table thead th {
+    background: var(--bg-card);
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+[data-theme="light"] .equiv-table thead th {
+    color: var(--secondary-color);
+}
+
+.equiv-table tbody tr:hover {
+    background: rgba(255, 107, 53, 0.05);
+}
+
+[data-theme="light"] .equiv-table tbody tr:hover {
+    background: rgba(129, 199, 132, 0.08);
+}
+
+/* =====================================================
+   RESPONSIVE — Onboarding
+   ===================================================== */
+
+@media (max-width: 480px) {
+    .onboarding-container {
+        max-height: 92vh;
+        border-radius: 16px;
+    }
+    
+    .onboarding-content {
+        padding: 16px 20px 20px;
+        min-height: 240px;
+    }
+    
+    .onboarding-icon {
+        font-size: 44px;
+        margin-bottom: 16px;
+    }
+    
+    .onboarding-step h2 {
+        font-size: 19px;
+    }
+    
+    .onboarding-step p {
+        font-size: 13px;
+    }
+    
+    .onboarding-footer {
+        padding: 12px 20px 20px;
+    }
+    
+    .rate-btn {
+        max-width: 100%;
+        font-size: 13px;
+        padding: 10px 20px;
+    }
+}
+
+/* SUPPORT TOUCH — Onboarding */
+@media (hover: none) {
+    .rate-btn:hover,
+    .onboarding-nav-btn:hover {
+        transform: none;
     }
 }
 
