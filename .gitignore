@@ -3,7 +3,7 @@ node_modules/
 ios/
 android/
 dist/
-www/
+# www/ intentionnellement versionné : c'est le webDir Capacitor (sources web)
 
 # Build files
 *.log
