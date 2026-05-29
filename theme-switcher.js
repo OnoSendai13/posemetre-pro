@@ -83,20 +83,25 @@
      */
     function updateThemeButtonIcon(state) {
         const button = document.getElementById('theme-toggle');
-        if (button) {
-            if (state === 'auto') {
-                button.textContent = '🌓'; // Icône pour auto
-                button.setAttribute('aria-label', 'Mode système (auto)');
-                button.title = 'Système (Auto)';
-            } else if (state === 'light') {
-                button.textContent = '☀️';
-                button.setAttribute('aria-label', 'Mode clair (forcer)');
-                button.title = 'Mode Clair';
-            } else {
-                button.textContent = '🌙';
-                button.setAttribute('aria-label', 'Mode sombre (forcer)');
-                button.title = 'Mode Sombre';
-            }
+        if (!button) return;
+        
+        const lang = (window.i18n && window.i18n.getLanguage) ? window.i18n.getLanguage() : 'fr';
+        
+        if (state === 'auto') {
+            button.textContent = '🌓';
+            button.setAttribute('aria-label', 'Mode système (auto)');
+            button.setAttribute('data-i18n-title', 'themeAuto');
+            button.title = lang === 'fr' ? 'Système (Auto)' : 'System (Auto)';
+        } else if (state === 'light') {
+            button.textContent = '☀️';
+            button.setAttribute('aria-label', 'Mode clair (forcer)');
+            button.setAttribute('data-i18n-title', 'themeLight');
+            button.title = lang === 'fr' ? 'Mode Clair' : 'Light Mode';
+        } else {
+            button.textContent = '🌙';
+            button.setAttribute('aria-label', 'Mode sombre (forcer)');
+            button.setAttribute('data-i18n-title', 'themeDark');
+            button.title = lang === 'fr' ? 'Mode Sombre' : 'Dark Mode';
         }
     }
     
@@ -168,7 +173,9 @@
             const button = document.getElementById('theme-toggle');
             if (button) {
                 button.addEventListener('click', toggleTheme);
-                updateThemeButtonIcon(initialState);
+                // Re-appliquer l'état pour s'assurer que l'icône et le titre sont corrects
+                const currentState = getSavedThemeState();
+                updateThemeButtonIcon(currentState);
             } else {
                 console.warn('Theme toggle button not found');
             }

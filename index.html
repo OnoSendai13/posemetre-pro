@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#1a1a1a">
@@ -41,6 +41,16 @@
     
     <title>Assistant Posemetre Pro</title>
     
+    <!-- Edge-to-Edge Safe Area CSS Variables -->
+    <style>
+        :root {
+            --safe-area-top: env(safe-area-inset-top, 0px);
+            --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-area-left: env(safe-area-inset-left, 0px);
+            --safe-area-right: env(safe-area-inset-right, 0px);
+        }
+    </style>
+    
     <!-- Manifest & Icons -->
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -58,7 +68,7 @@
                 <div class="header-buttons">
                     <button id="lang-btn" class="header-btn" title="Switch to English">EN</button>
                     <button id="help-btn" class="header-btn" title="Aide">?</button>
-                    <button id="theme-toggle" class="header-btn" title="Changer de thème"></button>
+                    <button id="theme-toggle" class="header-btn" data-i18n-title="themeAuto" title="Système (Auto)">🌓</button>
                 </div>
             </div>
             <div class="power-mode-switch" id="powerModeSwitch" style="display: none;">
@@ -408,8 +418,60 @@
             <button id="installBtn" class="install-btn" style="display:none;">
                 <span data-i18n="footerInstall">&#128241; Installer l'application</span>
             </button>
+            <button id="rateBtn" class="rate-btn">
+                <span data-i18n="footerRateApp">⭐ Noter l'application</span>
+            </button>
             <p class="footer-text" data-i18n="footerText">Assistant Posemètre Pro v1.6 | Développé pour Laurent Suchet IG:@ono_sendai</p>
         </footer>
+    </div>
+
+    <!-- Modal Onboarding (Première utilisation) -->
+    <div id="onboarding-overlay" class="onboarding-overlay" style="display: none;">
+        <div class="onboarding-container">
+            <div class="onboarding-header">
+                <button id="onboarding-skip" class="onboarding-skip-btn" data-i18n="onboardingSkip">Passer</button>
+            </div>
+            <div class="onboarding-content">
+                <div class="onboarding-step active" data-step="0">
+                    <div class="onboarding-icon">📷</div>
+                    <h2 data-i18n="onboardingStep1Title">Bienvenue !</h2>
+                    <p data-i18n="onboardingStep1Text">Assistant Posemètre Pro vous aide à calculer vos réglages d'exposition...</p>
+                </div>
+                <div class="onboarding-step" data-step="1">
+                    <div class="onboarding-icon">☀️</div>
+                    <h2 data-i18n="onboardingStep2Title">Mode Continu</h2>
+                    <p data-i18n="onboardingStep2Text">Mesurez la lumière ambiante avec votre posemètre...</p>
+                </div>
+                <div class="onboarding-step" data-step="2">
+                    <div class="onboarding-icon">⚡</div>
+                    <h2 data-i18n="onboardingStep3Title">Mode Flash</h2>
+                    <p data-i18n="onboardingStep3Text">Entrez la mesure de votre flashmètre et l'ouverture souhaitée...</p>
+                </div>
+                <div class="onboarding-step" data-step="3">
+                    <div class="onboarding-icon">💡</div>
+                    <h2 data-i18n="onboardingStep4Title">Mode Ratios</h2>
+                    <p data-i18n="onboardingStep4Text">Gérez l'éclairage multi-sources...</p>
+                </div>
+                <div class="onboarding-step" data-step="4">
+                    <div class="onboarding-icon">🎯</div>
+                    <h2 data-i18n="onboardingStep5Title">Sans Cellule</h2>
+                    <p data-i18n="onboardingStep5Text">Utilisez la mesure spot de votre appareil...</p>
+                </div>
+            </div>
+            <div class="onboarding-footer">
+                <div class="onboarding-dots">
+                    <span class="onboarding-dot active"></span>
+                    <span class="onboarding-dot"></span>
+                    <span class="onboarding-dot"></span>
+                    <span class="onboarding-dot"></span>
+                    <span class="onboarding-dot"></span>
+                </div>
+                <div class="onboarding-nav">
+                    <button id="onboarding-prev" class="onboarding-nav-btn" data-i18n="onboardingPrev" style="visibility: hidden;">Précédent</button>
+                    <button id="onboarding-next" class="onboarding-nav-btn onboarding-primary" data-i18n="onboardingNext">Suivant</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modal Aide -->

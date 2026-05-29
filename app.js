@@ -289,6 +289,12 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateFlashmetre();
     calculateRatios();
     calculateEstimation();
+    
+    // Initialiser l'onboarding (première utilisation)
+    initOnboarding();
+    
+    // Configurer le bouton Google Play
+    initRateButton();
 });
 
 /**
@@ -647,8 +653,9 @@ function setCompensation(mode, value) {
     }
     
     // Met à jour le texte
+    const _t = window.i18n ? window.i18n.t : (k) => k;
     document.getElementById(displayId).textContent = 
-        (value >= 0 ? '+' : '') + value.toFixed(1) + ' IL';
+        (value >= 0 ? '+' : '') + value.toFixed(1) + ' ' + _t('evUnit');
     
     // Met à jour les boutons actifs
     document.querySelectorAll(btnSelector).forEach(btn => {
@@ -1111,3 +1118,201 @@ window.calculatePosemetre = calculatePosemetre;
 window.calculateFlashmetre = calculateFlashmetre;
 window.calculateRatios = calculateRatios;
 window.calculateEstimation = calculateEstimation;
+
+// ============================================
+// ONBOARDING (Première utilisation)
+// ============================================
+
+const ONBOARDING_KEY = 'app-onboarding-done';
+let currentOnboardingStep = 0;
+const totalOnboardingSteps = 5;
+
+/**
+ * Initialise le système d'onboarding
+ */
+function initOnboarding() {
+    // Vérifier si l'onboarding a déjà été fait
+    const done = localStorage.getItem(ONBOARDING_KEY);
+    if (done === 'true') return;
+    
+    // Afficher après un court délai
+    setTimeout(() => {
+        showOnboarding();
+    }, 800);
+}
+
+/**
+ * Affiche l'onboarding
+ */
+function showOnboarding() {
+    const overlay = document.getElementById('onboarding-overlay');
+    if (!overlay) return;
+    
+    currentOnboardingStep = 0;
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    updateOnboardingStep();
+    
+    // Bouton fermer/skip
+    const skipBtn = document.getElementById('onboarding-skip');
+    if (skipBtn) {
+        skipBtn.onclick = closeOnboarding;
+    }
+    
+    // Bouton précédent
+    const prevBtn = document.getElementById('onboarding-prev');
+    if (prevBtn) {
+        prevBtn.onclick = () => {
+            if (currentOnboardingStep > 0) {
+                currentOnboardingStep--;
+                updateOnboardingStep();
+            }
+        };
+    }
+    
+    // Bouton suivant/terminer
+    const nextBtn = document.getElementById('onboarding-next');
+    if (nextBtn) {
+        nextBtn.onclick = () => {
+            if (currentOnboardingStep < totalOnboardingSteps - 1) {
+                currentOnboardingStep++;
+                updateOnboardingStep();
+            } else {
+                closeOnboarding();
+            }
+        };
+    }
+    
+    // Navigation tactile (swipe)
+    let touchStartX = 0;
+    overlay.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+    });
+    overlay.addEventListener('touchend', (e) => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) {
+            if (diff > 0 && currentOnboardingStep < totalOnboardingSteps - 1) {
+                currentOnboardingStep++;
+                updateOnboardingStep();
+            } else if (diff < 0 && currentOnboardingStep > 0) {
+                currentOnboardingStep--;
+                updateOnboardingStep();
+            }
+        }
+    });
+}
+
+/**
+ * Met à jour l'étape d'onboarding affichée
+ */
+function updateOnboardingStep() {
+    // Mettre à jour les étapes
+    document.querySelectorAll('.onboarding-step').forEach((step, index) => {
+        step.classList.toggle('active', index === currentOnboardingStep);
+    });
+    
+    // Mettre à jour les dots
+    document.querySelectorAll('.onboarding-dot').forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentOnboardingStep);
+    });
+    
+    // Mettre à jour les boutons
+    const prevBtn = document.getElementById('onboarding-prev');
+    const nextBtn = document.getElementById('onboarding-next');
+    
+    if (prevBtn) {
+        prevBtn.style.visibility = currentOnboardingStep === 0 ? 'hidden' : 'visible';
+    }
+    
+    if (nextBtn) {
+        const _t = window.i18n ? window.i18n.t : (k) => k;
+        if (currentOnboardingStep === totalOnboardingSteps - 1) {
+            nextBtn.textContent = _t('onboardingFinish');
+        } else {
+            nextBtn.textContent = _t('onboardingNext');
+        }
+    }
+}
+
+/**
+ * Ferme l'onboarding et le marque comme fait
+ */
+function closeOnboarding() {
+    const overlay = document.getElementById('onboarding-overlay');
+    if (overlay) {
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    localStorage.setItem(ONBOARDING_KEY, 'true');
+}
+
+/**
+ * Met à jour la langue de l'onboarding
+ */
+function updateOnboardingLanguage() {
+    const _t = window.i18n ? window.i18n.t : (k) => k;
+    
+    // Mettre à jour tous les éléments avec data-i18n dans l'onboarding
+    const overlay = document.getElementById('onboarding-overlay');
+    if (!overlay) return;
+    
+    overlay.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        el.innerHTML = _t(key);
+    });
+    
+    // Mettre à jour le bouton suivant/terminer
+    const nextBtn = document.getElementById('onboarding-next');
+    if (nextBtn) {
+        if (currentOnboardingStep === totalOnboardingSteps - 1) {
+            nextBtn.textContent = _t('onboardingFinish');
+        } else {
+            nextBtn.textContent = _t('onboardingNext');
+        }
+    }
+}
+
+window.updateOnboardingLanguage = updateOnboardingLanguage;
+
+// ============================================
+// BOUTON GOOGLE PLAY (Noter l'application)
+// ============================================
+
+/**
+ * Configure le bouton de notation Google Play
+ */
+function initRateButton() {
+    const rateBtn = document.getElementById('rateBtn');
+    if (!rateBtn) return;
+    
+    // ID du package Google Play — à remplacer par le vrai package ID
+    const PLAY_STORE_ID = 'com.laurentsuchet.posemetrepro';
+    
+    rateBtn.addEventListener('click', () => {
+        // Essayer d'ouvrir l'application Google Play d'abord (Android)
+        const androidUrl = `market://details?id=${PLAY_STORE_ID}`;
+        // Fallback vers le site web Google Play
+        const webUrl = `https://play.google.com/store/apps/details?id=${PLAY_STORE_ID}`;
+        
+        // Tenter d'ouvrir l'app Google Play sur Android
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        
+        if (isAndroid) {
+            // Sur Android, essayer market:// d'abord
+            const startTime = Date.now();
+            window.location.href = androidUrl;
+            
+            // Si après 500ms on est toujours là, fallback vers le web
+            setTimeout(() => {
+                if (Date.now() - startTime < 600) {
+                    window.open(webUrl, '_blank');
+                }
+            }, 500);
+        } else {
+            // Sur iOS ou desktop, ouvrir le site web
+            window.open(webUrl, '_blank');
+        }
+    });
+    
+    console.log('Rate button initialized');
+}
