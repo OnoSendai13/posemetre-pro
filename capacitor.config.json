@@ -5,13 +5,15 @@
   "backgroundColor": "#1a1a1a",
   "ios": {
     "contentInset": "always",
-    "scheme": "App"
+    "scheme": "App",
+    "icon": "resources/app-icon/icon.png"
   },
   "android": {
     "backgroundColor": "#1a1a1a",
     "allowMixedContent": true,
     "webContentsDebuggingEnabled": false,
-    "edgeToEdgeEnabled": true
+    "edgeToEdgeEnabled": true,
+    "icon": "resources/app-icon/icon.png"
   },
   "plugins": {
     "SplashScreen": {
