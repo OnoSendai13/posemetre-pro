@@ -416,7 +416,10 @@ export function calculateEstimation() {
     const shutter = parseFloat(dom('estim-vitesse')?.value);
     const comp = state.compensation.estimation;
 
-    const incidentFstop = calculateAperture(measuredFstop, -zoneIL);
+    // Sujet plus lumineux que gris neutre (zoneIL > 0) → fermer le diaphragme (+zoneIL)
+    // Sujet plus sombre (zoneIL < 0) → ouvrir le diaphragme
+    const incidentFstop = calculateAperture(measuredFstop, zoneIL);
+    // Compensation positive → plus de lumière → ouvrir → -comp sur l'ouverture
     const finalFstop = calculateAperture(incidentFstop, -comp);
     const finalShutter = calculateShutterSpeed(shutter, -comp);
     const finalISO = calculateISO(iso, comp);
@@ -438,7 +441,7 @@ export function calculateEstimation() {
         </div>
         <div class="result-item">
             <span class="result-label">${_t('resultZoneComp')}</span>
-            <span class="result-value">${-zoneIL >= 0 ? '+' : ''}${(-zoneIL).toFixed(1)} ${evUnit}</span>
+            <span class="result-value">${zoneIL >= 0 ? '+' : ''}${zoneIL.toFixed(1)} ${evUnit}</span>
             <span class="result-detail">${_t('resultAccordingReflectance')}</span>
         </div>
         <hr style="border: 0; border-top: 2px solid rgba(255,255,255,0.1); margin: 20px 0;">
