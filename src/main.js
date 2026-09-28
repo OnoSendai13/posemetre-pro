@@ -7,7 +7,8 @@ import { state, initDomCache, dom } from './state.js';
 import {
     populateSelects, switchTab, togglePowerMode, setCompensation,
     calculatePosemetre, calculateFlashmetre, calculateRatios, calculateEstimation,
-    openHelpModal, closeHelpModal, showHelpSection
+    openHelpModal, closeHelpModal, showHelpSection,
+    populateSunnySelects, buildSunnyConditionsGrid, initSunnyLockBtns, onSunnyParamChange
 } from './ui.js';
 
 // ============================================
@@ -40,6 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateFlashmetre();
     calculateRatios();
     calculateEstimation();
+
+    // Sunny 16
+    populateSunnySelects();
+    buildSunnyConditionsGrid();
+    initSunnyLockBtns();
 
     // 4. Evenements
     setupEventListeners();
@@ -146,6 +152,11 @@ function setupEventListeners() {
         dom(id)?.addEventListener('change', calculateEstimation);
     });
 
+    // Input changes — SUNNY 16
+    dom('sunny-fstop')?.addEventListener('change',   () => onSunnyParamChange('fstop'));
+    dom('sunny-shutter')?.addEventListener('change', () => onSunnyParamChange('shutter'));
+    dom('sunny-iso')?.addEventListener('change',     () => onSunnyParamChange('iso'));
+
     // Help modal
     initHelpModal();
 }
@@ -186,3 +197,4 @@ window.calculatePosemetre = calculatePosemetre;
 window.calculateFlashmetre = calculateFlashmetre;
 window.calculateRatios = calculateRatios;
 window.calculateEstimation = calculateEstimation;
+window.onSunnyParamChange = onSunnyParamChange;

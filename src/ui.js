@@ -468,6 +468,280 @@ export function calculateEstimation() {
 }
 
 // ============================================
+// SUNNY 16
+// ============================================
+
+/**
+ * Données des conditions lumineuses Sunny 16
+ * EV de référence = valeur pour ISO 100, vitesse ISO (1/ISO = 1/100s)
+ * La règle Sunny 16 : f/16 à 1/ISO = EV 15 (plein soleil)
+ * EV = log2(N² / t) avec ISO 100 comme base
+ */
+const SUNNY16_CONDITIONS = [
+    { key: 'snow',          icon: '❄️', ev: 16, fRef: 22,  labelKey: 'sunnyCondSnow'         },
+    { key: 'clear',         icon: '☀️', ev: 15, fRef: 16,  labelKey: 'sunnyCondClear'        },
+    { key: 'lightHaze',     icon: '🌤', ev: 14, fRef: 11,  labelKey: 'sunnyCondLightHaze'    },
+    { key: 'overcast',      icon: '⛅', ev: 13, fRef: 8,   labelKey: 'sunnyCondOvercast'     },
+    { key: 'heavyOvercast', icon: '🌥', ev: 12, fRef: 5.6, labelKey: 'sunnyCondHeavyOvercast'},
+    { key: 'shade',         icon: '🌫', ev: 11, fRef: 4,   labelKey: 'sunnyCondShade'        },
+    { key: 'dusk',          icon: '🌆', ev: 9,  fRef: 2.8, labelKey: 'sunnyCondDusk'         },
+    { key: 'indoor',        icon: '🏠', ev: 7,  fRef: 2,   labelKey: 'sunnyCondIndoor'       },
+];
+
+/** EV actif sélectionné par l'utilisateur */
+let sunnyCurrentEV = null;
+
+/** Paramètre verrouillé (celui que l'utilisateur veut garder fixe) */
+let sunnyLockedParam = 'fstop';
+
+/**
+ * Calcule l'ouverture f/N pour un EV, une vitesse t (s) et un ISO donnés.
+ * EV100 = log2(N²/t)  → N² = 2^EV * t * (ISO/100)
+ */
+function evToFstop(ev, shutterVal, iso) {
+    const N2 = Math.pow(2, ev) * shutterVal * (iso / 100);
+    return Math.sqrt(N2);
+}
+
+/**
+ * Calcule la vitesse t pour un EV, une ouverture N et un ISO donnés.
+ * t = N² / (2^EV * ISO/100)
+ */
+function evToShutter(ev, fstop, iso) {
+    return (fstop * fstop) / (Math.pow(2, ev) * (iso / 100));
+}
+
+/**
+ * Calcule l'ISO pour un EV, une ouverture N et une vitesse t donnés.
+ * ISO = 100 * N² / (2^EV * t)
+ */
+function evToISO(ev, fstop, shutterVal) {
+    return 100 * (fstop * fstop) / (Math.pow(2, ev) * shutterVal);
+}
+
+/**
+ * Peuple les selects du calculateur Sunny 16 (ouverture, vitesse, ISO)
+ */
+export function populateSunnySelects() {
+    // Ouverture — pleins stops + demi-stops courants
+    const sunnyFstops = [1, 1.4, 2, 2.8, 4, 5.6, 8, 11, 16, 22, 32];
+    const fstopSel = dom('sunny-fstop');
+    if (fstopSel) {
+        fstopSel.innerHTML = sunnyFstops.map(f =>
+            `<option value="${f}">f/${f}</option>`
+        ).join('');
+        fstopSel.value = '16';
+    }
+
+    // Vitesse — même liste que les autres onglets
+    const shutterSel = dom('sunny-shutter');
+    if (shutterSel) {
+        shutterSel.innerHTML = SHUTTERSPEEDS.map(s =>
+            `<option value="${s.value}">${s.label}</option>`
+        ).join('');
+        const s100 = SHUTTERSPEEDS.find(s => s.label === '1/100');
+        const s125 = SHUTTERSPEEDS.find(s => s.label === '1/125');
+        shutterSel.value = (s100 || s125 || SHUTTERSPEEDS[0]).value;
+    }
+
+    // ISO — liste standard
+    const isoSel = dom('sunny-iso');
+    if (isoSel) {
+        const { ISO_STANDARD } = { ISO_STANDARD: [25,32,40,50,64,80,100,125,160,200,250,320,400,500,640,800,1600,3200,6400,12800,25600,51200,102400] };
+        isoSel.innerHTML = ISO_STANDARD.map(v =>
+            `<option value="${v}">${v}</option>`
+        ).join('');
+        isoSel.value = '100';
+    }
+}
+
+/**
+ * Génère la grille de sélection des conditions météo
+ */
+export function buildSunnyConditionsGrid() {
+    const grid = dom('sunny-conditions-grid');
+    if (!grid) return;
+    grid.innerHTML = SUNNY16_CONDITIONS.map(cond => `
+        <button class="sunny-cond-btn" data-key="${cond.key}" data-ev="${cond.ev}">
+            <span class="sunny-cond-icon">${cond.icon}</span>
+            <span class="sunny-cond-label">${_t(cond.labelKey)}</span>
+            <span class="sunny-cond-ev">EV ${cond.ev}</span>
+        </button>
+    `).join('');
+
+    // Tableau de référence
+    buildSunnyTable();
+
+    // Listeners sur les boutons de condition
+    grid.querySelectorAll('.sunny-cond-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            grid.querySelectorAll('.sunny-cond-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            sunnyCurrentEV = parseFloat(btn.dataset.ev);
+            applySunnyEVToSelects();
+            updateSunnyReference(btn.dataset.key);
+        });
+    });
+}
+
+/**
+ * Met à jour la boîte de référence (résultat @ 100 ISO · 1/100s)
+ */
+function updateSunnyReference(condKey) {
+    const cond = SUNNY16_CONDITIONS.find(c => c.key === condKey);
+    if (!cond) return;
+
+    const refIcon = dom('sunny-ref-icon');
+    const refCond = dom('sunny-ref-condition');
+    const refFstop = dom('sunny-ref-fstop');
+    const refFormula = dom('sunny-ref-formula');
+
+    if (refIcon)   refIcon.textContent   = cond.icon;
+    if (refCond)   refCond.textContent   = _t(cond.labelKey);
+    if (refFstop)  refFstop.textContent  = `f/${cond.fRef}`;
+    if (refFormula) refFormula.textContent = `EV ${cond.ev} → f/${cond.fRef} · 1/100s · 100 ISO`;
+}
+
+/**
+ * Quand l'utilisateur choisit une condition, on pré-remplit les selects
+ * en gardant le paramètre verrouillé fixe et en recalculant les deux autres.
+ */
+function applySunnyEVToSelects() {
+    if (sunnyCurrentEV === null) return;
+
+    const fstopSel  = dom('sunny-fstop');
+    const shutterSel = dom('sunny-shutter');
+    const isoSel    = dom('sunny-iso');
+
+    const currentFstop   = parseFloat(fstopSel?.value  || 16);
+    const currentShutter = parseFloat(shutterSel?.value || 0.01);
+    const currentISO     = parseFloat(isoSel?.value    || 100);
+
+    recalcSunny(sunnyCurrentEV, sunnyLockedParam, currentFstop, currentShutter, currentISO);
+    updateSunnyEVDisplay();
+}
+
+/**
+ * Recalcule et affiche les deux paramètres non verrouillés.
+ * @param {number} ev
+ * @param {string} locked - 'fstop' | 'shutter' | 'iso'
+ * @param {number} fstop
+ * @param {number} shutter
+ * @param {number} iso
+ */
+function recalcSunny(ev, locked, fstop, shutter, iso) {
+    const fstopSel   = dom('sunny-fstop');
+    const shutterSel = dom('sunny-shutter');
+    const isoSel     = dom('sunny-iso');
+
+    if (locked === 'fstop') {
+        // Fixe ouverture → recalcule vitesse à ISO donné
+        const newShutter = evToShutter(ev, fstop, iso);
+        setSelectToClosest(shutterSel, newShutter, 'log');
+        // Recalcule ISO à vitesse finale
+        // (on garde ISO aussi fixe sauf si on voulait le changer — ici on fixe fstop et recompute shutter)
+    } else if (locked === 'shutter') {
+        // Fixe vitesse → recalcule ouverture à ISO donné
+        const newFstop = evToFstop(ev, shutter, iso);
+        setSelectToClosest(fstopSel, newFstop, 'linear');
+    } else if (locked === 'iso') {
+        // Fixe ISO → recalcule ouverture à vitesse donnée
+        const newFstop = evToFstop(ev, shutter, iso);
+        setSelectToClosest(fstopSel, newFstop, 'linear');
+    }
+}
+
+/**
+ * Positionne un <select> sur la valeur la plus proche.
+ * @param {HTMLSelectElement} select
+ * @param {number} target
+ * @param {'log'|'linear'} scale
+ */
+function setSelectToClosest(select, target, scale) {
+    if (!select) return;
+    let bestOption = null;
+    let bestDist = Infinity;
+    for (const opt of select.options) {
+        const v = parseFloat(opt.value);
+        const dist = scale === 'log'
+            ? Math.abs(Math.log(v / target))
+            : Math.abs(v - target);
+        if (dist < bestDist) { bestDist = dist; bestOption = opt; }
+    }
+    if (bestOption) select.value = bestOption.value;
+}
+
+/**
+ * Appelé quand l'utilisateur change manuellement un paramètre dans le calculateur.
+ * On identifie quel champ a changé, on recalcule les deux autres.
+ */
+export function onSunnyParamChange(changedParam) {
+    if (sunnyCurrentEV === null) return;
+
+    const fstop   = parseFloat(dom('sunny-fstop')?.value  || 16);
+    const shutter = parseFloat(dom('sunny-shutter')?.value || 0.01);
+    const iso     = parseFloat(dom('sunny-iso')?.value    || 100);
+
+    // Le paramètre changé devient la référence ; on recalcule les deux autres
+    if (changedParam === 'fstop') {
+        // Recalcule vitesse (ISO fixe)
+        const newShutter = evToShutter(sunnyCurrentEV, fstop, iso);
+        setSelectToClosest(dom('sunny-shutter'), newShutter, 'log');
+    } else if (changedParam === 'shutter') {
+        // Recalcule ouverture (ISO fixe)
+        const newFstop = evToFstop(sunnyCurrentEV, shutter, iso);
+        setSelectToClosest(dom('sunny-fstop'), newFstop, 'linear');
+    } else if (changedParam === 'iso') {
+        // Recalcule ouverture (vitesse fixe)
+        const newFstop = evToFstop(sunnyCurrentEV, shutter, iso);
+        setSelectToClosest(dom('sunny-fstop'), newFstop, 'linear');
+    }
+    updateSunnyEVDisplay();
+}
+
+/**
+ * Met à jour l'affichage de l'EV courant
+ */
+function updateSunnyEVDisplay() {
+    const display = dom('sunny-ev-value');
+    if (display && sunnyCurrentEV !== null) {
+        display.textContent = sunnyCurrentEV;
+    }
+}
+
+/**
+ * Génère le tableau de référence Sunny 16
+ */
+function buildSunnyTable() {
+    const table = dom('sunny-table');
+    if (!table) return;
+    table.innerHTML = SUNNY16_CONDITIONS.map(cond => `
+        <div class="sunny-table-row">
+            <span class="sunny-table-icon">${cond.icon}</span>
+            <span class="sunny-table-label">${_t(cond.labelKey)}</span>
+            <span class="sunny-table-ev">EV ${cond.ev}</span>
+            <span class="sunny-table-fstop">f/${cond.fRef}</span>
+            <span class="sunny-table-desc">${_t('sunnyCondDesc')[cond.key] || ''}</span>
+        </div>
+    `).join('');
+}
+
+/**
+ * Initialise les boutons de verrouillage
+ */
+export function initSunnyLockBtns() {
+    document.querySelectorAll('.sunny-lock-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.sunny-lock-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            sunnyLockedParam = btn.dataset.param;
+            // Réappliquer le calcul si une condition est déjà sélectionnée
+            if (sunnyCurrentEV !== null) applySunnyEVToSelects();
+        });
+    });
+}
+
+// ============================================
 // MODAL D'AIDE
 // ============================================
 

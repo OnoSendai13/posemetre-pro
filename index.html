@@ -87,6 +87,7 @@
             <button class="tab-btn" data-tab="flashmetre" data-i18n="navFlash">&#9889; Flash</button>
             <button class="tab-btn" data-tab="ratios" data-i18n="navRatios">&#128161; Ratios</button>
             <button class="tab-btn" data-tab="estimation" data-i18n="navEstimation">&#127919; Sans Cellule</button>
+            <button class="tab-btn" data-tab="sunny16" data-i18n="navSunny16">&#9728; Sunny 16</button>
         </nav>
 
         <main class="content">
@@ -408,6 +409,83 @@
                             <div><strong>-2 IL:</strong> Pierre sombre, asphalte sec, terre sombre, ecorce de chene</div>
                             <div><strong>-3 IL:</strong> Noir avec details, ombres profondes, vetement noir texture, cheveux noirs</div>
                             <div><strong>⚠️ -4 IL:</strong> Noir bouche, ombres tres denses - <em>sans detail exploitable</em></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- MODE SUNNY 16 -->
+            <section id="tab-sunny16" class="tab-content">
+                <div class="meter-display">
+                    <h2 data-i18n="sunny16Title">&#9728; Règle Sunny 16</h2>
+                    <p class="info-text" data-i18n="sunny16Subtitle">Estimation d'exposition sans posemètre selon les conditions lumineuses</p>
+
+                    <!-- PARTIE 1 : Sélection météo -->
+                    <div class="input-group">
+                        <label data-i18n="labelSunnyCondition">Conditions lumineuses :</label>
+                        <div class="sunny-conditions-grid" id="sunny-conditions-grid">
+                            <!-- Généré par JS -->
+                        </div>
+                    </div>
+
+                    <!-- Résultat de référence -->
+                    <div class="sunny-reference-box" id="sunny-reference-box">
+                        <div class="sunny-ref-icon" id="sunny-ref-icon">☀️</div>
+                        <div class="sunny-ref-text">
+                            <div class="sunny-ref-condition" id="sunny-ref-condition" data-i18n="sunnySelectCondition">Sélectionnez une condition</div>
+                            <div class="sunny-ref-formula" id="sunny-ref-formula"></div>
+                        </div>
+                        <div class="sunny-ref-result" id="sunny-ref-result">
+                            <span class="sunny-ref-fstop" id="sunny-ref-fstop">—</span>
+                            <span class="sunny-ref-detail" data-i18n="sunnyAt100ISO">@ 100 ISO · 1/100s</span>
+                        </div>
+                    </div>
+
+                    <hr style="border: 0; border-top: 2px solid rgba(255,255,255,0.1); margin: 20px 0;">
+
+                    <!-- PARTIE 2 : Calculateur de triangulation -->
+                    <h3 data-i18n="sunny16CalcTitle">&#9881; Adapter à mes réglages</h3>
+                    <p class="info-text" data-i18n="sunny16CalcSubtitle">Modifiez un paramètre, les deux autres s'ajustent automatiquement</p>
+
+                    <div class="sunny-triangle">
+                        <div class="sunny-param-block">
+                            <label data-i18n="labelAperture">Ouverture</label>
+                            <select id="sunny-fstop" class="input-field sunny-param-select">
+                                <!-- Options générées par JS -->
+                            </select>
+                        </div>
+                        <div class="sunny-param-block">
+                            <label data-i18n="labelVitesse">Vitesse</label>
+                            <select id="sunny-shutter" class="input-field sunny-param-select">
+                                <!-- Options générées par JS -->
+                            </select>
+                        </div>
+                        <div class="sunny-param-block">
+                            <label data-i18n="labelISO">ISO</label>
+                            <select id="sunny-iso" class="input-field sunny-param-select">
+                                <!-- Options générées par JS -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="sunny-lock-row">
+                        <span class="sunny-lock-label" data-i18n="sunnyLockLabel">Paramètre à fixer :</span>
+                        <div class="sunny-lock-btns">
+                            <button class="sunny-lock-btn active" data-param="fstop" data-i18n="sunnyLockFstop">🔒 Ouverture</button>
+                            <button class="sunny-lock-btn" data-param="shutter" data-i18n="sunnyLockShutter">🔒 Vitesse</button>
+                            <button class="sunny-lock-btn" data-param="iso" data-i18n="sunnyLockISO">🔒 ISO</button>
+                        </div>
+                    </div>
+
+                    <div class="sunny-ev-display" id="sunny-ev-display">
+                        <span data-i18n="sunnyEVLabel">Valeur EV de référence :</span>
+                        <strong id="sunny-ev-value">—</strong>
+                    </div>
+
+                    <!-- Tableau des conditions (référence) -->
+                    <div class="info-box" style="margin-top: 24px;">
+                        <h4 data-i18n="sunny16TableTitle">&#128203; Échelle Sunny 16 (référence @ f/16 · ISO 100)</h4>
+                        <div class="sunny-table" id="sunny-table">
+                            <!-- Généré par JS -->
                         </div>
                     </div>
                 </div>

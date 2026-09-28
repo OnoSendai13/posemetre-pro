@@ -20,6 +20,7 @@ const translations = {
         navFlash: '⚡ Flash',
         navRatios: '💡 Ratios',
         navEstimation: '🎯 Sans Cellule',
+        navSunny16: '☀ Sunny 16',
         
         // Mode Posemètre
         posemetreTitle: 'Mode Continu (Lumière ambiante)',
@@ -155,6 +156,42 @@ const translations = {
         compMinus15: '-1.5 IL',
         compMinus05: '-0.5 IL',
         
+        // Mode Sunny 16
+        sunny16Title: '☀ Règle Sunny 16',
+        sunny16Subtitle: 'Estimation d\'exposition sans posemètre selon les conditions lumineuses',
+        labelSunnyCondition: 'Conditions lumineuses :',
+        sunnySelectCondition: 'Sélectionnez une condition',
+        sunnyAt100ISO: '@ 100 ISO · 1/100s',
+        sunny16CalcTitle: '⚙ Adapter à mes réglages',
+        sunny16CalcSubtitle: 'Modifiez un paramètre, les deux autres s\'ajustent automatiquement',
+        labelAperture: 'Ouverture',
+        sunnyLockLabel: 'Paramètre à fixer :',
+        sunnyLockFstop: '🔒 Ouverture',
+        sunnyLockShutter: '🔒 Vitesse',
+        sunnyLockISO: '🔒 ISO',
+        sunnyEVLabel: 'Valeur EV de référence :',
+        sunny16TableTitle: '📋 Échelle Sunny 16 (référence @ f/16 · ISO 100)',
+
+        // Conditions Sunny 16
+        sunnyCondSnow: '❄️ Neige / Plage / Eau',
+        sunnyCondClear: '☀️ Plein soleil',
+        sunnyCondLightHaze: '🌤 Légère brume',
+        sunnyCondOvercast: '⛅ Ciel couvert',
+        sunnyCondHeavyOvercast: '🌥 Très nuageux',
+        sunnyCondShade: '🌫 Ombre / Coucher soleil',
+        sunnyCondDusk: '🌆 Crépuscule',
+        sunnyCondIndoor: '🏠 Intérieur (jour)',
+        sunnyCondDesc: {
+            snow:         'Sujets sur neige, sable blanc ou eau ensoleillée — réflexion maximale',
+            clear:        'Soleil franc, ombres nettes — condition de référence Sunny 16',
+            lightHaze:    'Légère brume, ombres douces mais visibles',
+            overcast:     'Ciel voilé, pas d\'ombre — lumière diffuse',
+            heavyOvercast:'Nuages épais, lumière plate',
+            shade:        'Ombre profonde, ou coucher/lever de soleil à l\'horizon',
+            dusk:         'Crépuscule civil, 15–30 min après le coucher',
+            indoor:       'Intérieur éclairé par fenêtres (journée)',
+        },
+
         // Onboarding
         onboardingSkip: 'Passer',
         onboardingNext: 'Suivant',
@@ -186,6 +223,7 @@ const translations = {
         navFlash: '⚡ Flash',
         navRatios: '💡 Ratios',
         navEstimation: '🎯 No Meter',
+        navSunny16: '☀ Sunny 16',
         
         // Mode Posemètre
         posemetreTitle: 'Ambient Mode (Continuous Light)',
@@ -321,6 +359,42 @@ const translations = {
         compMinus15: '-1.5 EV',
         compMinus05: '-0.5 EV',
         
+        // Mode Sunny 16
+        sunny16Title: '☀ Sunny 16 Rule',
+        sunny16Subtitle: 'Exposure estimation without a light meter based on lighting conditions',
+        labelSunnyCondition: 'Lighting conditions:',
+        sunnySelectCondition: 'Select a condition',
+        sunnyAt100ISO: '@ 100 ISO · 1/100s',
+        sunny16CalcTitle: '⚙ Adapt to my settings',
+        sunny16CalcSubtitle: 'Change one parameter, the other two adjust automatically',
+        labelAperture: 'Aperture',
+        sunnyLockLabel: 'Parameter to lock:',
+        sunnyLockFstop: '🔒 Aperture',
+        sunnyLockShutter: '🔒 Shutter',
+        sunnyLockISO: '🔒 ISO',
+        sunnyEVLabel: 'Reference EV value:',
+        sunny16TableTitle: '📋 Sunny 16 Scale (reference @ f/16 · ISO 100)',
+
+        // Sunny 16 Conditions
+        sunnyCondSnow: '❄️ Snow / Beach / Water',
+        sunnyCondClear: '☀️ Full sun',
+        sunnyCondLightHaze: '🌤 Light haze',
+        sunnyCondOvercast: '⛅ Overcast',
+        sunnyCondHeavyOvercast: '🌥 Heavy overcast',
+        sunnyCondShade: '🌫 Shade / Sunset',
+        sunnyCondDusk: '🌆 Dusk',
+        sunnyCondIndoor: '🏠 Indoor (daylight)',
+        sunnyCondDesc: {
+            snow:         'Subjects on snow, white sand or sunlit water — maximum reflection',
+            clear:        'Direct sun, sharp shadows — the classic Sunny 16 reference condition',
+            lightHaze:    'Slight haze, soft but visible shadows',
+            overcast:     'Overcast sky, no shadows — diffused light',
+            heavyOvercast:'Thick clouds, flat light',
+            shade:        'Open shade, or sun at/just above the horizon',
+            dusk:         'Civil twilight, 15–30 min after sunset',
+            indoor:       'Interior lit by daylight windows',
+        },
+
         // Onboarding
         onboardingSkip: 'Skip',
         onboardingNext: 'Next',
