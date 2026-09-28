@@ -126,7 +126,7 @@ const translations = {
         
         // Footer
         footerInstall: '📱 Installer l\'application',
-        footerText: 'Assistant Posemètre Pro v1.6 | Développé pour Laurent Suchet IG:@ono_sendai',
+        footerText: 'Assistant Posemètre Pro v2.0 | Développé pour Laurent Suchet IG:@ono_sendai',
         footerRateApp: '⭐ Noter l\'application',
         
         // Modal Aide - Titres
@@ -329,7 +329,7 @@ const translations = {
         
         // Footer
         footerInstall: '📱 Install app',
-        footerText: 'Light Meter Pro Assistant v1.6 | Developed for Laurent Suchet IG:@ono_sendai',
+        footerText: 'Light Meter Pro Assistant v2.0 | Developed for Laurent Suchet IG:@ono_sendai',
         footerRateApp: '⭐ Rate the app',
         
         // Modal Aide - Titres

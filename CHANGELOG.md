@@ -7,6 +7,60 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.0.0] - 2026-09-28
+
+### ☀️ Sunny 16 — Nouveau mode d'estimation sans posemètre
+
+**Status**: ✅ Production-ready  
+**Breaking change**: non — ajout fonctionnel pur, aucune API modifiée  
+**Motif du passage en v2.0**: addition d'un cinquième mode complet, modification significative de la surface fonctionnelle de l'application  
+
+### ✨ Nouvelles fonctionnalités
+
+#### ☀️ Onglet Sunny 16 (5ᵉ mode)
+- **8 conditions lumineuses** couvrant tout le spectre naturel (EV 7 → 16) :
+  - ❄️ Neige / Plage / Eau (EV 16 → f/22)
+  - ☀️ Plein soleil (EV 15 → f/16) — référence historique de la règle
+  - 🌤 Légère brume (EV 14 → f/11)
+  - ⛅ Ciel couvert (EV 13 → f/8)
+  - 🌥 Très nuageux (EV 12 → f/5.6)
+  - 🌫 Ombre / Coucher de soleil (EV 11 → f/4)
+  - 🌆 Crépuscule (EV 9 → f/2.8)
+  - 🏠 Intérieur (jour, fenêtres) (EV 7 → f/2)
+- **Affichage de référence** : f/ estimé pour 100 ISO · 1/100s, avec formule EV visible
+- **Grille de sélection visuelle** (boutons avec icône + label + EV)
+
+#### ⚙️ Calculateur triangulaire
+- **3 selects liés** : Ouverture · Vitesse · ISO
+- **Logique réciproque** : modifier n'importe quel paramètre recalcule les deux autres pour conserver l'EV de la condition sélectionnée
+- **Boutons de verrouillage** (🔒 Ouverture / Vitesse / ISO) : choisir quel paramètre reste fixe lors d'un changement de condition
+- **Affichage EV courant** toujours visible
+
+#### 📋 Tableau de référence intégré
+- Récapitulatif de toutes les conditions avec icône, EV et f/ de référence
+- Description textuelle de chaque condition (FR + EN)
+
+### 🐛 Corrections incluses dans ce cycle
+- **fix(no-meter)**: correction du raisonnement zone → ouverture dans l'onglet Sans Cellule
+  - `calculateAperture(measuredFstop, -zoneIL)` → `calculateAperture(measuredFstop, +zoneIL)`
+  - Sujet plus lumineux que gris neutre = fermer le diaphragme (et non ouvrir)
+  - Affichage de la compensation de zone corrigé (signe inversé)
+
+### 🛠️ Fichiers modifiés
+- `index.html` — bouton nav `sunny16`, section `#tab-sunny16` complète (grille, référence, calculateur, tableau)
+- `src/ui.js` — 6 fonctions Sunny 16 : `populateSunnySelects`, `buildSunnyConditionsGrid`, `updateSunnyReference`, `applySunnyEVToSelects`, `recalcSunny`, `onSunnyParamChange`, `buildSunnyTable`, `initSunnyLockBtns`
+- `src/main.js` — import + init Sunny 16 + listeners (fstop/shutter/iso change)
+- `i18n.js` — ~40 nouvelles clés FR + EN (`navSunny16`, `sunnyCondXxx`, `sunnyCondDesc`, labels)
+- `styles.css` — ~200 lignes CSS dédiées Sunny 16 (dark + light theme, responsive 4→2 colonnes)
+- `www/` — synchronisé via `build-www.js`
+- `package.json` — version `1.6.0` → `2.0.0`
+
+### 🌍 i18n
+- Toutes les nouvelles clés disponibles en **Français** et **Anglais**
+- Unités adaptées : IL (FR) / EV (EN)
+
+---
+
 ## [1.6] - 2026-05-29
 
 ### 🎨 Theme Selector, Live i18n, Onboarding & Android Edge-to-Edge
@@ -541,12 +595,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## 🚀 Future Versions
 
-### v1.7 (Planned)
+### v2.1 (Planned)
 - [ ] History of last 10 measurements
 - [ ] Saved favorites / Presets
 - [ ] Export to CSV/PDF
 
-### v2.0 (Future)
+### v2.x (Future)
 - [ ] Additional languages (ES, DE, IT)
 - [ ] Native iOS app (App Store)
 - [ ] Bluetooth integration (Sekonic)
@@ -564,6 +618,6 @@ MIT License - Copyright (c) 2026 Laurent Suchet IG:@ono_sendai
 
 **Happy shooting!** 📸✨
 
-Current version: **1.6** (May 29, 2026)
+Current version: **2.0.0** (September 28, 2026)
 
 </div>
